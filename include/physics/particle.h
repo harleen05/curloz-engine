@@ -10,7 +10,7 @@ class Particle
         physics::Vector3 velocity;
         // physics::Vector3 acceleration ;
         physics::Vector3 forceAccum;
-        physics::real damping;
+        physics::real damping = 1;
         physics::real inverseMass;
         bool hasFiniteMass();
         physics::real getMass();
@@ -22,8 +22,15 @@ class Particle
         {
             return glm::vec3(vector.x , vector.y, vector.z);
         }
-
-
+        inline void setMass(physics::real mass)
+        {
+            inverseMass = 1/mass;
+        }
+        inline physics::Vector3 getVelocity()
+        {
+            return this->velocity;
+        }
+        physics::Vector3 getPosition();
 
 };
 

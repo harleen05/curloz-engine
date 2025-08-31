@@ -1,9 +1,9 @@
 #pragma once
 #include "glm/glm.hpp"
-#include "renderer/shaders.h"
+#include "shader/shaders.h"
 #include "glad/glad.h"
-#include "general.h"
-#include "shaders.h"
+#include "global/general.h"
+#include "shader/shaders.h"
     
 struct generalAttributes
 {

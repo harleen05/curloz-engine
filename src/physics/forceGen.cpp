@@ -1,6 +1,5 @@
 #include "physics/forceGen.h"
 #include "physics/core.h"
-#include <bits/stdc++.h>
 
 void physics::ParticleForceRegistry::updateForce(physics::real duration)
 {
@@ -8,10 +7,6 @@ void physics::ParticleForceRegistry::updateForce(physics::real duration)
     {
         it->fg->updateForce(it->particle, duration);
     }
-    // for(auto &it : registrations)
-    // {
-    //     it.fg->updateForce(it.particle, duration);
-    // }
 }
 
 void physics::ParticleForceRegistry::add(Particle *particle, ParticleForceGenerator *fg)
@@ -43,7 +38,19 @@ void particleGravity::updateForce(Particle *particle, physics::real duration)
 {
     if(!particle->hasFiniteMass()) return;
     particle->addForce(gravity * particle->getMass());
-    
+}
+
+void particleDrag::updateForce(Particle *particle, physics::real duration)
+{
+    physics::Vector3 force;
+    force = particle->getVelocity();
+
+    physics::real dragCoeff = force.magnitude();
+    dragCoeff = k1*dragCoeff + k2 * dragCoeff*dragCoeff;
+
+    force.normalize();
+    force *= -dragCoeff;
+    particle->addForce(force);
 }
 
 

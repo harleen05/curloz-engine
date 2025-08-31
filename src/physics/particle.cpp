@@ -47,3 +47,8 @@ physics::real Particle::getMass()
 {
     return 1/(physics::real)inverseMass;
 }
+
+physics::Vector3 Particle::getPosition()
+{
+    return position;
+}

@@ -1,6 +1,6 @@
 #pragma once
 #include "precision.h"
-#include "../glm/glm.hpp"
+#include "glm/glm.hpp"
 namespace physics
 {
     class Vector3

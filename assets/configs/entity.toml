@@ -1,0 +1,29 @@
+[[entity]]
+ID = 0
+path = 'assets/models/statue-chiriqui-3d-model/scene.gltf'
+scale = 1
+
+    [entity.position]
+    x = 3.0
+    y = 0.0
+    z = 0.0
+
+    [entity.rotation]
+    x = 0.0
+    y = 0.0
+    z = 0.0
+
+[[entity]]
+ID = 1
+path = 'assets/models/statue-chiriqui-3d-model/scene.gltf'
+scale = 1
+
+    [entity.position]
+    x = 0.0
+    y = 0.0
+    z = 0.0
+
+    [entity.rotation]
+    x = 0.0
+    y = 0.0
+    z = 0.0

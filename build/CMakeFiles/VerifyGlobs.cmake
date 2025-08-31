@@ -5,7 +5,7 @@ cmake_policy(SET CMP0009 NEW)
 # SOURCES at CMakeLists.txt:6 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/curloz/dev/project/opengl/src/*/*.c")
 set(OLD_GLOB
-  "/home/curloz/dev/project/opengl/src/renderer/glad.c"
+  "/home/curloz/dev/project/opengl/src/glad/glad.c"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
@@ -15,24 +15,28 @@ endif()
 # SOURCES at CMakeLists.txt:6 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/curloz/dev/project/opengl/src/*/*.cpp")
 set(OLD_GLOB
+  "/home/curloz/dev/project/opengl/src/audio/audioMaster.cpp"
+  "/home/curloz/dev/project/opengl/src/audio/source.cpp"
+  "/home/curloz/dev/project/opengl/src/camera/camera.cpp"
+  "/home/curloz/dev/project/opengl/src/entity/entity.cpp"
   "/home/curloz/dev/project/opengl/src/imgui/imgui.cpp"
   "/home/curloz/dev/project/opengl/src/imgui/imgui_draw.cpp"
   "/home/curloz/dev/project/opengl/src/imgui/imgui_impl_glfw.cpp"
   "/home/curloz/dev/project/opengl/src/imgui/imgui_impl_opengl3.cpp"
   "/home/curloz/dev/project/opengl/src/imgui/imgui_tables.cpp"
   "/home/curloz/dev/project/opengl/src/imgui/imgui_widgets.cpp"
+  "/home/curloz/dev/project/opengl/src/loader/bone.cpp"
+  "/home/curloz/dev/project/opengl/src/loader/mesh.cpp"
+  "/home/curloz/dev/project/opengl/src/loader/model.cpp"
   "/home/curloz/dev/project/opengl/src/physics/forceGen.cpp"
   "/home/curloz/dev/project/opengl/src/physics/particle.cpp"
-  "/home/curloz/dev/project/opengl/src/renderer/camera.cpp"
-  "/home/curloz/dev/project/opengl/src/renderer/entity.cpp"
-  "/home/curloz/dev/project/opengl/src/renderer/general.cpp"
-  "/home/curloz/dev/project/opengl/src/renderer/gltLoader.cpp"
-  "/home/curloz/dev/project/opengl/src/renderer/imageLoader.cpp"
-  "/home/curloz/dev/project/opengl/src/renderer/model.cpp"
-  "/home/curloz/dev/project/opengl/src/renderer/platform.cpp"
+  "/home/curloz/dev/project/opengl/src/physics/springs.cpp"
+  "/home/curloz/dev/project/opengl/src/renderer/game.cpp"
   "/home/curloz/dev/project/opengl/src/renderer/renderCube.cpp"
-  "/home/curloz/dev/project/opengl/src/renderer/shaders.cpp"
-  "/home/curloz/dev/project/opengl/src/renderer/stb_image.cpp"
+  "/home/curloz/dev/project/opengl/src/renderer/renderPlatform.cpp"
+  "/home/curloz/dev/project/opengl/src/shader/shaders.cpp"
+  "/home/curloz/dev/project/opengl/src/texture/imageLoader.cpp"
+  "/home/curloz/dev/project/opengl/src/texture/stb_image.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")

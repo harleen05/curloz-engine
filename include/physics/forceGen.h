@@ -44,3 +44,14 @@ class particleGravity : public ParticleForceGenerator
         void updateForce(Particle* particle, physics::real duration) override;
     
 };
+
+class particleDrag : public ParticleForceGenerator 
+{
+    private:
+        physics::real k1;
+        physics::real k2;
+
+    public:
+        particleDrag(physics::real k1, physics::real k2) : k1(k1), k2(k2){}
+        void updateForce(Particle* particle, physics::real duration) override;
+};

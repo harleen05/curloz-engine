@@ -1,12 +1,6 @@
 #include "renderer/renderCube.h"
 
-
-
-
 generalAttributes renderCube::attributes;
-
-
-
 
 void renderCube::bookInAdvance()
 {        
