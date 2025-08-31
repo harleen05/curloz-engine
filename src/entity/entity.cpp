@@ -49,6 +49,34 @@ void Entity::loadEntities()
 }
 void Entity::saveConfig()
 {
+    auto config_entities = config["entity"].as_array();
+
+    for(int i=0; i<entities.size(); ++i)
+    {
+        auto& entity = entities[i];
+        auto config_entity = (*config_entities)[i].as_table();
+
+        //update values in file
+
+        std::cout<<"Saving Model"<<entity->name<<std::endl;
+        //scale
+        config_entity->insert_or_assign("scale", entity->scale);
+        std::cout<<"Saved scale:"<<entity->scale<<std::endl;
+
+        //position
+        auto position_table = (*config_entity)["position"].as_table();
+        position_table->insert_or_assign("x", entity->particle.position.x);
+        position_table->insert_or_assign("y", entity->particle.position.y);
+        position_table->insert_or_assign("z", entity->particle.position.z);
+        std::cout<<"Saved position:"<<entity->particle.position.x<<" "<<entity->particle.position.y<<" "<<entity->particle.position.z<<std::endl;
+
+        //rotation
+        auto rotation_table = (*config_entity)["rotation"].as_table();
+        rotation_table->insert_or_assign("x", entity->rotationMap["x"]);
+        rotation_table->insert_or_assign("y", entity->rotationMap["y"]);
+        rotation_table->insert_or_assign("z", entity->rotationMap["z"]);
+        std::cout<<"Saved rotation:"<<entity->rotationMap["x"]<<" "<<entity->rotationMap["y"]<<" "<<entity->rotationMap["z"]<<std::endl;
+    }
     std::ofstream file("assets/configs/entity.toml");
     file << config;
 }
@@ -220,7 +248,12 @@ void Entity::drawImGuiMenu()
     {
 
         ImGui::Begin("Entities");
-        // std::cout<<"DEBUG::entities size: "<<entities.size()<<std::endl;
+
+        if(ImGui::Button("Save"))
+        {
+            saveConfig();
+            std::cout<<"Saved succesfully"<<std::endl;
+        }
         for(int i=0; i<entities.size(); ++i)
         {
             ImGui::PushID(i);

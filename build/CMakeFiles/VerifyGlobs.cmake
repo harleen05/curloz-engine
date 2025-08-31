@@ -25,7 +25,6 @@ set(OLD_GLOB
   "/home/curloz/dev/project/opengl/src/imgui/imgui_impl_opengl3.cpp"
   "/home/curloz/dev/project/opengl/src/imgui/imgui_tables.cpp"
   "/home/curloz/dev/project/opengl/src/imgui/imgui_widgets.cpp"
-  "/home/curloz/dev/project/opengl/src/loader/bone.cpp"
   "/home/curloz/dev/project/opengl/src/loader/mesh.cpp"
   "/home/curloz/dev/project/opengl/src/loader/model.cpp"
   "/home/curloz/dev/project/opengl/src/physics/forceGen.cpp"

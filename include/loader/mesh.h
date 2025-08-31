@@ -6,7 +6,6 @@
 
 #include "shader/shaders.h"
 
-#define MAX_BONE_INFLUENCE 4
 //This struct stores information about each triangle in the mesh
 struct Vertex
 {
@@ -15,8 +14,6 @@ struct Vertex
     glm::vec2 TexCoords;
 
     //4 is the maximum bone influence
-    int BoneIDs[MAX_BONE_INFLUENCE];
-    float Weights[MAX_BONE_INFLUENCE];
 };
 
 //this stores the texture for our triangles
