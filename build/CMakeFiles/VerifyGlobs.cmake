@@ -3,41 +3,41 @@
 cmake_policy(SET CMP0009 NEW)
 
 # SOURCES at CMakeLists.txt:6 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/curloz/dev/project/opengl/src/*/*.c")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/curloz/dev/git/curloz-engine/src/*/*.c")
 set(OLD_GLOB
-  "/home/curloz/dev/project/opengl/src/glad/glad.c"
+  "/home/curloz/dev/git/curloz-engine/src/glad/glad.c"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
-  file(TOUCH_NOCREATE "/home/curloz/dev/project/opengl/build/CMakeFiles/cmake.verify_globs")
+  file(TOUCH_NOCREATE "/home/curloz/dev/git/curloz-engine/build/CMakeFiles/cmake.verify_globs")
 endif()
 
 # SOURCES at CMakeLists.txt:6 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/curloz/dev/project/opengl/src/*/*.cpp")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/curloz/dev/git/curloz-engine/src/*/*.cpp")
 set(OLD_GLOB
-  "/home/curloz/dev/project/opengl/src/audio/audioMaster.cpp"
-  "/home/curloz/dev/project/opengl/src/audio/source.cpp"
-  "/home/curloz/dev/project/opengl/src/camera/camera.cpp"
-  "/home/curloz/dev/project/opengl/src/entity/entity.cpp"
-  "/home/curloz/dev/project/opengl/src/imgui/imgui.cpp"
-  "/home/curloz/dev/project/opengl/src/imgui/imgui_draw.cpp"
-  "/home/curloz/dev/project/opengl/src/imgui/imgui_impl_glfw.cpp"
-  "/home/curloz/dev/project/opengl/src/imgui/imgui_impl_opengl3.cpp"
-  "/home/curloz/dev/project/opengl/src/imgui/imgui_tables.cpp"
-  "/home/curloz/dev/project/opengl/src/imgui/imgui_widgets.cpp"
-  "/home/curloz/dev/project/opengl/src/loader/mesh.cpp"
-  "/home/curloz/dev/project/opengl/src/loader/model.cpp"
-  "/home/curloz/dev/project/opengl/src/physics/forceGen.cpp"
-  "/home/curloz/dev/project/opengl/src/physics/particle.cpp"
-  "/home/curloz/dev/project/opengl/src/physics/springs.cpp"
-  "/home/curloz/dev/project/opengl/src/renderer/game.cpp"
-  "/home/curloz/dev/project/opengl/src/renderer/renderCube.cpp"
-  "/home/curloz/dev/project/opengl/src/renderer/renderPlatform.cpp"
-  "/home/curloz/dev/project/opengl/src/shader/shaders.cpp"
-  "/home/curloz/dev/project/opengl/src/texture/imageLoader.cpp"
-  "/home/curloz/dev/project/opengl/src/texture/stb_image.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/audio/audioMaster.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/audio/source.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/camera/camera.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/entity/entity.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/imgui/imgui.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/imgui/imgui_draw.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/imgui/imgui_impl_glfw.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/imgui/imgui_impl_opengl3.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/imgui/imgui_tables.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/imgui/imgui_widgets.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/loader/mesh.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/loader/model.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/physics/forceGen.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/physics/particle.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/physics/springs.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/renderer/game.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/renderer/renderCube.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/renderer/renderPlatform.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/shader/shaders.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/texture/imageLoader.cpp"
+  "/home/curloz/dev/git/curloz-engine/src/texture/stb_image.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
-  file(TOUCH_NOCREATE "/home/curloz/dev/project/opengl/build/CMakeFiles/cmake.verify_globs")
+  file(TOUCH_NOCREATE "/home/curloz/dev/git/curloz-engine/build/CMakeFiles/cmake.verify_globs")
 endif()

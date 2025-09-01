@@ -54,7 +54,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /usr/bin/cmake --regenerate-during-build -S/home/curloz/dev/project/opengl -B/home/curloz/dev/project/opengl/build
+  command = /usr/bin/cmake --regenerate-during-build -S/home/curloz/dev/git/curloz-engine -B/home/curloz/dev/git/curloz-engine/build
   description = Re-running CMake...
   generator = 1
 
@@ -63,7 +63,7 @@ rule RERUN_CMAKE
 # Rule for re-checking globbed directories.
 
 rule VERIFY_GLOBS
-  command = /usr/bin/cmake -P /home/curloz/dev/project/opengl/build/CMakeFiles/VerifyGlobs.cmake
+  command = /usr/bin/cmake -P /home/curloz/dev/git/curloz-engine/build/CMakeFiles/VerifyGlobs.cmake
   description = Re-checking globbed directories...
   generator = 1
 
