@@ -1,45 +1,51 @@
-TOOLCHAIN ?= gnu
+TOOLCHAIN ?= gcc
 
 ifeq ($(TOOLCHAIN), clang)
 		CC := clang
 		CXX := clang++
-else
-		CC ?= gcc
-		CXX ?= g++
+		LIBS_DIR := lib/linux
+		LIBS := -lGL -ldl -L./lib/linux -lglfw3 -lassimp -lz
+
+else ifeq ($(TOOLCHAIN), gcc)
+		CC = gcc
+		CXX = g++
+		LIBS := -L./lib/linux -lglfw3 -lassimp -lz  -lGL -ldl
+
+else ifeq ($(TOOLCHAIN), mingw)
+		CC = x86_64-w64-mingw32-gcc
+		CXX = x86_64-w64-mingw32-g++
+		CXXFLAGS += -static -static-libgcc -static-libstdc++
+		LDFLAGS := -static -static-libgcc -static-libstdc++
+		LIBS := -L./lib/windows -lglfw3 -lassimp -lz -lopengl32 -lgdi32 -luser32 -lkernel32 -lwinmm
+
 endif
 
 INC_DIRS = include
 SRC_DIRS := src
 BUILD_DIR := build
-LIB_DIR := lib
 
-CFLAGS := -Wall
-CXXFLAGS := $(CFLAGS)
+CFLAGS += -Wall
+CXXFLAGS += $(CFLAGS)
 
 TARGET_EXEC := prog
-
 
 SRCS := $(shell find $(SRC_DIRS)/* -name '*.cpp' -or -name '*.c')
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 
-ifeq ($(OS), Window_NT)
-		LIBS := -lopengl32
-else 
-		LIBS := -lGL -ldl
-endif
-LIBS += -lglfw3 -lassimp -lz
 
-
-USE_MOLD ?= 1
+USE_MOLD ?= 0
 ifeq ($(USE_MOLD), 1)
-		LDFLAGS := -fuse-ld=mold
+		LDFLAGS += -fuse-ld=mold
 endif
+
 
 DEBUG ?= 1
 RELEASE ?= 0
+
 ifeq ($(RELEASE),1)
 		DEBUG = 0
 endif
+
 
 ifeq ($(DEBUG), 1)
 		CFLAGS += -DDEBUG -g -O0 
@@ -79,7 +85,7 @@ endif
 
 
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
-		$(CXX) $(OBJS) -o $@ $(LDFLAGS) -L./$(LIB_DIR) $(LIBS)
+		$(CXX) $(OBJS) -o $@ $(LDFLAGS) $(LIBS)
 
 $(BUILD_DIR)/%.c.o: %.c
 		@mkdir -p $(dir $@)
