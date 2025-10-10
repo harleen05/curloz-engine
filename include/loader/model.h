@@ -1,38 +1,30 @@
 #pragma once
 
-#include "shader/shaders.h"
-#include "loader/mesh.h"
-#include "glm/glm.hpp"
-#include "texture/imageLoader.h"
-
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
+#include <map>
 #include <string>
-#include <iostream>
+#include "loader/mesh.h"
+#include "assimp/Importer.hpp"
+#include "assimp/scene.h"
+#include "assimp/postprocess.h"
+#include "shader/shader.h"
 
-class Model 
+
+class Model
 {
-    public:
-        //constructor
-        Model(std::string path);
+        public:
+                Model(const std::string &modelPath);
+                void Draw(Shader &shader);
 
-        //calls all meshes and call their respective draw functions
-        void Draw(Shader &shader);	
+                std::vector<Mesh> m_Meshes;
 
-        std::vector<assimpMesh> meshes;
-    private:
-        //a vector that holds all our model's meshes
-        //directory of texture
-        std::string directory;
-        //helpful in faster loading
-        std::vector<Texture> textures_loaded;
+        private:
+                std::string directory;
+                std::vector<Texture> m_texturesLoaded;
 
-        void loadModel(std::string path);
-        void processNode(aiNode *node, const aiScene *scene);
-        assimpMesh processMesh(aiMesh *mesh, const aiScene *scene);
-        std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
-        GLuint TextureFromFile(const char *path);
+                bool loadModel (const std::string &modelPath);
+                void processNode (aiNode *node, const aiScene *scene);
+                Mesh processMesh (aiMesh *mesh, const aiScene *scene);
+                std::vector<Texture> loadMaterial (aiMaterial *texture, aiTextureType textureType, std::string typeName);
+                GLuint loadTexture (const std::string &texturePath);
 
 };
-

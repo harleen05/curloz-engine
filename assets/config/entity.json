@@ -1,0 +1,36 @@
+{
+    "entities": [
+        {
+            "model": "assets/models/goldenstatue/scene.gltf",
+            "name": "Golden Statue",
+            "position": [
+                1.315999984741211,
+                0.6489999890327454,
+                0.0
+            ],
+            "rotation": [
+                -118.4209976196289,
+                -32.72700119018555,
+                0.0
+            ],
+            "scale": 1.6230000257492065,
+            "type": "renderStatic"
+        },
+        {
+            "model": "assets/models/schoolgirl/D0208059.obj",
+            "name": "School Girl",
+            "position": [
+                -2.631999969482422,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 0.009999999776482582,
+            "type": "renderStatic"
+        }
+    ]
+}

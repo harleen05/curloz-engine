@@ -1,0 +1,16 @@
+[camera]
+far = 100.0
+front = [ 0.30272519588470459, -0.36638081073760986, 0.87984234094619751 ]
+near = 0.10000000000000001
+position = [ -3.5993881225585938, 6.1991806030273438, -7.3972587585449219 ]
+
+[display]
+height = 1080
+refreshrate = 144
+vsync = true
+width = 1920
+
+[entity]
+configfile = 'assets/config/entity.json'
+fragmentshaderfile = 'assets/shaders/shaderEntity.frag'
+vertexshaderfile = 'assets/shaders/shaderEntity.vert'

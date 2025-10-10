@@ -1,3 +1,0 @@
-/home/curloz/dev/git/curloz-engine/build/CMakeFiles/prog.dir
-/home/curloz/dev/git/curloz-engine/build/CMakeFiles/edit_cache.dir
-/home/curloz/dev/git/curloz-engine/build/CMakeFiles/rebuild_cache.dir

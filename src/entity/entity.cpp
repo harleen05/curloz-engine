@@ -1,287 +1,182 @@
-#include "entity/entity.h"
-#include "glm/ext/matrix_transform.hpp"
-#include "glm/trigonometric.hpp"
-#include "physics/core.h"
-#include "toml/toml.hpp"
-#include "imgui/imgui.h"
-#include <algorithm>
-#include <cmath>
+#include <iostream>
+#include <string>
 #include <fstream>
 #include <memory>
+#include "entity/entity.h"
+#include "global/globalEntity.h"
+#include "json/json.hpp"
+#include <unordered_map>
+#include "global/globalStatus.h"
+#include "imgui/imgui.h"
 
-Camera *Entity::camera;
-
-glm::mat4 Entity::viewMatrix = generalInfo.viewMatrix;
-glm::mat4 Entity::projectionMatrix = generalInfo.projectionMatrix;
-
-DirectionalLight Entity::directionLight;
-std::vector<PointLight> Entity::PointLights;
-std::vector<std::unique_ptr<Entity> > Entity::entities;
-// std::vector<Entity*> Entity::entities;
-
-int Entity::numInfluencingLights = 8;
-int Entity::numEntities = 0;
-
-physics::ParticleForceRegistry Entity::registry;
-particleGravity Entity::gravity = particleGravity(physics::Vector3(0.0f,-7.0f,0.0f));
-particleDrag Entity::drag = particleDrag(0.01, 0.001);
+using json = nlohmann::json;
 
 
-toml::table Entity::config;
+std::string Entity::entityConfigFile;
+std::vector<std::unique_ptr<renderStatic>> Entity::p_renderStatic;
+
+void Entity::init()
+{
+        entityConfigFile = global::Entity::getConfigFile();
+        
+        renderStatic::init();
+
+        loadEntities();
+}
 void Entity::loadEntities()
 {
-    config = toml::parse_file("assets/configs/entity.toml");
+        std::ifstream file(entityConfigFile);
+        if (!file.is_open())
+        {
+                std::cerr << "Could not open entity config file" << std::endl;
+                return ;
+        }
+        json data = json::parse(file);
+        file.close();
 
-    auto config_entities = config["entity"].as_array();
-    // int size = config_entities->size();
-    
-    for(int i=0; i < config_entities->size(); ++i)
-    {
-        auto config_entity = (*config_entities)[i].as_table();
-        std::string path = (*config_entity)["path"].value_or("not found");
-        std::cout<<"path of entity: "<<path<<std::endl;
+        if (!data.contains("entities")) 
+        {
+                std::cout << "Entity config file is empty" << std::endl;
+                data["entities"] = json::array();
+                std::ofstream oFile(entityConfigFile);
+                oFile << data.dump(4);
+                oFile.close();
+                return;
+        }
 
-        // std::unique_ptr<Entity> newEntity = std::make_unique<Entity>(path);
-        // Entity *newEntity = new Entity(path);
-        entities.emplace_back(std::make_unique<Entity>(path));
-    }
+        for (auto &entities : data["entities"])
+        {
+                std::string type = entities["type"];
+                std::string name = entities["name"];
 
+                glm::vec3 position;
+                glm::vec3 rotation;
+                float scale;
+                std::string modelPath;
+                if (entities.contains("position"))
+                {
+                        position.x = entities["position"][0];
+                        position.y = entities["position"][1];
+                        position.z = entities["position"][2];
+                }
+
+                if (entities.contains("rotation"))
+                {
+                        rotation.x = entities["rotation"][0];
+                        rotation.y = entities["rotation"][1];
+                        rotation.z = entities["rotation"][2];
+                }
+
+                if (entities.contains("scale"))
+                {
+                        scale = entities["scale"];
+                }
+
+                if (entities.contains("model"))
+                {
+                        modelPath = entities["model"];
+                }
+
+                if(type == "renderStatic")
+                {
+                        p_renderStatic.emplace_back(std::make_unique<renderStatic>(modelPath)); 
+                        ++renderStatic::m_Count;
+
+                        auto &p_currentEntity = p_renderStatic.back();
+                        p_currentEntity->setName(name);
+                        p_currentEntity->setPosition(position);
+                        p_currentEntity->setRotation(rotation);
+                        p_currentEntity->setScale(scale);
+
+                }
+
+        }
 }
+
 void Entity::saveConfig()
 {
-    auto config_entities = config["entity"].as_array();
+        std::ifstream fileOpen(entityConfigFile);
+        if (!fileOpen.is_open())
+        {
+                std::cerr << "Could not open entity config file" << std::endl;
+                return ;
+        }
+        json data = json::parse(fileOpen);
+        fileOpen.close();
 
-    for(int i=0; i<entities.size(); ++i)
-    {
-        auto& entity = entities[i];
-        auto config_entity = (*config_entities)[i].as_table();
+        std::unordered_map<std::string, json*> entityMap;
+        for (auto &entity : data["entities"])
+        {
+                entityMap[entity["name"]] = &entity;
+        }
 
-        //update values in file
+        for (int i=0; i<p_renderStatic.size(); ++i)
+        {
+                auto it = entityMap.find(p_renderStatic[i]->getName());
+                
+                if (it != entityMap.end())
+                {
+                        json &entity = *(it->second);
+                        entity["position"][0] = p_renderStatic[i]->getPosition().x;
+                        entity["position"][1] = p_renderStatic[i]->getPosition().y;
+                        entity["position"][2] = p_renderStatic[i]->getPosition().z;
 
-        std::cout<<"Saving Model"<<entity->name<<std::endl;
-        //scale
-        config_entity->insert_or_assign("scale", entity->scale);
-        std::cout<<"Saved scale:"<<entity->scale<<std::endl;
+                        entity["rotation"][0] = p_renderStatic[i]->getRotation().x;
+                        entity["rotation"][1] = p_renderStatic[i]->getRotation().y;
+                        entity["rotation"][2] = p_renderStatic[i]->getRotation().z;
 
-        //position
-        auto position_table = (*config_entity)["position"].as_table();
-        position_table->insert_or_assign("x", entity->particle.position.x);
-        position_table->insert_or_assign("y", entity->particle.position.y);
-        position_table->insert_or_assign("z", entity->particle.position.z);
-        std::cout<<"Saved position:"<<entity->particle.position.x<<" "<<entity->particle.position.y<<" "<<entity->particle.position.z<<std::endl;
+                        entity["scale"] = p_renderStatic[i]->getScale();
+                }
+        }
 
-        //rotation
-        auto rotation_table = (*config_entity)["rotation"].as_table();
-        rotation_table->insert_or_assign("x", entity->rotationMap["x"]);
-        rotation_table->insert_or_assign("y", entity->rotationMap["y"]);
-        rotation_table->insert_or_assign("z", entity->rotationMap["z"]);
-        std::cout<<"Saved rotation:"<<entity->rotationMap["x"]<<" "<<entity->rotationMap["y"]<<" "<<entity->rotationMap["z"]<<std::endl;
-    }
-    std::ofstream file("assets/configs/entity.toml");
-    file << config;
+
+        std::ofstream fileClose(entityConfigFile);
+
+        fileClose << data.dump(4);
+        fileClose.close();
+
 }
 
-Entity::Entity(std::string modelPath):
-    ourModel(Model(modelPath) )
-{
-    //general attributes
-
-    ID = numEntities;
-    auto config_entities = config["entity"].as_array();
-    config_entity = (*config_entities)[ID].as_table();
-    ++numEntities;
-
-    int pos = modelPath.find(".");
-    name = modelPath.substr(0,pos);
-
-
-    this->scale = (*config_entity)["scale"].value_or(1.0f);
-
-    rotationMap["x"] = (*config_entity)["rotation"]["x"].value_or(0.0f);
-    rotationMap["y"] = (*config_entity)["rotation"]["y"].value_or(0.0f);
-    rotationMap["z"] = (*config_entity)["rotation"]["z"].value_or(0.0f);
-    rotation = glm::vec3(rotationMap["x"], rotationMap["y"], rotationMap["z"]);
-
-    particle.setMass(5.0f);
-    particle.position = physics::Vector3(
-            (*config_entity)["position"]["x"].value_or(0.0f),
-            (*config_entity)["position"]["y"].value_or(0.0f),
-            (*config_entity)["position"]["z"].value_or(0.0f)
-            );
-    this->setPosition(glm::vec3(particle.position.x, particle.position.y, particle.position.z));
-    
-
-
-    //Finally push back to static vector
-    registry.add(&this->particle, &gravity);
-    registry.add(&this->particle, &drag);
-    // entities.push_back(this); 
-}
-
-float Entity::distanceEntityAndLight(physics::Vector3 entityPos, glm::vec3 lightPos)
-{
-    return  (entityPos.x - lightPos.x) * (entityPos.x - lightPos.x)
-                        + 
-            (entityPos.y - lightPos.y) * (entityPos.y - lightPos.y)
-                        + 
-            (entityPos.z - lightPos.z) * (entityPos.z - entityPos.z) ;
-}
-
-
-
-void Entity::sortNearestLights(std::vector<PointLight> &PointLights)
-{
-    std::sort(PointLights.begin(), PointLights.end(), [this](PointLight &pre, PointLight &post){
-            return distanceEntityAndLight(particle.position, pre.position) < distanceEntityAndLight(particle.position, post.position);
-    });
-    nearestLights.clear();
-    for(int i=0; i<numInfluencingLights; ++i)
-    {
-        if(i<PointLights.size()) this->nearestLights.push_back(PointLights[i]);
-        else break;
-    }
-}
-
-void Entity::setPosition(glm::vec3 newPosition)
-{
-    // setting the position finally
-    particle.position = physics::Vector3(newPosition.x, newPosition.y, newPosition.z);
-
-    //Call sorting function here
-    sortNearestLights(PointLights);
-}
-glm::vec3 Entity::getPosition()
-{
-    return glm::vec3(particle.position.x , particle.position.y, particle.position.z);
-}
-
-void Entity::setScale(float scale)
-{
-    this->scale = scale;
-}
-float Entity::getScale()
-{
-    return scale;
-}
-
-void Entity::setRotation(glm::vec3 axis, float angle)
-{
-    // setting the rotation finally
-    if(axis.x == 1.0f) rotationMap["x"] = angle;
-    if(axis.y == 1.0f) rotationMap["y"] = angle;    
-    if(axis.z == 1.0f) rotationMap["z"] = angle;    
-
-    rotation = glm::vec3(rotationMap["x"], rotationMap["y"], rotationMap["z"]);
-}
-
-glm::vec3 Entity::getRotation()
-{
-    return rotation; 
-}
-    
 void Entity::update(float deltaTime)
 {
-    // particle.integrate(deltaTime);
-    if(particle.position.y <= 1.0f)
-    {
-        // particle.velocity.y = 0.0f;
-    }
-
-
-
-
-    shader.use();
-
-    modelMatrix = glm::mat4(1.0f);
-    modelMatrix = glm::translate(modelMatrix, glm::vec3(particle.position.x, particle.position.y, particle.position.z));
-    for(auto it : rotationMap)
-    {
-        if(it.first == "x") modelMatrix = glm::rotate(modelMatrix, glm::radians(it.second), glm::vec3(1.0f,0.0f,0.0f));
-        if(it.first == "y") modelMatrix = glm::rotate(modelMatrix, glm::radians(it.second), glm::vec3(0.0f,1.0f,0.0f));
-        if(it.first == "z") modelMatrix = glm::rotate(modelMatrix, glm::radians(it.second), glm::vec3(0.0f,0.0f,1.0f));
-    }
-    modelMatrix = glm::scale(modelMatrix, glm::vec3(scale));
-    shader.setMat3("normalMatrix", glm::mat3(glm::transpose(glm::inverse(modelMatrix) ) ) );
-    shader.setMat4("model", modelMatrix);
-    shader.setMat4("transform", generalInfo.projectionMatrix * generalInfo.viewMatrix * modelMatrix);
-    
-
-
-    shader.setVec3("dirLight.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
-    shader.setVec3("dirLight.ambient", glm::vec3(0.1f));
-    shader.setVec3("dirLight.diffuse", glm::vec3(0.1f));
-    shader.setVec3("dirLight.specular", glm::vec3(0.2f));
-    shader.setInt("numInfluencingLights", numInfluencingLights);
-
-    int i=0;
-    // std::cout<<"global vector lights size: "<<PointLights.size()<<std::endl;
-    // std::cout<<"nearest lights size: "<<nearestLights.size()<<std::endl;
-    for(auto it = nearestLights.begin(); it!= nearestLights.end(); ++it)
-    {
-        // std::cout<<"x: "<<it->position.x<<" z: "<<it->position.z<<std::endl;     
-        shader.setVec3("pointLights["+ std::to_string(i)+ "].position", it->position);
-        shader.setVec3("pointLights["+ std::to_string(i)+ "].ambient", it->ambient);
-        // std::cout<<"r: "<<it->ambient.x<<"y: "<<it->ambient.y<<" z: "<<it->ambient.z<<std::endl;     
-        shader.setVec3("pointLights["+ std::to_string(i)+ "].diffuse", it->diffuse);
-        // std::cout<<"r: "<<it->diffuse.x<<"y: "<<it->diffuse.y<<" z: "<<it->diffuse.z<<std::endl;     
-        shader.setVec3("pointLights["+ std::to_string(i)+ "].specular", it->specular);
-        // std::cout<<"r: "<<it->specular.x<<"y: "<<it->specular.y<<" z: "<<it->specular.z<<std::endl;     
-        shader.setFloat("pointLights["+ std::to_string(i)+ "].constant", 1.0f);
-        shader.setFloat("pointLights["+ std::to_string(i)+ "].linear", 0.09f);
-        shader.setFloat("pointLights["+ std::to_string(i)+ "].quadratic", 0.032f);
-        renderCube(0.2f, it->diffuse, it->position, shader);
-        ++i; 
-    }
-    
-    shader.setInt("numLights",i);
-    shader.setVec3("viewPos", generalInfo.camera.Position);
-
-    shader.setFloat("material.shininess", 128.0f);
-    ourModel.Draw(shader);
-
-}
-
-
-void Entity::drawImGuiMenu()
-{
-    if(!generalInfo.camera.shouldMove) 
-    {
-
-        ImGui::Begin("Entities");
-
-        if(ImGui::Button("Save"))
+        if (global::Status::Mode == global::MODE::EDIT_MODE)
         {
-            saveConfig();
-            std::cout<<"Saved succesfully"<<std::endl;
+                ImGui::Begin("Entity");
+                ImGui::Separator();
+                ImGui::Separator();
+                if (ImGui::Button("Click Here to Save"))
+                {
+                        saveConfig();
+                        std::cout << "Saved Succesfully" << std::endl;
+                }
+                ImGui::Separator();
+                ImGui::Separator();
+                ImGui::Separator();
+                ImGui::Separator();
+                ImGui::CollapsingHeader("Render Static");
+                
+                for (int i=0; i<p_renderStatic.size(); ++i)          
+                {                                                            
+                        ImGui::PushID(i);
+
+                        p_renderStatic[i]->update(deltaTime);        
+                                                                     
+
+                        ImGui::PopID();  
+                        ImGui::Separator();
+                        ImGui::Separator();
+                }                
+
+               
+                ImGui::End();
+        
         }
-        for(int i=0; i<entities.size(); ++i)
+        else if (global::Status::Mode == global::MODE::GAME_MODE)
         {
-            ImGui::PushID(i);
-            if(ImGui::CollapsingHeader(entities[i]->name.c_str()))
-            {
-               //setting position
-               glm::vec3 objectPosArr = entities[i]->getPosition();
-               ImGui::SliderFloat3("Object Position", &objectPosArr.x, -50.0f, 50.0f);
-               entities[i]->setPosition(objectPosArr);
-
-               //setting rotation
-               glm::vec3 objectRotArr = entities[i]->getRotation();
-               ImGui::SliderFloat3("Object Rotation", &objectRotArr.x, -180.0f, 180.0f);
-               entities[i]->setRotation(glm::vec3(1.0f,0.0f,0.0f), objectRotArr.x);
-               entities[i]->setRotation(glm::vec3(0.0f,1.0f,0.0f), objectRotArr.y);
-               entities[i]->setRotation(glm::vec3(0.0f,0.0f,1.0f), objectRotArr.z);
-
-               //setting scale
-               float scale = entities[i]->getScale();
-               ImGui::SliderFloat("Object Scale", &scale, 0.0f,10.0f);
-               entities[i]->setScale(scale);
-
-            }
-            ImGui::PopID();
-            ImGui::Separator();
+                for (int i=0; i<p_renderStatic.size(); ++i)
+                {
+                        p_renderStatic[i]->update(deltaTime);
+                }
         }
-        ImGui::End();
-
-    }
 
 }

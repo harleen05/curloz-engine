@@ -1,152 +1,127 @@
 #include "glad/glad.h"
-#include <GLFW/glfw3.h>
-#include "glm/ext/matrix_transform.hpp"
-#include "glm/geometric.hpp"
-#include "glm/trigonometric.hpp"
+#include "GLFW/glfw3.h"
 #include "camera/camera.h"
-// #include<iostream>
+#include "glm/trigonometric.hpp"
+#include "glm/ext/matrix_transform.hpp"
+#include <glm/ext/vector_float3.hpp>
+#include <glm/geometric.hpp>
 
 
-
-Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch) :
-                Front(glm::vec3(0.0f,0.0f,-1.0f)),
-                MovementSpeed(SPEED),
-                MouseSensitivity(SENSITIVITY),
-                Zoom(ZOOM)
+Camera::Camera (glm::vec3 position, glm::vec3 front) :
+        Position(position), 
+        Front(front),
+        MovementSpeed(SPEED), 
+        MouseSensitivity(SENSITIVITY), 
+        Zoom(ZOOM)
 {
-    Position = position;
-    WorldUp = up;
-    Yaw = yaw;
-    Pitch = pitch;
-    updateCameraVectors();
-    shouldMove = false;
-}
-Camera::Camera(float posX, float posY, float posZ,float upX, float upY, float upZ,float yaw,float pitch) : 
-                Front(glm::vec3(0.0f, 0.0f, -1.0f)), 
-                MovementSpeed(SPEED), 
-                MouseSensitivity(SENSITIVITY), 
-                Zoom(ZOOM)
-{
-     Position = glm::vec3(posX, posY, posZ);
-     WorldUp = glm::vec3(upX, upY, upZ);
-     Yaw = yaw;
-     Pitch = pitch;
-     updateCameraVectors();
+        Yaw = YAW;
+        Pitch = PITCH;
+        WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
+        updateCameraVectors();
 }
 
-        
+
+
+
+
 glm::mat4 Camera::GetViewMatrix()
 {
-    return glm::lookAt(Position,Position + Front , Up);
+        return glm::lookAt(Position,Position + Front , Up);
+
 }
 
 void Camera::ProcessKeyboard(GLFWwindow* window, float deltaTime)
 {
-    // Direction = Camera_Movement::STOP;
-    // float velocity = 0.0f;
-    float velocity = MovementSpeed * deltaTime;
-    if(!shouldMove)
-    {
-        velocity = 0.0f;
-    }
-    // float velocity = MovementSpeed * deltaTime;
-    if(glfwGetKey(window,GLFW_KEY_W) == GLFW_PRESS) Position += Front * velocity;
-    if(glfwGetKey(window,GLFW_KEY_S) == GLFW_PRESS) Position -= Front * velocity;
-    if(glfwGetKey(window,GLFW_KEY_A) == GLFW_PRESS) Position -= Right * velocity;
-    if(glfwGetKey(window,GLFW_KEY_D) == GLFW_PRESS) Position += Right * velocity;
-    if(glfwGetKey(window,GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) Position -= WorldUp * velocity;
-    if(glfwGetKey(window,GLFW_KEY_SPACE) == GLFW_PRESS) Position += WorldUp * velocity;
 
-    // if(Position.y <= 0.8f || Position.y >= 0.8f)
-    // {
-    //     Position.y = 0.8f;
-    // }
-  //  else {camera.Direction = Camera_Movement::STOP;}
+        float velocity = (shouldMove) ? MovementSpeed * deltaTime : 0.0f;
 
-    // if(Direction == Camera_Movement::FORWARD) Position += Front * velocity;
-    // if(Direction == Camera_Movement::BACKWARD) Position -= Front * velocity;
-    // if(Direction == Camera_Movement::RIGHT) Position += Right * velocity;
-    // if(Direction == Camera_Movement::LEFT) Position -= Right * velocity;
-    // if(Direction == Camera_Movement::UP) Position += WorldUp * velocity;
-    // if(Direction == Camera_Movement::DOWN) Position -= WorldUp * velocity;
+        if(glfwGetKey(window,GLFW_KEY_W) == GLFW_PRESS) 
+                Position += Front * velocity;
+        if(glfwGetKey(window,GLFW_KEY_S) == GLFW_PRESS) 
+                Position -= Front * velocity;
+        if(glfwGetKey(window,GLFW_KEY_A) == GLFW_PRESS) 
+                Position -= Right * velocity;
+        if(glfwGetKey(window,GLFW_KEY_D) == GLFW_PRESS) 
+                Position += Right * velocity;
+        if(glfwGetKey(window,GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) 
+                Position -= WorldUp * velocity;
+        if(glfwGetKey(window,GLFW_KEY_SPACE) == GLFW_PRESS) 
+                Position += WorldUp * velocity;
+
 }
 
-        
 void Camera::ProcessMouseMovement(double xpos, double ypos)
 {
-    float xPos = static_cast<float>(xpos);
-    float yPos = static_cast<float>(ypos);
+        float xPos = static_cast<float>(xpos);
+        float yPos = static_cast<float>(ypos);
 
-    // std::cout<<"Camera attributes: X="<<xpos<<",Y="<<ypos<<std::endl;
-    if(firstInput)
-    {
-      lastX = xPos;
-      lastY = yPos;
-      firstInput = false;
-    }
+        if(firstInput)
+        {
+                lastX = xPos;
+                lastY = yPos;
+                firstInput = false;
+        }
 
- 
-    float xoffset = xPos - lastX;
-    float yoffset = lastY - yPos;
+        float xoffset = xPos - lastX;
+        float yoffset = lastY - yPos;
 
-    lastX = xPos;
-    lastY = yPos;
+        lastX = xPos;
+        lastY = yPos;
 
-    xoffset *= MouseSensitivity;
-    yoffset *= MouseSensitivity;
+        xoffset *= MouseSensitivity;
+        yoffset *= MouseSensitivity;
 
-    Yaw += xoffset;
-    Pitch += yoffset;
+        Yaw += xoffset;
+        Pitch += yoffset;
 
-    if(Pitch >= 89.0f) Pitch = 89.0f;
-    if(Pitch <= -89.0f) Pitch = -89.0f;
-    
-    if(shouldMove) updateCameraVectors();
+        if(Pitch >= 89.0f) 
+                Pitch = 89.0f;
+
+        if(Pitch <= -89.0f) 
+                Pitch = -89.0f;
+
+        if (!shouldMove)
+                return;
+
+        updateCameraVectors();
+
 }
 
 void Camera::ProcessMouseScroll(float yoffset)
 {
-    Zoom -= yoffset;
-    if(Zoom <= 1.0f) Zoom = 1;
-    if(Zoom >= 89.0f) Zoom = 89.0f;
+        Zoom -= yoffset;
+        if(Zoom <= 1.0f) Zoom = 1;
+        if(Zoom >= 89.0f) Zoom = 89.0f;
+
 }
 
 void Camera::updateCameraVectors()
 {
-    glm::vec3 front;
-    front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-    front.y = sin(glm::radians(Pitch));
-    front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
+        glm::vec3 front;
+        front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
+        front.y = sin(glm::radians(Pitch));
+        front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
 
-    Front = glm::normalize(front);
-    // printf("Camera.Front detes are: %f,%f,%f\n",Front.x,Front.y,Front.z);
+        Front = glm::normalize(front);
 
-    Right = glm::normalize(glm::cross(Front,WorldUp));
-    Up = glm::normalize(glm::cross(Right,Front));
+        Right = glm::normalize(glm::cross(Front,WorldUp));
+        Up = glm::normalize(glm::cross(Right,Front));
+    
 }
 
 void Camera::processScrollBack(double yOffset)
 {
-  fov -= yOffset;
-  if(fov <= 1) fov = 1;
-  if(fov >= 90) fov = 90;
+        fov -= yOffset;
+        if(fov <= 1) fov = 1;
+        if(fov >= 89) fov = 89;
+
 }
 
-
-
-
-/* Be sure to add following in your main function */
-
-/*  
-  void processInput(GLFWwindow* window);
-  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-  void mouseCallBack(GLFWwindow* , double xpos , double ypos);
-  void scrollback(GLFWwindow* window , double xOffset , double yOffset);
-  glfwSetCursorPosCallback(window, mouseCallBack);
-  glfwSetScrollCallback(window , scrollback);
-
-
-  Camera camera;
-  glfwSetWindowUserPointer(window,&camera);
-*/
+glm::vec3 Camera::getPosition() const 
+{
+        return Position;
+}
+glm::vec3 Camera::getFront() const 
+{
+        return Front;
+}
