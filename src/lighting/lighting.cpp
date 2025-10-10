@@ -3,6 +3,7 @@
 #include "lighting/lighting.h"
 #include "json/json.hpp"
 #include <memory>
+#include <string>
 #include <unordered_map>
 #include "global/globalStatus.h"
 #include "imgui/imgui.h"
@@ -164,17 +165,17 @@ void Lighting::saveConfig()
                 std::ofstream oFile(configFile);
         }
 
-        std::unordered_map<std::string, json> lightsHashMap;
+        std::unordered_map<std::string, json*> lightsHashMap;
         for (auto &lights : data["lights"])
         {
-                lightsHashMap[lights["name"]] = lights;
+                lightsHashMap[lights["name"]] = &lights;
         }
 
         // first checking for global light
         auto globalLight = lightsHashMap.find("global");
         if(globalLight != lightsHashMap.end())
         {
-                json &light = globalLight->second;
+                json &light = *(globalLight->second);
                  
                 light["direction"][0] = global.getDirection().x;
                 light["direction"][1] = global.getDirection().y;
@@ -194,9 +195,37 @@ void Lighting::saveConfig()
 
         }
 
+        //Now checking for point lights
+        std::cout << "remove me, sizef of point light vector is: " << m_point_lights.size() << std::endl;
         for (int i=0; i<m_point_lights.size(); ++i)
         {
-                
+                auto pointLight = lightsHashMap.find(m_point_lights[i]->getName());
+
+                //existing lights
+                if (pointLight != lightsHashMap.end())
+                {
+                        json &light = *(pointLight->second);
+
+                        std::cout << "remove me, position of point light is ->" << light["position"][0]  << std::endl;
+
+                        light["position"][0] = m_point_lights[i]->getPosition().x;
+                        light["position"][1] = m_point_lights[i]->getPosition().y;
+                        light["position"][2] = m_point_lights[i]->getPosition().z;
+
+                        light["ambient"][0] = m_point_lights[i]->getColor()[0].x;
+                        light["ambient"][1] = m_point_lights[i]->getColor()[0].y;
+                        light["ambient"][2] = m_point_lights[i]->getColor()[0].z;
+
+                        light["diffuse"][0] = m_point_lights[i]->getColor()[1].x;
+                        light["diffuse"][1] = m_point_lights[i]->getColor()[1].y;
+                        light["diffuse"][2] = m_point_lights[i]->getColor()[1].z;
+
+                        light["specular"][0] = m_point_lights[i]->getColor()[2].x;
+                        light["specular"][1] = m_point_lights[i]->getColor()[2].y;
+                        light["specular"][2] = m_point_lights[i]->getColor()[2].z;
+
+                }
+
         }
 
 
@@ -268,3 +297,4 @@ int Lighting::getNumPointLights()
 {
         return m_point_lights.size();
 }
+

@@ -35,6 +35,10 @@ void LightingPoint::setPosition(glm::vec3 new_position)
         m_position = new_position; 
 }
 
+std::string LightingPoint::getName() const 
+{
+        return m_name;
+}
 void LightingPoint::Edit()
 {
         if(ImGui::TreeNode(m_name.c_str()))

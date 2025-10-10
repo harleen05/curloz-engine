@@ -18,6 +18,8 @@ class LightingPoint
                 glm::vec3 getPosition();
                 void setPosition(glm::vec3 position);
 
+                std::string getName() const;
+
                 LightingPoint();
                 LightingPoint(const std::string &name, glm::vec3 colorComponent[3], glm::vec3 position);
 
