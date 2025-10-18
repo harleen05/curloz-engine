@@ -11,6 +11,7 @@ class Shader
         public:
 
         GLuint m_ID;
+        Shader(){}
         Shader(std::string shaderVertexPath, std::string shaderFragmentPath);
 
         //use this shader

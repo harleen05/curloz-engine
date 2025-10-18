@@ -15,6 +15,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "lighting/lighting.h"
+#include "render/framebuffers.h"
 
 
 
@@ -50,9 +51,12 @@ int main()
                 glfwTerminate();
                 return 1;
         }
-        glViewport(0, 0, WIDTH, HEIGHT);
-        glEnable(GL_DEPTH_TEST);
 
+        screenFramebuffer::Init();
+
+        glViewport(0, 0, WIDTH, HEIGHT);
+
+        renderFramebuffer::Init(WIDTH, HEIGHT);
         
         Lighting::init();
         Entity::init();
@@ -98,6 +102,8 @@ int main()
         //Game Loop
         while(!glfwWindowShouldClose(window))
         {
+                glBindFramebuffer(GL_FRAMEBUFFER, renderFramebuffer::getFramebuffer());
+                glEnable(GL_DEPTH_TEST);
 
                 glfwPollEvents();
                 glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -156,6 +162,8 @@ int main()
                         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
                 }
 
+
+                screenFramebuffer::Draw(renderFramebuffer::getScreenTexture());
 
                 glfwSwapBuffers(window);
         }

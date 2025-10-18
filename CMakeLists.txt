@@ -13,7 +13,10 @@ if(CMAKE_BUILD_TYPE STREQUAL Debug)
 		add_link_options(-g)
 endif()
 
-set(OpenGL_GL_PREFERENCE "GLVND")
+if(UNIX AND NOT APPLE)
+		set(OpenGL_GL_PREFERENCE "GLVND")
+endif()
+
 find_package(OpenGL REQUIRED)
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*/*.cpp src/*/*.c)
