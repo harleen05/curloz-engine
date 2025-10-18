@@ -16,6 +16,7 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "lighting/lighting.h"
 #include "render/framebuffers.h"
+#include "render/cubemap.h"
 
 
 
@@ -60,6 +61,9 @@ int main()
         
         Lighting::init();
         Entity::init();
+
+	CubeMap::init();
+
 
         if (global::Status::Profile == global::PROFILE::DEBUG_MODE)
         {
@@ -148,6 +152,7 @@ int main()
                 
                 Entity::update(deltaTime);
 
+		CubeMap::Draw();
 
 
 
@@ -161,6 +166,7 @@ int main()
                         ImGui::Render();
                         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
                 }
+
 
 
                 screenFramebuffer::Draw(renderFramebuffer::getScreenTexture());

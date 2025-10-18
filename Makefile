@@ -14,8 +14,8 @@ else ifeq ($(TOOLCHAIN), gcc)
 else ifeq ($(TOOLCHAIN), mingw)
 		CC = x86_64-w64-mingw32-gcc
 		CXX = x86_64-w64-mingw32-g++
-		CXXFLAGS += -static -static-libgcc -static-libstdc++
-		LDFLAGS := -static -static-libgcc -static-libstdc++
+		CXXFLAGS += -static 
+		LDFLAGS := -static 
 		LIBS := -L./lib/windows -lglfw3 -lassimp -lz -lopengl32 -lgdi32 -luser32 -lkernel32 -lwinmm
 
 endif
@@ -95,10 +95,14 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 		@mkdir -p $(dir $@)
 		$(CXX) -I./$(INC_DIRS) $(CXXFLAGS) -c $< -o $@
 
-.PHONY: debug clean
+
+
+.PHONY: debug clean run
 
 debug:
 		@lldb $(BUILD_DIR)/$(TARGET_EXEC)
 clean:
 		@rm -rf $(BUILD_DIR)/*
+run:
+		@./$(BUILD_DIR)/$(TARGET_EXEC)
 

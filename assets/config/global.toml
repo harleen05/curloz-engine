@@ -1,8 +1,17 @@
 [camera]
 far = 100.0
-front = [ 0.98480784893035889, -0.17364819347858429, 0.0 ]
+fov = 75.0
+front = [ -0.25090724229812622, 0.14953534305095673, 0.95639151334762573 ]
 near = 0.10000000000000001
-position = [ -2.7992899417877197, 1.883238673210144, 0.57449942827224731 ]
+position = [ 3.6833419799804688, 6.119898796081543, -12.860110282897949 ]
+
+[cubemap]
+back = 'assets/cubemap/back.jpg'
+bottom = 'assets/cubemap/bottom.jpg'
+front = 'assets/cubemap/front.jpg'
+left = 'assets/cubemap/left.jpg'
+right = 'assets/cubemap/right.jpg'
+top = 'assets/cubemap/top.jpg'
 
 [display]
 height = 1080
