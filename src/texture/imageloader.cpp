@@ -4,7 +4,6 @@
 GLuint loadImageFromFile(std::string imagePath, bool flip_image)
 {
         int imageWidth = 0, imageHeight = 0, nrChannels = 0; 
-        unsigned char *data = stbi_load(imagePath.c_str(), &imageWidth, &imageHeight, &nrChannels, 0);
 
         GLuint texture;
         stbi_set_flip_vertically_on_load(flip_image);
