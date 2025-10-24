@@ -4,10 +4,13 @@
 #include "global/globalStatus.h"
 
 
-void global::init()
+void global::preInit()
 {
         global::Status::init();
         global::Config::init();
+}
+void global::postInit()
+{
         global::CameraManager::init();
 }
 

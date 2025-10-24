@@ -19,12 +19,12 @@ class Model
 
         private:
                 std::string directory;
-                std::vector<Texture> m_texturesLoaded;
+                std::vector<assimp_Texture> m_texturesLoaded;
 
                 bool loadModel (const std::string &modelPath);
                 void processNode (aiNode *node, const aiScene *scene);
                 Mesh processMesh (aiMesh *mesh, const aiScene *scene);
-                std::vector<Texture> loadMaterial (aiMaterial *texture, aiTextureType textureType, std::string typeName);
+                std::vector<assimp_Texture> loadMaterial (aiMaterial *texture, aiTextureType textureType, std::string typeName);
                 GLuint loadTexture (const std::string &texturePath);
 
 };

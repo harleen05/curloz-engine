@@ -8,14 +8,14 @@
 #include "shader/shader.h"
 
 
-struct Vertex
+struct assimp_Vertex
 {
         glm::vec3 v_Position;
         glm::vec3 v_Normal;
         glm::vec2 v_TexCoords;
 };
 
-struct Texture 
+struct assimp_Texture 
 {
         GLuint t_ID;
         std::string t_type;
@@ -30,11 +30,11 @@ class Mesh
                 void init();
 
         public:
-                std::vector<Vertex> m_Vertices;
+                std::vector<assimp_Vertex> m_Vertices;
                 std::vector<GLuint> m_Indices;
-                std::vector<Texture> m_Textures;
+                std::vector<assimp_Texture> m_Textures;
 
-                Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vector<Texture> textures, float shininess);
+                Mesh(std::vector<assimp_Vertex> vertices, std::vector<GLuint> indices, std::vector<assimp_Texture> textures, float shininess);
 
                 void Draw(Shader &shader);
 };

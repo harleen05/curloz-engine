@@ -3,8 +3,8 @@
 #include "camera/camera.h"
 #include "glm/trigonometric.hpp"
 #include "glm/ext/matrix_transform.hpp"
-#include <glm/ext/vector_float3.hpp>
-#include <glm/geometric.hpp>
+#include "glm/ext/vector_float3.hpp"
+#include "glm/geometric.hpp"
 
 
 Camera::Camera (glm::vec3 position, glm::vec3 front) :
@@ -115,6 +115,7 @@ void Camera::processScrollBack(double yOffset)
         if(fov <= 1) fov = 1;
         if(fov >= 89) fov = 89;
 
+        check_FOV_changed = true;
 }
 
 glm::vec3 Camera::getPosition() const 

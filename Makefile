@@ -63,14 +63,11 @@ else ifeq ($(RELEASE), 1)
 
 		ifeq ($(TOOLCHAIN), clang)
 				CFLAGS += -flto=thin
-				CXXFLAGS := $(CFLAGS)
-				CXXFLAGS += -stdlib=libc++
-				CXXFLAGS += -fcolor-diagnostics
-				CXXFLAGS += -fdiagnostics-show-template-tree
+				CXXFLAGS := $(CFLAGS) -stdlib=libc++
 				ifeq ($(USE_MOLD), 0)
-						LDFLAGS := -stdlib=libc++ -lc++ -fuse-ld=lld
+						LDFLAGS := -fuse-ld=lld
 				endif
-				LDFLAGS += -flto=thin
+				LDFLAGS += -flto=thin -lc++
 
 		else ifeq ($(TOOLCHAIN), gnu)
 				CFLAGS += -flto

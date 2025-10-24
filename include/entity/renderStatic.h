@@ -16,8 +16,7 @@ class renderStatic
                 static void saveConfig();
 
         private:
-                static glm::mat4 projection;
-                static glm::mat4 view;
+                GLuint UBO_MATRICES_INDEX;
 
                 Model m_Model;
                 std::string m_Name;

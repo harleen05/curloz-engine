@@ -61,54 +61,54 @@ void CubeMap::init()
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-        float CubeMapVertices[108] = {
-                // positions
-        	-1.0f,  1.0f, -1.0f,
-                -1.0f, -1.0f, -1.0f,
-                 1.0f, -1.0f, -1.0f,
-                 1.0f, -1.0f, -1.0f,
-                 1.0f,  1.0f, -1.0f,
-                -1.0f,  1.0f, -1.0f,
+	      float CubeMapVertices[108] = {
+		      // positions
+		-1.0f,  1.0f, -1.0f,
+		      -1.0f, -1.0f, -1.0f,
+		       1.0f, -1.0f, -1.0f,
+		       1.0f, -1.0f, -1.0f,
+		       1.0f,  1.0f, -1.0f,
+		      -1.0f,  1.0f, -1.0f,
 
-                -1.0f, -1.0f,  1.0f,
-                -1.0f, -1.0f, -1.0f,
-                -1.0f,  1.0f, -1.0f,
-                -1.0f,  1.0f, -1.0f,
-                -1.0f,  1.0f,  1.0f,
-                -1.0f, -1.0f,  1.0f,
+		      -1.0f, -1.0f,  1.0f,
+		      -1.0f, -1.0f, -1.0f,
+		      -1.0f,  1.0f, -1.0f,
+		      -1.0f,  1.0f, -1.0f,
+		      -1.0f,  1.0f,  1.0f,
+		      -1.0f, -1.0f,  1.0f,
 
-                 1.0f, -1.0f, -1.0f,
-                 1.0f, -1.0f,  1.0f,
-                 1.0f,  1.0f,  1.0f,
-                 1.0f,  1.0f,  1.0f,
-                 1.0f,  1.0f, -1.0f,
-                 1.0f, -1.0f, -1.0f,
+		       1.0f, -1.0f, -1.0f,
+		       1.0f, -1.0f,  1.0f,
+		       1.0f,  1.0f,  1.0f,
+		       1.0f,  1.0f,  1.0f,
+		       1.0f,  1.0f, -1.0f,
+		       1.0f, -1.0f, -1.0f,
 
-                -1.0f, -1.0f,  1.0f,
-                -1.0f,  1.0f,  1.0f,
-                 1.0f,  1.0f,  1.0f,
-                 1.0f,  1.0f,  1.0f,
-                 1.0f, -1.0f,  1.0f,
-                -1.0f, -1.0f,  1.0f,
+		      -1.0f, -1.0f,  1.0f,
+		      -1.0f,  1.0f,  1.0f,
+		       1.0f,  1.0f,  1.0f,
+		       1.0f,  1.0f,  1.0f,
+		       1.0f, -1.0f,  1.0f,
+		      -1.0f, -1.0f,  1.0f,
 
-                -1.0f,  1.0f, -1.0f,
-                 1.0f,  1.0f, -1.0f,
-                 1.0f,  1.0f,  1.0f,
-                 1.0f,  1.0f,  1.0f,
-                -1.0f,  1.0f,  1.0f,
-                -1.0f,  1.0f, -1.0f,
+		      -1.0f,  1.0f, -1.0f,
+		       1.0f,  1.0f, -1.0f,
+		       1.0f,  1.0f,  1.0f,
+		       1.0f,  1.0f,  1.0f,
+		      -1.0f,  1.0f,  1.0f,
+		      -1.0f,  1.0f, -1.0f,
 
-                -1.0f, -1.0f, -1.0f,
-                -1.0f, -1.0f,  1.0f,
-                 1.0f, -1.0f, -1.0f,
-                 1.0f, -1.0f, -1.0f,
-                -1.0f, -1.0f,  1.0f,
-                 1.0f, -1.0f,  1.0f
-        };
-	
+		      -1.0f, -1.0f, -1.0f,
+		      -1.0f, -1.0f,  1.0f,
+		       1.0f, -1.0f, -1.0f,
+		       1.0f, -1.0f, -1.0f,
+		      -1.0f, -1.0f,  1.0f,
+		       1.0f, -1.0f,  1.0f
+	      };
+
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
-	
+
 	GLuint VBO;
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);

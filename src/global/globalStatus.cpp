@@ -1,3 +1,4 @@
+#include <iostream>
 #include "global/globalStatus.h"
 
 using namespace global;
@@ -16,5 +17,9 @@ void Status::init()
         #ifdef DEBUG
         Mode = MODE::EDIT_MODE;
         #endif
+
+        std::cout << "Release Status: " << (Profile == PROFILE::RELEASE_MODE) << std::endl;
+        std::cout << "Game Status: " << (Mode == MODE::GAME_MODE) << std::endl;
+
 
 }

@@ -1,30 +1,24 @@
 #include "entity/renderStatic.h"
-#include "glm/ext/matrix_clip_space.hpp"
 #include "glm/trigonometric.hpp"
 #include "global/globalCamera.h"
-#include "global/globalDisplay.h"
 #include "glm/ext/matrix_transform.hpp"
 #include "global/globalStatus.h"
 #include "imgui/imgui.h"
 #include "lighting/lighting.h"
+#include "loader/mesh.h"
 #include <glm/matrix.hpp>
 #include <string>
 
 using namespace global;
 
-glm::mat4 renderStatic::projection;
-glm::mat4 renderStatic::view;
+// glm::mat4 renderStatic::projection;
+// glm::mat4 renderStatic::view;
 
 int renderStatic::m_Count;
 
 void renderStatic::init()
 {
-        projection = glm::perspective(glm::radians(CameraManager::camera->fov), (float)Display::getWidth() /(float)Display::getheight(), CameraManager::m_Near, CameraManager::m_Far);
-
-        view = CameraManager::camera->GetViewMatrix();
-
         m_Count = 0;
-
 }
 
 
@@ -32,7 +26,8 @@ void renderStatic::init()
 renderStatic::renderStatic (std::string modelPath) : m_Model(modelPath)
 {
         model = glm::mat4(1.0f);
-
+        UBO_MATRICES_INDEX = glGetUniformBlockIndex(m_Shader.m_ID , "Matrices");
+        glUniformBlockBinding(m_Shader.m_ID, UBO_MATRICES_INDEX, 0);
 }
 
 std::string renderStatic::getName() const 
@@ -88,8 +83,6 @@ void renderStatic::updateModelMatrix()
 
 void renderStatic::update(float deltaTime)
 {
-        view = CameraManager::camera->GetViewMatrix();
-
         m_Shader.use();
 
         if (global::Status::Mode == global::MODE::EDIT_MODE)
@@ -116,8 +109,6 @@ void renderStatic::update(float deltaTime)
                 }
         }
 
-        m_Shader.setMat4("projection", renderStatic::projection);
-        m_Shader.setMat4("view", renderStatic::view);
         m_Shader.setMat4("model", this->model);
 
         m_Shader.setVec3("directionalLight.direction", Lighting::getGlobalLight_Direction());

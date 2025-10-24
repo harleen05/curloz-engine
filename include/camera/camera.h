@@ -45,6 +45,7 @@ class Camera
                 glm::vec3 getPosition() const;
                 glm::vec3 getFront() const;
 
+                bool check_FOV_changed = false;
                 bool firstInput = true;
                 bool shouldMove = false;
                 float fov = ZOOM;

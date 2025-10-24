@@ -58,13 +58,13 @@ void Model::processNode (aiNode *node, const aiScene *scene)
 Mesh Model::processMesh (aiMesh *mesh, const aiScene *scene)
 {
 
-        std::vector<Vertex> vertices;
+        std::vector<assimp_Vertex> vertices;
         std::vector<GLuint> indices;
-        std::vector<Texture> textures;
+        std::vector<assimp_Texture> textures;
 
         vertices.reserve(mesh->mNumVertices);
         for(unsigned int i = 0; i < mesh->mNumVertices; i++) {
-                Vertex vertex; 
+                assimp_Vertex vertex; 
 
                 vertex.v_Position = glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
 
@@ -104,24 +104,19 @@ Mesh Model::processMesh (aiMesh *mesh, const aiScene *scene)
         {
                 aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
 
-                std::vector<Texture> diffuseMaps = loadMaterial(material, aiTextureType_DIFFUSE, "texture_diffuse");
+                std::vector<assimp_Texture> diffuseMaps = loadMaterial(material, aiTextureType_DIFFUSE, "texture_diffuse");
                 textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
-                std::vector<Texture> specularMaps = loadMaterial(material, aiTextureType_SPECULAR, "texture_specular");
+                std::vector<assimp_Texture> specularMaps = loadMaterial(material, aiTextureType_SPECULAR, "texture_specular");
                 textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 
-                std::vector<Texture> emissionMaps = loadMaterial(material, aiTextureType_EMISSIVE, "texture_emission");
+                std::vector<assimp_Texture> emissionMaps = loadMaterial(material, aiTextureType_EMISSIVE, "texture_emission");
                 textures.insert(textures.end(), emissionMaps.begin(), emissionMaps.end());
 
                 aiReturn result = material->Get(AI_MATKEY_SHININESS, shininess);
                 if(result != AI_SUCCESS || shininess < 1.0f) 
                 {
                         shininess = 128.0f;
-                        std::cerr << "No shininess found in material" << std::endl;
-                }
-                else 
-                {
-                        std::cout << "Remove me later: Shininess is : " << shininess << std::endl;
                 }
 
 
@@ -130,8 +125,8 @@ Mesh Model::processMesh (aiMesh *mesh, const aiScene *scene)
         return Mesh (vertices, indices, textures, shininess);
 }
 
-std::vector<Texture> Model::loadMaterial(aiMaterial *mat, aiTextureType type, std::string typeName) {
-        std::vector<Texture> textures;
+std::vector<assimp_Texture> Model::loadMaterial(aiMaterial *mat, aiTextureType type, std::string typeName) {
+        std::vector<assimp_Texture> textures;
         for(unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
                 aiString str;
                 mat->GetTexture(type, i, &str);
@@ -149,8 +144,9 @@ std::vector<Texture> Model::loadMaterial(aiMaterial *mat, aiTextureType type, st
 
                 if(!skip) 
                 {
-                        Texture texture;
-                        texture.t_ID = loadTexture(str.C_Str());
+                        assimp_Texture texture;
+
+                        texture.t_ID = loadTexture(str.C_Str() );
                         texture.t_type = typeName;
                         texture.t_path = str.C_Str();
                         textures.push_back(texture);
@@ -171,7 +167,8 @@ GLuint Model::loadTexture(const std::string &texturePath)
         std::replace(filename.begin(), filename.end(),'\\','/');
 
 
-        GLuint textureID = loadImageFromFile(filename.c_str(), false);
+        bool flip = false;
+        GLuint textureID = Texture::loadImageFromFile(filename.c_str(), flip);
         return textureID;
 
 }
@@ -183,4 +180,5 @@ void Model::Draw(Shader &shader)
         {
                 m_Meshes[i].Draw(shader);
         }
+
 }

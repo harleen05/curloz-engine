@@ -33,11 +33,14 @@ int main()
         glfwInit();     
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-        global::init();
+
+        //initialization before glad is initialized
+        global::preInit();
+
         int WIDTH = global::Display::getWidth();
         int HEIGHT = global::Display::getheight();
-
         GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "curloz engine", NULL, NULL);
         if(!window)
         {
@@ -52,17 +55,17 @@ int main()
                 glfwTerminate();
                 return 1;
         }
+        //initialization after glad is initialized
+        global::postInit();
+
 
         screenFramebuffer::Init();
-
         glViewport(0, 0, WIDTH, HEIGHT);
 
         renderFramebuffer::Init(WIDTH, HEIGHT);
-        
         Lighting::init();
         Entity::init();
-
-	CubeMap::init();
+        CubeMap::init();
 
 
         if (global::Status::Profile == global::PROFILE::DEBUG_MODE)
@@ -144,21 +147,9 @@ int main()
                 }
 
 
-
-
-
-
                 Lighting::update();
-                
                 Entity::update(deltaTime);
-
-		CubeMap::Draw();
-
-
-
-
-
-
+		            CubeMap::Draw();
 
 
                 if (global::Status::Mode == global::MODE::EDIT_MODE)
@@ -166,7 +157,6 @@ int main()
                         ImGui::Render();
                         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
                 }
-
 
 
                 screenFramebuffer::Draw(renderFramebuffer::getScreenTexture());

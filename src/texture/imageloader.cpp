@@ -1,7 +1,7 @@
 #include "texture/imageloader.h"
 #include <iostream>
 
-GLuint loadImageFromFile(std::string imagePath, bool flip_image)
+GLuint Texture::loadImageFromFile(std::string imagePath, bool flip_image)
 {
         int imageWidth = 0, imageHeight = 0, nrChannels = 0; 
 
@@ -24,15 +24,15 @@ GLuint loadImageFromFile(std::string imagePath, bool flip_image)
         switch(nrChannels)
         {
                 case(1):
-                        glTexImage2D(GL_TEXTURE_2D,0,GL_RED,imageWidth,imageHeight,0,GL_RED,GL_UNSIGNED_BYTE,textureData);
+                        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, imageWidth, imageHeight, 0, GL_RED, GL_UNSIGNED_BYTE, textureData);
                         glGenerateMipmap(GL_TEXTURE_2D);
                         break;
                 case(3):
-                        glTexImage2D(GL_TEXTURE_2D,0,GL_SRGB,imageWidth,imageHeight,0,GL_RGB,GL_UNSIGNED_BYTE,textureData);
+                        glTexImage2D(GL_TEXTURE_2D, 0, GL_SRGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, textureData);
                         glGenerateMipmap(GL_TEXTURE_2D);
                         break;
                 case(4):
-                        glTexImage2D(GL_TEXTURE_2D,0,GL_SRGB_ALPHA,imageWidth,imageHeight,0,GL_RGBA,GL_UNSIGNED_BYTE,textureData);
+                        glTexImage2D(GL_TEXTURE_2D, 0, GL_SRGB_ALPHA ,imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
                         glGenerateMipmap(GL_TEXTURE_2D);
                         break;
 
