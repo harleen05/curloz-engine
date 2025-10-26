@@ -48,7 +48,7 @@ endif
 
 
 ifeq ($(DEBUG), 1)
-		CFLAGS += -DDEBUG -g -O0 
+		CFLAGS += -DDEBUG -g -O0
 		ifeq ($(TOOLCHAIN), clang)
 				CXXFLAGS := $(CFLAGS) -stdlib=libc++ 
 				LDFLAGS += -stdlib=libc++ -lc++ 

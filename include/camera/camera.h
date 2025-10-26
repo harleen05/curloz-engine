@@ -36,7 +36,6 @@ class Camera
                 float MovementSpeed;
                 float MouseSensitivity;
                 float Zoom;
-                float aspectRatio;
                 float lastX;
                 float lastY;
 

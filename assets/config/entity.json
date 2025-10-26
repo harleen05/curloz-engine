@@ -1,4 +1,4 @@
-﻿{
+{
     "entities": [
         {
             "model": "assets/models/ground/Untitled.gltf",
@@ -11,7 +11,7 @@
             "rotation": [
                 -118.4209976196289,
                 -32.72700119018555,
-                 0.0
+                0.0
             ],
             "scale": 1.6230000257492065,
             "type": "renderStatic"
@@ -27,7 +27,7 @@
             "rotation": [
                 -118.4209976196289,
                 -32.72700119018555,
-                 0.0
+                0.0
             ],
             "scale": 1.6230000257492065,
             "type": "renderStatic"

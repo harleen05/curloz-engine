@@ -1,12 +1,12 @@
 #include "texture/imageloader.h"
 #include <iostream>
 
-GLuint Texture::loadImageFromFile(std::string imagePath, bool flip_image)
+GLuint Texture::loadImageFromFile(std::string imagePath, bool flipImage, bool gammaCorrect)
 {
         int imageWidth = 0, imageHeight = 0, nrChannels = 0; 
 
         GLuint texture;
-        stbi_set_flip_vertically_on_load(flip_image);
+        stbi_set_flip_vertically_on_load(flipImage);
 
         glGenTextures(1, &texture);
         glBindTexture(GL_TEXTURE_2D, texture);
@@ -28,11 +28,11 @@ GLuint Texture::loadImageFromFile(std::string imagePath, bool flip_image)
                         glGenerateMipmap(GL_TEXTURE_2D);
                         break;
                 case(3):
-                        glTexImage2D(GL_TEXTURE_2D, 0, GL_SRGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, textureData);
+                        glTexImage2D(GL_TEXTURE_2D, 0, (gammaCorrect) ? GL_SRGB8 : GL_RGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, textureData);
                         glGenerateMipmap(GL_TEXTURE_2D);
                         break;
                 case(4):
-                        glTexImage2D(GL_TEXTURE_2D, 0, GL_SRGB_ALPHA ,imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
+                        glTexImage2D(GL_TEXTURE_2D, 0, (gammaCorrect) ? GL_SRGB8_ALPHA8 : GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
                         glGenerateMipmap(GL_TEXTURE_2D);
                         break;
 

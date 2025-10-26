@@ -7,5 +7,5 @@
 class Texture 
 {
 	public:
-		static GLuint loadImageFromFile(std::string imagePath, bool flipImage);
+		static GLuint loadImageFromFile(std::string imagePath, bool flipImage, bool gammaCorrect);
 };

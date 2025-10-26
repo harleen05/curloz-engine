@@ -149,7 +149,7 @@ int main()
 
                 Lighting::update();
                 Entity::update(deltaTime);
-		            CubeMap::Draw();
+		CubeMap::Draw();
 
 
                 if (global::Status::Mode == global::MODE::EDIT_MODE)

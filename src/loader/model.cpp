@@ -146,8 +146,10 @@ std::vector<assimp_Texture> Model::loadMaterial(aiMaterial *mat, aiTextureType t
                 {
                         assimp_Texture texture;
 
-                        texture.t_ID = loadTexture(str.C_Str() );
+
                         texture.t_type = typeName;
+			                  bool gammaCorrect = (texture.t_type == "texture_diffuse" || texture.t_type == "texture_emission");
+                        texture.t_ID = loadTexture(str.C_Str(), gammaCorrect);
                         texture.t_path = str.C_Str();
                         textures.push_back(texture);
                         m_texturesLoaded.push_back(texture);
@@ -156,7 +158,7 @@ std::vector<assimp_Texture> Model::loadMaterial(aiMaterial *mat, aiTextureType t
         return textures;
 }
 
-GLuint Model::loadTexture(const std::string &texturePath)
+GLuint Model::loadTexture(const std::string &texturePath, bool gammaCorrect)
 {
         std::string filename = std::string(texturePath);
         if(filename[0] == '/') 
@@ -168,8 +170,7 @@ GLuint Model::loadTexture(const std::string &texturePath)
 
 
         bool flip = false;
-        GLuint textureID = Texture::loadImageFromFile(filename.c_str(), flip);
-        return textureID;
+        return Texture::loadImageFromFile(filename.c_str(), flip, gammaCorrect);
 
 }
 

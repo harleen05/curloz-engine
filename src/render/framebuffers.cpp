@@ -46,9 +46,9 @@ void screenFramebuffer::Init()
 void screenFramebuffer::Draw(GLuint screenTexture)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glDisable(GL_DEPTH_TEST);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
-	glDisable(GL_DEPTH_TEST);
 
 	glBindVertexArray(quadVAO);
 	shader.use();
@@ -56,9 +56,8 @@ void screenFramebuffer::Draw(GLuint screenTexture)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, screenTexture);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
+
 }
-
-
 
 
 //our main render framebuffer
