@@ -1,0 +1,13 @@
+#libraries
+lib/linux/*
+lib/windows/*
+
+#build
+build/*
+
+#custom models
+assets/models/*
+
+#MISC
+.clangd
+imgui.ini

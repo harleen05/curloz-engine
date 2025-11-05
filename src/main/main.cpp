@@ -110,6 +110,7 @@ int main()
         while(!glfwWindowShouldClose(window))
         {
                 glBindFramebuffer(GL_FRAMEBUFFER, renderFramebuffer::getFramebuffer());
+                // glEnable(GL_DEPTH_TEST | GL_CULL_FACE);
                 glEnable(GL_DEPTH_TEST);
 
                 glfwPollEvents();
@@ -149,7 +150,7 @@ int main()
 
                 Lighting::update();
                 Entity::update(deltaTime);
-		CubeMap::Draw();
+		            CubeMap::Draw();
 
 
                 if (global::Status::Mode == global::MODE::EDIT_MODE)
