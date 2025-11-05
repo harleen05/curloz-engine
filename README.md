@@ -45,6 +45,7 @@ A modern, cross-platform 3D game engine built with OpenGL, featuring advanced re
 ```bash
 git clone https://github.com/culoz123/curloz-engine.git
 cd curloz-engine
+```
 
 ### Configure and build
 ```bash
@@ -57,10 +58,14 @@ make TOOLCHAIN=gcc USE_MOLD=1 DEBUG=1 -j$(nproc)
 
 # 2. USE Cmake
 cd build && cmake .. && make -j$(nproc)
+```
 
 # Run
-If built engine using makefile, just do make run from root directory
-Else, do ./build/prog
+```bash
+#If built engine using makefile, just do make run from root directory
+make run
+#Else, do ./build/prog
+./build/prog
 ```
 
 ## Controls
