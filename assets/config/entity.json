@@ -33,22 +33,6 @@
             "type": "renderStatic"
         },
         {
-            "model": "assets/models/schoolgirl/D0208059.obj",
-            "name": "School Girl",
-            "position": [
-                -2.631999969482422,
-                0.0,
-                0.0
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "scale": 0.009999999776482582,
-            "type": "renderStatic"
-        },
-        {
             "model": "assets/models/microphone/scene.gltf",
             "name": "Microphone",
             "position": [

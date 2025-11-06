@@ -36,9 +36,13 @@ A modern, cross-platform 3D game engine built with OpenGL, featuring advanced re
 
 ### Prerequisites
 ```bash
-# Install Make
-# Install CMake (3.10+)
+# Make
 # Install a C++17 compatible compiler (GCC, Clang, MSVC)
+# Install CMake (3.10+)
+# Ninja (if generating ninja files using cmake)
+
+sudo/doas your_package_manager install/-S/-a make cmake gcc/clang
+
 ```
 
 ### Clone and Build
@@ -107,10 +111,10 @@ Engine settings can be configured through JSON/TOML files for:
 
 ## Roadmap
 
-- [ ] Deferred rendering pipeline
-- [ ] PBR (Physically Based Rendering)
 - [ ] Shadow mapping
+- [ ] Cool Mappings
 - [ ] Post-processing effects (bloom, HDR, SSAO)
+- [ ] PBR (Physically Based Rendering)
 - [ ] Audio system integration
 - [ ] Physics engine integration
 - [ ] Scene serialization/deserialization
