@@ -1,140 +1,122 @@
-# Curloz Engine
+## Project Overview
 
-A modern, cross-platform 3D game engine built with OpenGL, featuring advanced rendering techniques and flexible scripting capabilities.
+### Description
+curloz-engine is a lightweight, modern Vulkan-based graphics engine written in C++, designed for simplicity, educational clarity, and rapid prototyping. It strips away heavy abstractions to give developers direct, readable access to Vulkan's core pipeline and window management systems.
 
-## Features
+### Tech Stack
+- **Language:** C++17/20
+- **Graphics API:** Vulkan 1.3+
+- **Build System:** xmake
+- **Shaders:** GLSL → SPIR-V (via `glslc`)
+- **Windowing:** Custom abstraction over native APIs
+- **Other Tools:** Vulkan Validation Layers, glslc, xmake
 
-### Rendering
-- **OpenGL 3.3 Core Profile** - Modern graphics pipeline
-- **Blinn-Phong Lighting Model** - Realistic lighting and shading
-- **MSAA (Multisample Anti-Aliasing)** - Smooth edge rendering with 4x multisampling
-- **Framebuffer System** - Offscreen rendering with post-processing support
-- **Skybox/Cubemap Support** - Environment mapping
-- **Model Loading** - Assimp integration for importing 3D models
+### Current Features
+curloz-engine currently supports:
+- Core window initialization & event loop
+- Vulkan instance, device, and swapchain creation
+- Graphics pipeline setup (programmable stages + fixed-function configuration)
+- SPIR-V shader loading & pipeline compilation
+- Basic render loop & frame presentation
+- Structured asset management (`assets/shaders/`, `assets/models/`, `assets/config/`)
+- Cross-platform project structure (Linux-optimized initially)
 
-### Architecture
-- **Entity Component System** - Flexible game object management
-- **Camera System** - Free-flight camera with smooth controls
-- **Lighting System** - Dynamic light management
-- **Shader Manager** - Hot-reloadable GLSL shaders
-
-### Developer Tools
-- **ImGui Integration** - In-engine debug UI
-- **Edit/Game Mode Toggle** - Runtime editor capabilities
-- **JSON/TOML Scripting** - Configuration and scene serialization
-- **Cross-Platform** - Runs on Windows, Linux, and macOS
-
-## Dependencies
-
-- **GLFW 3.x** - Window and input management
-- **GLAD 1.** - OpenGL loader
-- **GLM** - Mathematics library
-- **Assimp** - 3D model loading
-- **ImGui** - Immediate mode GUI
-
-## Building
-
-### Prerequisites
-```bash
-# Make
-# Install a C++17 compatible compiler (GCC, Clang, MSVC)
-# Install CMake (3.10+)
-# Ninja (if generating ninja files using cmake)
-
-sudo/doas your_package_manager install/-S/-a make cmake gcc/clang
-
-```
-
-### Clone and Build
-```bash
-git clone https://github.com/culoz123/curloz-engine.git
-cd curloz-engine
-```
-
-### Configure and build
-```bash
-# For Current-time-being in development phase, it is recommended to build the engine in just DEBUG mode
- 
-# 1. Just use make
-# Supported TOOLCHAIN's are clang, gcc and mingw.
-# MOLD's support is also added, just pass USE_MOLD=1, by default it is set to 0.
-make TOOLCHAIN=gcc USE_MOLD=1 DEBUG=1 -j$(nproc)
-
-# 2. USE Cmake
-cd build && cmake .. && make -j$(nproc)
-```
-
-# Run
-```bash
-#If built engine using makefile, just do make run from root directory
-make run
-#Else, do ./build/prog
-./build/prog
-```
-
-## Controls
-
-### Game Mode
-- **W/A/S/D** - Move camera
-- **Mouse** - Look around
-- **Scroll** - Adjust FOV/Zoom
-- **ESC** - Exit
-
-### Debug Mode
-- **TAB** - Switch to edit mode
-- **CTRL+G** - Return to game mode
-
-## Project Structure
-```
-curloz-engine/
-├── assets/
-│   ├── shaders/       # GLSL vertex/fragment shaders
-│   ├── models/        # 3D model files
-│   └── textures/      # Texture assets
-├── include/
-│   ├── entity/        # Entity system
-│   ├── global/        # Global managers
-│   ├── lighting/      # Lighting system
-│   ├── render/        # Rendering pipeline
-│   └── shader/        # Shader management
-├── src/               # Implementation files
-└── lib/               # External libraries (not tracked)
-```
-
-## Configuration
-
-Engine settings can be configured through JSON/TOML files for:
-- Window resolution and display settings
-- Graphics quality options
-- Input mappings
-- Scene definitions
-
-## Roadmap
-
-- [ ] Shadow mapping
-- [ ] Cool Mappings
-- [ ] Post-processing effects (bloom, HDR, SSAO)
-- [ ] PBR (Physically Based Rendering)
-- [ ] Audio system integration
-- [ ] Physics engine integration
-- [ ] Scene serialization/deserialization
-
-## License
-
-This project is licensed under the **GNU Lesser General Public License v3.0** (LGPL v3).
-
-[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
-
-## Acknowledgments
-
-- [LearnOpenGL](https://learnopengl.com/) - Excellent OpenGL tutorials
-- Joey de Vries - OpenGL learning resources
-- The open-source community for the amazing libraries
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit pull requests or open issues for bugs and feature requests.
+### Target Users
+This project is built for graphics programmers, Vulkan learners, and C++ developers looking for a clean, minimal Vulkan engine template without heavy framework abstraction or hidden magic.
 
 ---
 
-**Note:** This is an educational project built while learning OpenGL and game engine architecture.
+## Architecture / Key Modules
+
+### Module Overview
+| Module/Component | Location | Purpose |
+|------------------|----------|---------|
+| `base` | `src/base.cpp`, `include/base.hpp` | Core engine initialization, main loop, global state management |
+| `window` | `src/window/`, `include/window/` | Window creation, surface setup, render context, event polling |
+| `renderer` | `src/renderer/`, `include/renderer/` | Vulkan initialization, pipeline creation, resource cleanup, render types |
+| `assets` | `assets/` | Shaders (`.glsl`/`.spv`), 3D models, configuration files |
+| `xmake.lua` | `xmake.lua` | Cross-platform build configuration, compilation rules, runtime directories |
+
+### Project Structure
+```bash
+Curloz Engine
+├── assets
+│   ├── config                      // Config files
+│   ├── models                      // All 3d models
+│   └── shaders                     // Shaders
+│       ├── triangle.frag
+│       ├── triangle_frag.spirv
+│       ├── triangle.vert
+│       └── triangle_vert.spirv
+├── build                           // Build directory
+├── COPYING                         // License
+├── include                         // Include directory
+│   ├── base.hpp
+│   ├── clz_types.hpp
+│   ├── renderer
+│   │   ├── cleaners.hpp
+│   │   ├── initializers.hpp
+│   │   ├── renderer.hpp
+│   │   └── render_types.hpp
+│   └── window
+│       ├── render.hpp
+│       ├── window.hpp
+│       ├── window_types.hpp
+│       └── window_variables.hpp
+├── README.md
+├── src                             // Source files
+│   ├── base.cpp
+│   ├── main.cpp
+│   ├── renderer
+│   │   ├── cleaners.cpp
+│   │   ├── initializers.cpp
+│   │   └── renderer.cpp
+│   └── window
+│       ├── render.cpp
+│       └── window.cpp
+└── xmake.lua                       // Build system
+```
+
+## New Feature Ideas
+
+### Feature 1: Windows xmake Compatibility & Cross-Platform Validation
+**Problem it solves:** The engine is currently optimized and tested on Linux. Windows Vulkan development uses different toolchains (MSVC/MinGW), Vulkan SDK discovery methods, and path separators. Contributors on Windows often face build or runtime errors.
+**Difficulty Level:** Intermediate
+**Estimated Effort:** 6-10 hours
+**Modules Affected:**
+- `xmake.lua` - Cross-platform toolchain & package configuration
+- `src/renderer/initializers.cpp` - Path normalization for asset loading
+- `README.md` - Windows setup instructions
+- `assets/` - Runtime directory handling
+
+### Feature 2: Automatic Shader Compilation via xmake
+**Problem it solves:** Contributors currently need to manually run `glslc` to compile `.vert` or `frag` to `.spv` before testing changes.
+**Difficulty Level:** Beginner
+**Estimated Effort:** 3-5 hours
+**Modules Affected:**
+- `xmake.lua` - Add `on_build`/`after_build` rules for shader compilation
+- `assets/shaders/` - Standardize naming conventions
+
+##  Contributor Notes
+
+### Getting Started
+#### Prerequisites
+Make sure you have the following installed:
+- [Git](https://git-scm.com/)
+- [xmake](https://xmake.io/) (v2.8.0+)
+- [Vulkan SDK 1.3+](https://vulkan.lunarg.com/)
+- C++ Compiler: `g++`/`clang++` (Linux/macOS) or `MSVC`/`MinGW` (Windows)
+- `glslc` (included with Vulkan SDK)
+
+#### Workflow
+```bash
+# Need to run only the first time
+xmake f -c
+# Compile project and run
+xmake && xmake run
+```
+
+In case of any issues, contact me at discord ID: itz_curloz_36825
+or email me at: curloz@tutamail.com.
+
+Happy contributing
