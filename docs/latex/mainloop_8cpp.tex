@@ -1,0 +1,305 @@
+\doxysection{src/renderer/mainloop.cpp File Reference}
+\hypertarget{mainloop_8cpp}{}\label{mainloop_8cpp}\index{src/renderer/mainloop.cpp@{src/renderer/mainloop.cpp}}
+
+
+Per-\/frame Vulkan render loop step implementations.  
+
+
+{\ttfamily \#include "{}renderer/mainloop.\+hpp"{}}\newline
+{\ttfamily \#include "{}clz\+\_\+types.\+hpp"{}}\newline
+{\ttfamily \#include "{}renderer/render\+\_\+types.\+hpp"{}}\newline
+{\ttfamily \#include "{}vulkan/vulkan\+\_\+core.\+h"{}}\newline
+{\ttfamily \#include "{}renderer/image.\+hpp"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{mainloop_8cpp_a36fade8ddbcf8063db4b136c67d51f8c}{clz\+::render\+::wait\+For\+GPU}} (const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} device, Vk\+Fence \texorpdfstring{$\ast$}{*}p\+Fence)
+\begin{DoxyCompactList}\small\item\em Waits on the in-\/flight fence then resets it. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{mainloop_8cpp_a1c5b6b35de681f390fc57e0cdf508e8a}{clz\+::render\+::acquire\+Next\+Image}} (const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} device, const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain}{types\+::\+Swapchain}} swapchain, Vk\+Semaphore semaphore, uint32\+\_\+t \texorpdfstring{$\ast$}{*}p\+Image\+Index)
+\begin{DoxyCompactList}\small\item\em Acquires the next presentable swapchain image. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{mainloop_8cpp_a04e98fe8d7253566f41c628465733409}{clz\+::render\+::start\+Command\+Buffer}} (const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} device, \mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandBuffer}{types\+::\+Command\+Buffer}} command\+Buffer)
+\begin{DoxyCompactList}\small\item\em Resets and begins a command buffer for this frame\textquotesingle{}s recording. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{mainloop_8cpp_a4f84dcdd122a5f1efd47806c66aaca77}{clz\+::render\+::record\+Command\+Buffer}} (const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandBuffer}{types\+::\+Command\+Buffer}} command\+Buffer, const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain}{types\+::\+Swapchain}} swapchain, uint32\+\_\+t image\+Index, \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Pipeline}{types\+::\+Pipeline}} pipeline)
+\begin{DoxyCompactList}\small\item\em Records the full draw sequence for one frame. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{mainloop_8cpp_aa61bb26ab591b98bfb7ade20fd5ca79b}{clz\+::render\+::submit\+Command\+Buffer}} (\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue}{types\+::\+Queue}} queue, \mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandBuffer}{types\+::\+Command\+Buffer}} command\+Buffer, Vk\+Semaphore image\+Available\+Semaphore, Vk\+Semaphore render\+Finished\+Semaphore, Vk\+Fence in\+Flight\+Fence)
+\begin{DoxyCompactList}\small\item\em Submits the recorded command buffer to the graphics queue. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{mainloop_8cpp_a6bb0170f7fe1a3c618d3476bc9375df7}{clz\+::render\+::present}} (const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain}{types\+::\+Swapchain}} swapchain, const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue}{types\+::\+Queue}} queue, Vk\+Semaphore semaphore, uint32\+\_\+t image\+Index)
+\begin{DoxyCompactList}\small\item\em Presents the rendered swapchain image to the display. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Per-\/frame Vulkan render loop step implementations. 
+
+Implements the six render loop steps declared in \doxylink{mainloop_8hpp}{mainloop.\+hpp}. All functions operate on explicitly passed handles — no global state here. Module-\/level state (r\+\_\+current\+Frame, r\+\_\+image\+Index, etc.) lives in \doxylink{renderer_8cpp}{renderer.\+cpp}. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{mainloop_8cpp_a1c5b6b35de681f390fc57e0cdf508e8a}\index{mainloop.cpp@{mainloop.cpp}!acquireNextImage@{acquireNextImage}}
+\index{acquireNextImage@{acquireNextImage}!mainloop.cpp@{mainloop.cpp}}
+\doxysubsubsection{\texorpdfstring{acquireNextImage()}{acquireNextImage()}}
+{\footnotesize\ttfamily \label{mainloop_8cpp_a1c5b6b35de681f390fc57e0cdf508e8a} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::render\+::acquire\+Next\+Image (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}}}]{device}{, }\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain}{types\+::\+Swapchain}}}]{swapchain}{, }\item[{Vk\+Semaphore}]{semaphore}{, }\item[{uint32\+\_\+t \texorpdfstring{$\ast$}{*}}]{p\+Image\+Index}{}\end{DoxyParamCaption})}
+
+
+
+Acquires the next presentable swapchain image. 
+
+Acquires the next available swapchain image index.
+
+VK\+\_\+\+SUBOPTIMAL\+\_\+\+KHR is treated as success (image is still usable). VK\+\_\+\+ERROR\+\_\+\+OUT\+\_\+\+OF\+\_\+\+DATE\+\_\+\+KHR means the swapchain must be rebuilt — returned as Failure. Swapchain rebuild is not yet implemented.
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device. \\
+\hline
+{\em swapchain} & Swapchain to acquire from. \\
+\hline
+{\em semaphore} & Signaled when the image is safe to render into. \\
+\hline
+{\em p\+Image\+Index} & Output\+: acquired image index. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success (including suboptimal), or Failure with a reason string.
+\end{DoxyReturn}
+Signals {\ttfamily semaphore} when the image is ready to render into. Returns Failure on VK\+\_\+\+ERROR\+\_\+\+OUT\+\_\+\+OF\+\_\+\+DATE\+\_\+\+KHR (swapchain needs rebuild) or any other error. VK\+\_\+\+SUBOPTIMAL\+\_\+\+KHR is treated as success.
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device. \\
+\hline
+{\em swapchain} & Swapchain to acquire from. \\
+\hline
+{\em semaphore} & Semaphore to signal when the image is available. \\
+\hline
+{\em p\+Image\+Index} & Output\+: index into the swapchain image array. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success, or Failure with a reason string. 
+\end{DoxyReturn}
+\Hypertarget{mainloop_8cpp_a6bb0170f7fe1a3c618d3476bc9375df7}\index{mainloop.cpp@{mainloop.cpp}!present@{present}}
+\index{present@{present}!mainloop.cpp@{mainloop.cpp}}
+\doxysubsubsection{\texorpdfstring{present()}{present()}}
+{\footnotesize\ttfamily \label{mainloop_8cpp_a6bb0170f7fe1a3c618d3476bc9375df7} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::render\+::present (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain}{types\+::\+Swapchain}}}]{swapchain}{, }\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue}{types\+::\+Queue}}}]{queue}{, }\item[{Vk\+Semaphore}]{semaphore}{, }\item[{uint32\+\_\+t}]{image\+Index}{}\end{DoxyParamCaption})}
+
+
+
+Presents the rendered swapchain image to the display. 
+
+Waits on {\ttfamily semaphore} (render\+Complete\+Semaphore) before presenting. Uses the graphics queue — assumes it supports presentation, which holds on most desktop hardware. A dedicated present queue path is not implemented.
+
+
+\begin{DoxyParams}{Parameters}
+{\em swapchain} & Swapchain to present from. \\
+\hline
+{\em queue} & Queue to submit the present operation to. \\
+\hline
+{\em semaphore} & Wait semaphore — render must be complete. \\
+\hline
+{\em image\+Index} & Swapchain image index to present. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success, or Failure if vk\+Queue\+Present\+KHR fails.
+\end{DoxyReturn}
+Waits on {\ttfamily semaphore} before presenting. Uses the graphics queue for presentation (assumes graphics == present queue or that the queue supports both).
+
+
+\begin{DoxyParams}{Parameters}
+{\em swapchain} & Swapchain to present from. \\
+\hline
+{\em queue} & Queue to submit the present operation to. \\
+\hline
+{\em semaphore} & Wait semaphore — render must be complete before present. \\
+\hline
+{\em image\+Index} & Index of the swapchain image to present. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success, or Failure if vk\+Queue\+Present\+KHR fails. 
+\end{DoxyReturn}
+\Hypertarget{mainloop_8cpp_a4f84dcdd122a5f1efd47806c66aaca77}\index{mainloop.cpp@{mainloop.cpp}!recordCommandBuffer@{recordCommandBuffer}}
+\index{recordCommandBuffer@{recordCommandBuffer}!mainloop.cpp@{mainloop.cpp}}
+\doxysubsubsection{\texorpdfstring{recordCommandBuffer()}{recordCommandBuffer()}}
+{\footnotesize\ttfamily \label{mainloop_8cpp_a4f84dcdd122a5f1efd47806c66aaca77} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::render\+::record\+Command\+Buffer (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandBuffer}{types\+::\+Command\+Buffer}}}]{command\+Buffer}{, }\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain}{types\+::\+Swapchain}}}]{swapchain}{, }\item[{uint32\+\_\+t}]{image\+Index}{, }\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Pipeline}{types\+::\+Pipeline}}}]{pipeline}{}\end{DoxyParamCaption})}
+
+
+
+Records the full draw sequence for one frame. 
+
+Records the full draw sequence into the command buffer.
+
+Uses dynamic rendering (VK\+\_\+\+KHR\+\_\+dynamic\+\_\+rendering / Vulkan 1.\+3) — no render pass object. Sequence\+:
+
+
+\begin{DoxyEnumerate}
+\item Barrier\+: UNDEFINED → COLOR\+\_\+\+ATTACHMENT\+\_\+\+OPTIMAL (src\+: TOP\+\_\+\+OF\+\_\+\+PIPE / no access, dst\+: COLOR\+\_\+\+ATTACHMENT\+\_\+\+OUTPUT / write)
+\item vk\+Cmd\+Begin\+Rendering with a black clear, store op, single color attachment
+\item Dynamic viewport + scissor set to swapchain extent
+\item Bind graphics pipeline
+\item vk\+Cmd\+Draw(3, 1, 0, 0) — hardcoded triangle, positions in vertex shader
+\item vk\+Cmd\+End\+Rendering
+\item Barrier\+: COLOR\+\_\+\+ATTACHMENT\+\_\+\+OPTIMAL → PRESENT\+\_\+\+SRC\+\_\+\+KHR (src\+: COLOR\+\_\+\+ATTACHMENT\+\_\+\+OUTPUT / write, dst\+: BOTTOM\+\_\+\+OF\+\_\+\+PIPE / no access)
+\item vk\+End\+Command\+Buffer
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}{Parameters}
+{\em command\+Buffer} & Command buffer in recording state. \\
+\hline
+{\em swapchain} & Source of images, image views, and extent. \\
+\hline
+{\em image\+Index} & Which swapchain image to render into. \\
+\hline
+{\em pipeline} & Graphics pipeline to bind. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success, or Failure if vk\+End\+Command\+Buffer fails.
+\end{DoxyReturn}
+Records in order\+:
+\begin{DoxyEnumerate}
+\item Image layout transition\+: UNDEFINED → COLOR\+\_\+\+ATTACHMENT\+\_\+\+OPTIMAL
+\item Begin dynamic rendering with a black clear color
+\item Set dynamic viewport and scissor to swapchain extent
+\item Bind graphics pipeline
+\item Draw 3 vertices (hardcoded triangle, no vertex buffer)
+\item End dynamic rendering
+\item Image layout transition\+: COLOR\+\_\+\+ATTACHMENT\+\_\+\+OPTIMAL → PRESENT\+\_\+\+SRC\+\_\+\+KHR
+\item End command buffer
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}{Parameters}
+{\em command\+Buffer} & Command buffer to record into (must be in recording state). \\
+\hline
+{\em swapchain} & Provides images, image views, and extent. \\
+\hline
+{\em image\+Index} & Index of the swapchain image to render into. \\
+\hline
+{\em pipeline} & Graphics pipeline to bind. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success, or Failure if vk\+End\+Command\+Buffer fails. 
+\end{DoxyReturn}
+\Hypertarget{mainloop_8cpp_a04e98fe8d7253566f41c628465733409}\index{mainloop.cpp@{mainloop.cpp}!startCommandBuffer@{startCommandBuffer}}
+\index{startCommandBuffer@{startCommandBuffer}!mainloop.cpp@{mainloop.cpp}}
+\doxysubsubsection{\texorpdfstring{startCommandBuffer()}{startCommandBuffer()}}
+{\footnotesize\ttfamily \label{mainloop_8cpp_a04e98fe8d7253566f41c628465733409} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::render\+::start\+Command\+Buffer (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}}}]{device}{, }\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandBuffer}{types\+::\+Command\+Buffer}}}]{command\+Buffer}{}\end{DoxyParamCaption})}
+
+
+
+Resets and begins a command buffer for this frame\textquotesingle{}s recording. 
+
+Resets and begins a command buffer for recording.
+
+Reset flags are 0 — the pool was created with VK\+\_\+\+COMMAND\+\_\+\+POOL\+\_\+\+CREATE\+\_\+\+RESET\+\_\+\+COMMAND\+\_\+\+BUFFER\+\_\+\+BIT so this is valid. Begin\+Info has no flags set (not ONE\+\_\+\+TIME\+\_\+\+SUBMIT — the buffer is reused).
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device. \\
+\hline
+{\em command\+Buffer} & Command buffer to reset and open for recording. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success, or Failure if either Vulkan call fails.
+\end{DoxyReturn}
+Calls vk\+Reset\+Command\+Buffer() then vk\+Begin\+Command\+Buffer() with a default Vk\+Command\+Buffer\+Begin\+Info (one-\/time-\/submit not set — the buffer is reused every frame).
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device. \\
+\hline
+{\em command\+Buffer} & Command buffer to reset and begin. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success, or Failure if reset or begin fails. 
+\end{DoxyReturn}
+\Hypertarget{mainloop_8cpp_aa61bb26ab591b98bfb7ade20fd5ca79b}\index{mainloop.cpp@{mainloop.cpp}!submitCommandBuffer@{submitCommandBuffer}}
+\index{submitCommandBuffer@{submitCommandBuffer}!mainloop.cpp@{mainloop.cpp}}
+\doxysubsubsection{\texorpdfstring{submitCommandBuffer()}{submitCommandBuffer()}}
+{\footnotesize\ttfamily \label{mainloop_8cpp_aa61bb26ab591b98bfb7ade20fd5ca79b} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::render\+::submit\+Command\+Buffer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue}{types\+::\+Queue}}}]{queue}{, }\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandBuffer}{types\+::\+Command\+Buffer}}}]{command\+Buffer}{, }\item[{Vk\+Semaphore}]{image\+Available\+Semaphore}{, }\item[{Vk\+Semaphore}]{render\+Finished\+Semaphore}{, }\item[{Vk\+Fence}]{in\+Flight\+Fence}{}\end{DoxyParamCaption})}
+
+
+
+Submits the recorded command buffer to the graphics queue. 
+
+Uses vk\+Queue\+Submit2 (sync2 / Vulkan 1.\+3). Semaphore wait is scoped to COLOR\+\_\+\+ATTACHMENT\+\_\+\+OUTPUT so the GPU can process earlier pipeline stages before the image is available. Signal semaphore scope is ALL\+\_\+\+GRAPHICS.
+
+
+\begin{DoxyParams}{Parameters}
+{\em queue} & Graphics queue. \\
+\hline
+{\em command\+Buffer} & Recorded command buffer to submit. \\
+\hline
+{\em image\+Available\+Semaphore} & Wait semaphore — blocks until image is ready. \\
+\hline
+{\em render\+Finished\+Semaphore} & Signal semaphore — fires when rendering is done. \\
+\hline
+{\em in\+Flight\+Fence} & Signal fence — CPU can reuse this frame\textquotesingle{}s resources. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success, or Failure if vk\+Queue\+Submit2 fails.
+\end{DoxyReturn}
+Uses vk\+Queue\+Submit2 (Vulkan 1.\+3 / sync2). Waits on {\ttfamily image\+Available\+Semaphore} at the color attachment output stage, signals {\ttfamily render\+Finished\+Semaphore} and {\ttfamily in\+Flight\+Fence} on completion.
+
+
+\begin{DoxyParams}{Parameters}
+{\em queue} & Graphics queue to submit to. \\
+\hline
+{\em command\+Buffer} & Recorded command buffer to submit. \\
+\hline
+{\em image\+Available\+Semaphore} & Wait semaphore — image ready to render into. \\
+\hline
+{\em render\+Finished\+Semaphore} & Signal semaphore — rendering complete. \\
+\hline
+{\em in\+Flight\+Fence} & Signal fence — CPU can reuse this frame\textquotesingle{}s resources. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success, or Failure if vk\+Queue\+Submit2 fails. 
+\end{DoxyReturn}
+\Hypertarget{mainloop_8cpp_a36fade8ddbcf8063db4b136c67d51f8c}\index{mainloop.cpp@{mainloop.cpp}!waitForGPU@{waitForGPU}}
+\index{waitForGPU@{waitForGPU}!mainloop.cpp@{mainloop.cpp}}
+\doxysubsubsection{\texorpdfstring{waitForGPU()}{waitForGPU()}}
+{\footnotesize\ttfamily \label{mainloop_8cpp_a36fade8ddbcf8063db4b136c67d51f8c} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::render\+::wait\+For\+GPU (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}}}]{device}{, }\item[{Vk\+Fence \texorpdfstring{$\ast$}{*}}]{p\+Fence}{}\end{DoxyParamCaption})}
+
+
+
+Waits on the in-\/flight fence then resets it. 
+
+Waits for the in-\/flight fence and resets it for the next frame.
+
+Blocks indefinitely (UINT64\+\_\+\+MAX timeout) until the GPU signals the fence, guaranteeing command buffer and sync primitives for this frame are free. Resets the fence so it can be re-\/signaled by the next vk\+Queue\+Submit2.
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device. \\
+\hline
+{\em p\+Fence} & Pointer to the fence to wait on and reset. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success, or Failure if wait or reset returns a non-\/success Vk\+Result.
+\end{DoxyReturn}
+Blocks the CPU until the GPU signals the fence, ensuring the command buffer and sync primitives for this frame index are no longer in use. Resets the fence after waiting so it can be re-\/signaled on next submit.
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device. \\
+\hline
+{\em p\+Fence} & Pointer to the fence to wait on and reset. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success, or Failure if wait or reset fails. 
+\end{DoxyReturn}

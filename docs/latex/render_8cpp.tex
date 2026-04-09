@@ -1,0 +1,96 @@
+\doxysection{src/window/render.cpp File Reference}
+\hypertarget{render_8cpp}{}\label{render_8cpp}\index{src/window/render.cpp@{src/window/render.cpp}}
+
+
+Vulkan-\/surface and extension-\/query implementation for the window subsystem.  
+
+
+{\ttfamily \#include "{}window/render.\+hpp"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{render_8cpp_ad42562914cdfb7f0c7a014cd7f7e73b9}{clz\+::window\+::get\+Window\+Extensions}} (std\+::vector$<$ const char \texorpdfstring{$\ast$}{*} $>$ \&Extensions, uint32\+\_\+t \&extensions\+Count, const \mbox{\hyperlink{structclz_1_1window_1_1types_1_1Window}{types\+::\+Window}} \&window)
+\begin{DoxyCompactList}\small\item\em Queries the Vulkan instance extensions required by GLFW. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structclz_1_1Result}{Result}} \mbox{\hyperlink{render_8cpp_a9e680fce0b2ac8055ac3baa1363b63dc}{clz\+::window\+::create\+Vk\+Surface}} (Vk\+Surface\+KHR \texorpdfstring{$\ast$}{*}surface, const Vk\+Instance \&instance, const \mbox{\hyperlink{structclz_1_1window_1_1types_1_1Window}{types\+::\+Window}} \&window)
+\begin{DoxyCompactList}\small\item\em Creates a Vulkan surface backed by the GLFW window. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Vulkan-\/surface and extension-\/query implementation for the window subsystem. 
+
+Bridges GLFW and Vulkan. Like \doxylink{native_8cpp}{native.\+cpp}, these functions take an explicit types\+::\+Window reference and carry no global state — w\+\_\+window is injected by the forwarding layer in \doxylink{window_8cpp}{window.\+cpp}. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{render_8cpp_a9e680fce0b2ac8055ac3baa1363b63dc}\index{render.cpp@{render.cpp}!createVkSurface@{createVkSurface}}
+\index{createVkSurface@{createVkSurface}!render.cpp@{render.cpp}}
+\doxysubsubsection{\texorpdfstring{createVkSurface()}{createVkSurface()}}
+{\footnotesize\ttfamily \label{render_8cpp_a9e680fce0b2ac8055ac3baa1363b63dc} 
+Result clz\+::window\+::create\+Vk\+Surface (\begin{DoxyParamCaption}\item[{Vk\+Surface\+KHR \texorpdfstring{$\ast$}{*}}]{surface}{, }\item[{const Vk\+Instance \&}]{instance}{, }\item[{const \mbox{\hyperlink{structclz_1_1window_1_1types_1_1Window}{types\+::\+Window}} \&}]{window}{}\end{DoxyParamCaption})}
+
+
+
+Creates a Vulkan surface backed by the GLFW window. 
+
+Wraps glfw\+Create\+Window\+Surface(). The caller owns the returned surface and must destroy it with vk\+Destroy\+Surface\+KHR() before destroying the Vk\+Instance.
+
+
+\begin{DoxyParams}{Parameters}
+{\em surface} & Output pointer to receive the created Vk\+Surface\+KHR. \\
+\hline
+{\em instance} & The Vulkan instance to create the surface against. \\
+\hline
+{\em window} & The active Window whose GLFWwindow\texorpdfstring{$\ast$}{*} backs the surface. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success if glfw\+Create\+Window\+Surface() returns VK\+\_\+\+SUCCESS, Failure with a location-\/prefixed error message otherwise.
+\end{DoxyReturn}
+Wraps glfw\+Create\+Window\+Surface(). The caller is responsible for destroying the surface (vk\+Destroy\+Surface\+KHR) before the instance.
+
+
+\begin{DoxyParams}{Parameters}
+{\em surface} & Output pointer to receive the created Vk\+Surface\+KHR. \\
+\hline
+{\em instance} & The Vulkan instance to create the surface against. \\
+\hline
+{\em window} & The active Window whose handle backs the surface. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success if VK\+\_\+\+SUCCESS, Failure with a message otherwise. 
+\end{DoxyReturn}
+\Hypertarget{render_8cpp_ad42562914cdfb7f0c7a014cd7f7e73b9}\index{render.cpp@{render.cpp}!getWindowExtensions@{getWindowExtensions}}
+\index{getWindowExtensions@{getWindowExtensions}!render.cpp@{render.cpp}}
+\doxysubsubsection{\texorpdfstring{getWindowExtensions()}{getWindowExtensions()}}
+{\footnotesize\ttfamily \label{render_8cpp_ad42562914cdfb7f0c7a014cd7f7e73b9} 
+void clz\+::window\+::get\+Window\+Extensions (\begin{DoxyParamCaption}\item[{std\+::vector$<$ const char \texorpdfstring{$\ast$}{*} $>$ \&}]{Extensions}{, }\item[{uint32\+\_\+t \&}]{extensions\+Count}{, }\item[{const \mbox{\hyperlink{structclz_1_1window_1_1types_1_1Window}{types\+::\+Window}} \&}]{window}{}\end{DoxyParamCaption})}
+
+
+
+Queries the Vulkan instance extensions required by GLFW. 
+
+Calls glfw\+Get\+Required\+Instance\+Extensions() to get the platform surface extensions (e.\+g. VK\+\_\+\+KHR\+\_\+surface + VK\+\_\+\+KHR\+\_\+xcb\+\_\+surface on Linux/\+X11, VK\+\_\+\+KHR\+\_\+wayland\+\_\+surface on Wayland) and appends each name pointer to {\ttfamily Extensions}.
+
+\begin{DoxyNote}{Note}
+The returned pointers are owned by GLFW and remain valid until glfw\+Terminate() is called. Do not free them.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em Extensions} & Output vector to append extension name strings to. \\
+\hline
+{\em extensions\+Count} & Output count populated by GLFW. \\
+\hline
+{\em window} & The active Window (establishes GLFW context).\\
+\hline
+\end{DoxyParams}
+Calls glfw\+Get\+Required\+Instance\+Extensions() and appends each extension name pointer to {\ttfamily Extensions}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em Extensions} & Output vector to append extension strings to. \\
+\hline
+{\em extensions\+Count} & Output count of required extensions. \\
+\hline
+{\em window} & The active Window (used to establish GLFW context). \\
+\hline
+\end{DoxyParams}

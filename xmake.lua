@@ -40,7 +40,7 @@ target("curloz engine")
     end
 
     -- Manual libraries
-    add_links("glfw3", "reactphysics3d")
+    add_links("glfw3")
 
     -- system libraries
     add_links("vulkan", "fmt")

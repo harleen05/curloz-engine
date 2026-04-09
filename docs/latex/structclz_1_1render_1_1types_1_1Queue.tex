@@ -1,0 +1,36 @@
+\doxysection{clz\+::render\+::types\+::Queue Struct Reference}
+\hypertarget{structclz_1_1render_1_1types_1_1Queue}{}\label{structclz_1_1render_1_1types_1_1Queue}\index{clz::render::types::Queue@{clz::render::types::Queue}}
+
+
+Holds graphics and present queue handles and their family indices.  
+
+
+
+
+{\ttfamily \#include $<$render\+\_\+types.\+hpp$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structclz_1_1render_1_1types_1_1Queue_ac4dd0374b456892c4b15cdaa1b1c2e84}\label{structclz_1_1render_1_1types_1_1Queue_ac4dd0374b456892c4b15cdaa1b1c2e84} 
+Vk\+Queue {\bfseries graphics\+Queue}
+\begin{DoxyCompactList}\small\item\em \doxylink{structclz_1_1render_1_1types_1_1Queue}{Queue} used for graphics command submission. \end{DoxyCompactList}\item 
+\Hypertarget{structclz_1_1render_1_1types_1_1Queue_afc77fd4256a31c0fec8474665824ac43}\label{structclz_1_1render_1_1types_1_1Queue_afc77fd4256a31c0fec8474665824ac43} 
+uint32\+\_\+t {\bfseries graphics\+Family}
+\begin{DoxyCompactList}\small\item\em \doxylink{structclz_1_1render_1_1types_1_1Queue}{Queue} family index for graphics\+Queue. \end{DoxyCompactList}\item 
+\Hypertarget{structclz_1_1render_1_1types_1_1Queue_a8234db0d63cd9ab4c61b9ed64db757df}\label{structclz_1_1render_1_1types_1_1Queue_a8234db0d63cd9ab4c61b9ed64db757df} 
+Vk\+Queue {\bfseries present\+Queue}
+\begin{DoxyCompactList}\small\item\em \doxylink{structclz_1_1render_1_1types_1_1Queue}{Queue} used for swapchain presentation. \end{DoxyCompactList}\item 
+\Hypertarget{structclz_1_1render_1_1types_1_1Queue_a47d7ff84e3e805f09281bbe39a4123be}\label{structclz_1_1render_1_1types_1_1Queue_a47d7ff84e3e805f09281bbe39a4123be} 
+uint32\+\_\+t {\bfseries present\+Family}
+\begin{DoxyCompactList}\small\item\em \doxylink{structclz_1_1render_1_1types_1_1Queue}{Queue} family index for present\+Queue. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Holds graphics and present queue handles and their family indices. 
+
+Graphics and present queues may refer to the same underlying queue on integrated GPUs — check graphics\+Family == present\+Family before assuming exclusive ownership. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/renderer/\mbox{\hyperlink{render__types_8hpp}{render\+\_\+types.\+hpp}}\end{DoxyCompactItemize}

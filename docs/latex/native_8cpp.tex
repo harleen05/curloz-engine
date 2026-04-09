@@ -1,0 +1,155 @@
+\doxysection{src/window/native.cpp File Reference}
+\hypertarget{native_8cpp}{}\label{native_8cpp}\index{src/window/native.cpp@{src/window/native.cpp}}
+
+
+GLFW lifecycle implementation for the window subsystem.  
+
+
+{\ttfamily \#include "{}window/native.\+hpp"{}}\newline
+{\ttfamily \#include "{}clz\+\_\+types.\+hpp"{}}\newline
+{\ttfamily \#include $<$GLFW/glfw3.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{native_8cpp_abbf6f207edb9655041007efcdf9af27b}{clz\+::window\+::init}} (\mbox{\hyperlink{structclz_1_1window_1_1types_1_1Window}{types\+::\+Window}} \texorpdfstring{$\ast$}{*}p\+Window)
+\begin{DoxyCompactList}\small\item\em Initializes GLFW and creates a Vulkan-\/compatible window. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{native_8cpp_ad9c7507dd2d88acd8887c022fb836446}{clz\+::window\+::cleanup}} (\mbox{\hyperlink{structclz_1_1window_1_1types_1_1Window}{types\+::\+Window}} \texorpdfstring{$\ast$}{*}p\+Window)
+\begin{DoxyCompactList}\small\item\em Destroys the GLFW window and terminates the GLFW library. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{native_8cpp_ada9e0a9ef4b98f07972f9fce567d314e}{clz\+::window\+::update}} (\mbox{\hyperlink{structclz_1_1window_1_1types_1_1Window}{types\+::\+Window}} \texorpdfstring{$\ast$}{*}p\+Window, float delta\+Time)
+\begin{DoxyCompactList}\small\item\em Polls GLFW events and handles Escape-\/to-\/close for one frame. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{native_8cpp_a6a076a3fee5b712622597c69824ffc14}{clz\+::window\+::window\+Should\+Close}} (\mbox{\hyperlink{structclz_1_1window_1_1types_1_1Window}{types\+::\+Window}} \texorpdfstring{$\ast$}{*}p\+Window)
+\begin{DoxyCompactList}\small\item\em Returns whether the window has been flagged for closing. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+GLFW lifecycle implementation for the window subsystem. 
+
+Real implementations of init / update / cleanup / window\+Should\+Close. All functions take an explicit types\+::\+Window\texorpdfstring{$\ast$}{*} so they carry no global state themselves — the module-\/level w\+\_\+window is owned by \doxylink{window_8cpp}{window.\+cpp} and injected here via the forwarding layer. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{native_8cpp_ad9c7507dd2d88acd8887c022fb836446}\index{native.cpp@{native.cpp}!cleanup@{cleanup}}
+\index{cleanup@{cleanup}!native.cpp@{native.cpp}}
+\doxysubsubsection{\texorpdfstring{cleanup()}{cleanup()}}
+{\footnotesize\ttfamily \label{native_8cpp_ad9c7507dd2d88acd8887c022fb836446} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::window\+::cleanup (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structclz_1_1window_1_1types_1_1Window}{types\+::\+Window}} \texorpdfstring{$\ast$}{*}}]{p\+Window}{}\end{DoxyParamCaption})}
+
+
+
+Destroys the GLFW window and terminates the GLFW library. 
+
+Always call this after the main loop exits and before process shutdown. Calling cleanup() while the window is still in use is undefined behaviour.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\+Window} & Non-\/null pointer to the Window to tear down. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success after cleanup completes.
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em p\+Window} & Non-\/null pointer to the Window to tear down. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success after cleanup completes. 
+\end{DoxyReturn}
+\Hypertarget{native_8cpp_abbf6f207edb9655041007efcdf9af27b}\index{native.cpp@{native.cpp}!init@{init}}
+\index{init@{init}!native.cpp@{native.cpp}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily \label{native_8cpp_abbf6f207edb9655041007efcdf9af27b} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::window\+::init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structclz_1_1window_1_1types_1_1Window}{types\+::\+Window}} \texorpdfstring{$\ast$}{*}}]{p\+Window}{}\end{DoxyParamCaption})}
+
+
+
+Initializes GLFW and creates a Vulkan-\/compatible window. 
+
+Initializes GLFW and creates a window into {\ttfamily p\+Window}.
+
+Sequence\+:
+\begin{DoxyEnumerate}
+\item glfw\+Init() — returns Failure on error.
+\item Set GLFW\+\_\+\+CLIENT\+\_\+\+API to GLFW\+\_\+\+NO\+\_\+\+API (Vulkan, no GL context).
+\item Set GLFW\+\_\+\+RESIZABLE to false (fixed 800×600 for now).
+\item glfw\+Create\+Window() — returns Failure if handle is null.
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\+Window} & Non-\/null pointer to the Window struct to populate. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success with a log message, or Failure with an error location string.
+\end{DoxyReturn}
+Calls glfw\+Init(), applies Vulkan/no-\/resize hints, and creates an 800×600 window. On any failure returns a Failure result with a descriptive message.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\+Window} & Non-\/null pointer to the Window struct to populate. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success with a log message, or Failure on GLFW errors. 
+\end{DoxyReturn}
+\Hypertarget{native_8cpp_ada9e0a9ef4b98f07972f9fce567d314e}\index{native.cpp@{native.cpp}!update@{update}}
+\index{update@{update}!native.cpp@{native.cpp}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily \label{native_8cpp_ada9e0a9ef4b98f07972f9fce567d314e} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::window\+::update (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structclz_1_1window_1_1types_1_1Window}{types\+::\+Window}} \texorpdfstring{$\ast$}{*}}]{p\+Window}{, }\item[{float}]{delta\+Time}{}\end{DoxyParamCaption})}
+
+
+
+Polls GLFW events and handles Escape-\/to-\/close for one frame. 
+
+Calls glfw\+Poll\+Events() to dispatch pending OS events, then checks whether the Escape key is held and flags the window for closing if so.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\+Window} & Non-\/null pointer to the active Window. \\
+\hline
+{\em delta\+Time} & Elapsed time since the last frame (seconds). Currently unused; reserved for future input/animation use. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Always returns Success.
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em p\+Window} & Non-\/null pointer to the active Window. \\
+\hline
+{\em delta\+Time} & Elapsed time since the last frame (seconds). Currently unused; reserved for future use. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Always returns Success. 
+\end{DoxyReturn}
+\Hypertarget{native_8cpp_a6a076a3fee5b712622597c69824ffc14}\index{native.cpp@{native.cpp}!windowShouldClose@{windowShouldClose}}
+\index{windowShouldClose@{windowShouldClose}!native.cpp@{native.cpp}}
+\doxysubsubsection{\texorpdfstring{windowShouldClose()}{windowShouldClose()}}
+{\footnotesize\ttfamily \label{native_8cpp_a6a076a3fee5b712622597c69824ffc14} 
+bool clz\+::window\+::window\+Should\+Close (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structclz_1_1window_1_1types_1_1Window}{types\+::\+Window}} \texorpdfstring{$\ast$}{*}}]{p\+Window}{}\end{DoxyParamCaption})}
+
+
+
+Returns whether the window has been flagged for closing. 
+
+The close flag is set either by the user clicking the window\textquotesingle{}s close button or by Escape being pressed in update().
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\+Window} & Non-\/null pointer to the active Window. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if glfw\+Window\+Should\+Close() is set for this window.
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em p\+Window} & Non-\/null pointer to the active Window. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if glfw\+Window\+Should\+Close() is set for this window. 
+\end{DoxyReturn}

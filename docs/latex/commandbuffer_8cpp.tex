@@ -1,0 +1,112 @@
+\doxysection{src/renderer/commandbuffer.cpp File Reference}
+\hypertarget{commandbuffer_8cpp}{}\label{commandbuffer_8cpp}\index{src/renderer/commandbuffer.cpp@{src/renderer/commandbuffer.cpp}}
+
+
+Command pool and command buffer allocation implementations.  
+
+
+{\ttfamily \#include "{}renderer/commandbuffer.\+hpp"{}}\newline
+{\ttfamily \#include "{}renderer/render\+\_\+types.\+hpp"{}}\newline
+{\ttfamily \#include "{}vulkan/vulkan\+\_\+core.\+h"{}}\newline
+{\ttfamily \#include "{}clz\+\_\+types.\+hpp"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{commandbuffer_8cpp_a6df1d5fab024762a6c7e1d468dff1c8b}{clz\+::render\+::create\+Command\+Pool}} (const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \&device, const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue}{types\+::\+Queue}} \&queue, \mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandPool}{types\+::\+Command\+Pool}} \texorpdfstring{$\ast$}{*}p\+Command\+Pool)
+\begin{DoxyCompactList}\small\item\em Creates a command pool tied to the graphics queue family. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{commandbuffer_8cpp_a863ee83a8d7a9e6af7bd3f962bccf3ea}{clz\+::render\+::create\+Command\+Buffers}} (const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \&device, const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandPool}{types\+::\+Command\+Pool}} \&command\+Pool, std\+::vector$<$ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandBuffer}{types\+::\+Command\+Buffer}} $>$ \texorpdfstring{$\ast$}{*}p\+Command\+Buffers, uint8\+\_\+t count)
+\begin{DoxyCompactList}\small\item\em Allocates primary command buffers from the given pool. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Command pool and command buffer allocation implementations. 
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{commandbuffer_8cpp_a863ee83a8d7a9e6af7bd3f962bccf3ea}\index{commandbuffer.cpp@{commandbuffer.cpp}!createCommandBuffers@{createCommandBuffers}}
+\index{createCommandBuffers@{createCommandBuffers}!commandbuffer.cpp@{commandbuffer.cpp}}
+\doxysubsubsection{\texorpdfstring{createCommandBuffers()}{createCommandBuffers()}}
+{\footnotesize\ttfamily \label{commandbuffer_8cpp_a863ee83a8d7a9e6af7bd3f962bccf3ea} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::render\+::create\+Command\+Buffers (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \&}]{device}{, }\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandPool}{types\+::\+Command\+Pool}} \&}]{command\+Pool}{, }\item[{std\+::vector$<$ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandBuffer}{types\+::\+Command\+Buffer}} $>$ \texorpdfstring{$\ast$}{*}}]{p\+Command\+Buffers}{, }\item[{uint8\+\_\+t}]{count}{}\end{DoxyParamCaption})}
+
+
+
+Allocates primary command buffers from the given pool. 
+
+Allocates {\ttfamily count} primary command buffers from the given pool.
+
+Allocates {\ttfamily count} VK\+\_\+\+COMMAND\+\_\+\+BUFFER\+\_\+\+LEVEL\+\_\+\+PRIMARY buffers in a single vk\+Allocate\+Command\+Buffers call, then wraps each in a types\+::\+Command\+Buffer and appends it to {\ttfamily p\+Command\+Buffers}. The intermediate raw vector is cleared after wrapping.
+
+Command buffers are freed implicitly when the parent pool is destroyed — no explicit vk\+Free\+Command\+Buffers call is needed.
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device. \\
+\hline
+{\em command\+Pool} & Pool to allocate from. \\
+\hline
+{\em p\+Command\+Buffers} & Output vector to append the allocated buffers to. \\
+\hline
+{\em count} & Number of buffers to allocate. Defaults to 1. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success, or Failure if vk\+Allocate\+Command\+Buffers fails.
+\end{DoxyReturn}
+Allocated at VK\+\_\+\+COMMAND\+\_\+\+BUFFER\+\_\+\+LEVEL\+\_\+\+PRIMARY. The resulting Command\+Buffer wrappers are appended to {\ttfamily p\+Command\+Buffers}. Freed implicitly when the pool is destroyed.
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device. \\
+\hline
+{\em command\+Pool} & Pool to allocate from. \\
+\hline
+{\em p\+Command\+Buffers} & Output vector to append allocated buffers to. \\
+\hline
+{\em count} & Number of command buffers to allocate. Defaults to 1. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success, or Failure if vk\+Allocate\+Command\+Buffers fails. 
+\end{DoxyReturn}
+\Hypertarget{commandbuffer_8cpp_a6df1d5fab024762a6c7e1d468dff1c8b}\index{commandbuffer.cpp@{commandbuffer.cpp}!createCommandPool@{createCommandPool}}
+\index{createCommandPool@{createCommandPool}!commandbuffer.cpp@{commandbuffer.cpp}}
+\doxysubsubsection{\texorpdfstring{createCommandPool()}{createCommandPool()}}
+{\footnotesize\ttfamily \label{commandbuffer_8cpp_a6df1d5fab024762a6c7e1d468dff1c8b} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::render\+::create\+Command\+Pool (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \&}]{device}{, }\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue}{types\+::\+Queue}} \&}]{queue}{, }\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandPool}{types\+::\+Command\+Pool}} \texorpdfstring{$\ast$}{*}}]{p\+Command\+Pool}{}\end{DoxyParamCaption})}
+
+
+
+Creates a command pool tied to the graphics queue family. 
+
+Creates a command pool for the graphics queue family.
+
+VK\+\_\+\+COMMAND\+\_\+\+POOL\+\_\+\+CREATE\+\_\+\+RESET\+\_\+\+COMMAND\+\_\+\+BUFFER\+\_\+\+BIT allows individual command buffers to be reset via vk\+Reset\+Command\+Buffer without needing to reset the entire pool. This is required for the per-\/frame reset in start\+Command\+Buffer().
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device. \\
+\hline
+{\em queue} & Provides graphics\+Family index for pool creation. \\
+\hline
+{\em p\+Command\+Pool} & Output\+: populated Command\+Pool. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success, or Failure with a location string if creation fails.
+\end{DoxyReturn}
+Created with VK\+\_\+\+COMMAND\+\_\+\+POOL\+\_\+\+CREATE\+\_\+\+RESET\+\_\+\+COMMAND\+\_\+\+BUFFER\+\_\+\+BIT so individual command buffers can be reset per-\/frame without resetting the entire pool.
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device. \\
+\hline
+{\em queue} & Queue whose graphics\+Family index the pool is created for. \\
+\hline
+{\em p\+Command\+Pool} & Output\+: populated Command\+Pool. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success, or Failure if vk\+Create\+Command\+Pool fails. 
+\end{DoxyReturn}

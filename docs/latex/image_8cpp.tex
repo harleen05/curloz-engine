@@ -1,0 +1,84 @@
+\doxysection{src/renderer/image.cpp File Reference}
+\hypertarget{image_8cpp}{}\label{image_8cpp}\index{src/renderer/image.cpp@{src/renderer/image.cpp}}
+
+
+Vulkan image layout transition utility implementation.  
+
+
+{\ttfamily \#include "{}renderer/image.\+hpp"{}}\newline
+{\ttfamily \#include "{}vulkan/vulkan\+\_\+core.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{image_8cpp_a764503e33104cf5a9f2e8b6571f35867}{clz\+::render\+::transition\+\_\+image\+\_\+layout}} (Vk\+Image image, Vk\+Image\+Layout old\+Layout, Vk\+Image\+Layout new\+Layout, Vk\+Access\+Flags2 src\+\_\+access\+\_\+mask, Vk\+Access\+Flags2 dst\+\_\+access\+\_\+mask, Vk\+Pipeline\+Stage\+Flags2 src\+\_\+stage\+\_\+mask, Vk\+Pipeline\+Stage\+Flags2 dst\+\_\+stage\+\_\+mask, Vk\+Command\+Buffer command\+Buffer)
+\begin{DoxyCompactList}\small\item\em Inserts a Vk\+Image\+Memory\+Barrier2 to transition an image\textquotesingle{}s layout. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Vulkan image layout transition utility implementation. 
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{image_8cpp_a764503e33104cf5a9f2e8b6571f35867}\index{image.cpp@{image.cpp}!transition\_image\_layout@{transition\_image\_layout}}
+\index{transition\_image\_layout@{transition\_image\_layout}!image.cpp@{image.cpp}}
+\doxysubsubsection{\texorpdfstring{transition\_image\_layout()}{transition\_image\_layout()}}
+{\footnotesize\ttfamily \label{image_8cpp_a764503e33104cf5a9f2e8b6571f35867} 
+void clz\+::render\+::transition\+\_\+image\+\_\+layout (\begin{DoxyParamCaption}\item[{Vk\+Image}]{image}{, }\item[{Vk\+Image\+Layout}]{old\+Layout}{, }\item[{Vk\+Image\+Layout}]{new\+Layout}{, }\item[{Vk\+Access\+Flags2}]{src\+\_\+access\+\_\+mask}{, }\item[{Vk\+Access\+Flags2}]{dst\+\_\+access\+\_\+mask}{, }\item[{Vk\+Pipeline\+Stage\+Flags2}]{src\+\_\+stage\+\_\+mask}{, }\item[{Vk\+Pipeline\+Stage\+Flags2}]{dst\+\_\+stage\+\_\+mask}{, }\item[{Vk\+Command\+Buffer}]{command\+Buffer}{}\end{DoxyParamCaption})}
+
+
+
+Inserts a Vk\+Image\+Memory\+Barrier2 to transition an image\textquotesingle{}s layout. 
+
+Inserts a pipeline barrier to transition an image\textquotesingle{}s layout.
+
+Builds a Vk\+Image\+Memory\+Barrier2 targeting a single mip level and single array layer of a color image, wraps it in a Vk\+Dependency\+Info, and records it with vk\+Cmd\+Pipeline\+Barrier2 (sync2 / Vulkan 1.\+3).
+
+Queue family ownership is not transferred (VK\+\_\+\+QUEUE\+\_\+\+FAMILY\+\_\+\+IGNORED).
+
+
+\begin{DoxyParams}{Parameters}
+{\em image} & Image to transition. \\
+\hline
+{\em old\+Layout} & Layout the image is currently in. \\
+\hline
+{\em new\+Layout} & Layout to transition to. \\
+\hline
+{\em src\+\_\+access\+\_\+mask} & Memory access type that was performed before this barrier. \\
+\hline
+{\em dst\+\_\+access\+\_\+mask} & Memory access type that will be performed after this barrier. \\
+\hline
+{\em src\+\_\+stage\+\_\+mask} & Pipeline stage that produced the previous access. \\
+\hline
+{\em dst\+\_\+stage\+\_\+mask} & Pipeline stage that will perform the next access. \\
+\hline
+{\em command\+Buffer} & Command buffer to record the barrier into.\\
+\hline
+\end{DoxyParams}
+Wraps Vk\+Image\+Memory\+Barrier2 + Vk\+Dependency\+Info + vk\+Cmd\+Pipeline\+Barrier2 (Vulkan 1.\+3 / synchronization2). Transitions a single-\/mip, single-\/layer color image. Queue family ownership is not transferred (VK\+\_\+\+QUEUE\+\_\+\+FAMILY\+\_\+\+IGNORED on both sides).
+
+Common usage in the render loop\+:
+\begin{DoxyItemize}
+\item UNDEFINED → COLOR\+\_\+\+ATTACHMENT\+\_\+\+OPTIMAL before rendering
+\item COLOR\+\_\+\+ATTACHMENT\+\_\+\+OPTIMAL → PRESENT\+\_\+\+SRC\+\_\+\+KHR before presentation
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em image} & Image to transition. \\
+\hline
+{\em old\+Layout} & Current image layout. \\
+\hline
+{\em new\+Layout} & Target image layout. \\
+\hline
+{\em src\+\_\+access\+\_\+mask} & Access mask for the source stage (what was written). \\
+\hline
+{\em dst\+\_\+access\+\_\+mask} & Access mask for the destination stage (what will read/write). \\
+\hline
+{\em src\+\_\+stage\+\_\+mask} & Pipeline stage that produced the data. \\
+\hline
+{\em dst\+\_\+stage\+\_\+mask} & Pipeline stage that will consume the data. \\
+\hline
+{\em command\+Buffer} & Command buffer to record the barrier into. \\
+\hline
+\end{DoxyParams}

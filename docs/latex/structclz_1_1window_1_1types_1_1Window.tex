@@ -1,0 +1,33 @@
+\doxysection{clz\+::window\+::types\+::Window Struct Reference}
+\hypertarget{structclz_1_1window_1_1types_1_1Window}{}\label{structclz_1_1window_1_1types_1_1Window}\index{clz::window::types::Window@{clz::window::types::Window}}
+
+
+Thin wrapper around a GLFWwindow pointer.  
+
+
+
+
+{\ttfamily \#include $<$window\+\_\+types.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structclz_1_1window_1_1types_1_1Window_a1225216d1d88ce6886a6463681292624}\label{structclz_1_1window_1_1types_1_1Window_a1225216d1d88ce6886a6463681292624} 
+{\bfseries Window} ()
+\begin{DoxyCompactList}\small\item\em Default-\/constructs a \doxylink{structclz_1_1window_1_1types_1_1Window}{Window} with a null handle. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structclz_1_1window_1_1types_1_1Window_afc92291996ec70a5b7e0b0a1b027f379}\label{structclz_1_1window_1_1types_1_1Window_afc92291996ec70a5b7e0b0a1b027f379} 
+GLFWwindow \texorpdfstring{$\ast$}{*} {\bfseries window}
+\begin{DoxyCompactList}\small\item\em Underlying GLFW window handle. Null until \doxylink{window_8cpp_a0f32130fcb0e89f140d54f029c4ba9a4}{init()}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Thin wrapper around a GLFWwindow pointer. 
+
+Exists so the rest of the engine never touches GLFWwindow\texorpdfstring{$\ast$}{*} directly. Default-\/constructed with a null handle; call \doxylink{window_8cpp_a0f32130fcb0e89f140d54f029c4ba9a4}{window\+::init()} to populate it. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/window/\mbox{\hyperlink{window__types_8hpp}{window\+\_\+types.\+hpp}}\end{DoxyCompactItemize}

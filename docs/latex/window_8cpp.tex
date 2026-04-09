@@ -1,0 +1,242 @@
+\doxysection{src/window/window.cpp File Reference}
+\hypertarget{window_8cpp}{}\label{window_8cpp}\index{src/window/window.cpp@{src/window/window.cpp}}
+
+
+Stateless public forwarders and module-\/level window state.  
+
+
+{\ttfamily \#include "{}window/window.\+hpp"{}}\newline
+{\ttfamily \#include "{}window/render.\+hpp"{}}\newline
+{\ttfamily \#include "{}window/native.\+hpp"{}}\newline
+{\ttfamily \#include "{}window/window\+\_\+types.\+hpp"{}}\newline
+{\ttfamily \#include $<$GLFW/glfw3.\+h$>$}\newline
+{\ttfamily \#include $<$fmt/base.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{window_8cpp_a0f32130fcb0e89f140d54f029c4ba9a4}{clz\+::window\+::init}} ()
+\begin{DoxyCompactList}\small\item\em Forwards to native\+::init() with the module-\/level window. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{window_8cpp_a4bdda7b3511a5faddc049b874df266bc}{clz\+::window\+::cleanup}} ()
+\begin{DoxyCompactList}\small\item\em Forwards to native\+::cleanup() with the module-\/level window. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{window_8cpp_af93f523f8cd89858c891d0447b8d6b2c}{clz\+::window\+::update}} (float delta\+Time)
+\begin{DoxyCompactList}\small\item\em Forwards to native\+::update() with the module-\/level window. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{window_8cpp_a40502894f7b9a9b0d29357449cc42fa0}{clz\+::window\+::window\+Should\+Close}} ()
+\begin{DoxyCompactList}\small\item\em Forwards to native\+::window\+Should\+Close() with the module-\/level window. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{window_8cpp_ac0b6422b44cf369f3edfc920f1ab6b49}{clz\+::window\+::get\+Window\+Extensions}} (std\+::vector$<$ const char \texorpdfstring{$\ast$}{*} $>$ \&Extensions, uint32\+\_\+t \&extensions\+Count)
+\begin{DoxyCompactList}\small\item\em Forwards to render\+::get\+Window\+Extensions() with the module-\/level window. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structclz_1_1Result}{Result}} \mbox{\hyperlink{window_8cpp_ade954a3d38cf500411738cfbd8b31d57}{clz\+::window\+::create\+Vk\+Surface}} (Vk\+Surface\+KHR \texorpdfstring{$\ast$}{*}surface, const Vk\+Instance \&instance)
+\begin{DoxyCompactList}\small\item\em Forwards to render\+::create\+Vk\+Surface() with the module-\/level window. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{window_8cpp_a7d86db634a49281a9037cbb394e5e1c4}{clz\+::window\+::get\+Framebuffer\+Extents}} (int \texorpdfstring{$\ast$}{*}p\+Width, int \texorpdfstring{$\ast$}{*}p\+Height)
+\begin{DoxyCompactList}\small\item\em Retrieves the current framebuffer dimensions in pixels. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{window_8cpp_a3e4219d437ee4c1a64b5fda53b0db4b4}\label{window_8cpp_a3e4219d437ee4c1a64b5fda53b0db4b4} 
+\mbox{\hyperlink{structclz_1_1window_1_1types_1_1Window}{types\+::\+Window}} {\bfseries clz\+::window\+::w\+\_\+window}
+\begin{DoxyCompactList}\small\item\em Module-\/level GLFW window handle. Populated by \doxylink{window_8cpp_a0f32130fcb0e89f140d54f029c4ba9a4}{init()}, destroyed by \doxylink{window_8cpp_a4bdda7b3511a5faddc049b874df266bc}{cleanup()}. \end{DoxyCompactList}\item 
+\Hypertarget{window_8cpp_a61d4b3d96931d28997ada8b2a07f214c}\label{window_8cpp_a61d4b3d96931d28997ada8b2a07f214c} 
+uint32\+\_\+t {\bfseries clz\+::window\+::w\+\_\+width} = 800
+\begin{DoxyCompactList}\small\item\em Default framebuffer width in pixels. \end{DoxyCompactList}\item 
+\Hypertarget{window_8cpp_a404cb8ee736bd560724cab012ae9ecb5}\label{window_8cpp_a404cb8ee736bd560724cab012ae9ecb5} 
+uint32\+\_\+t {\bfseries clz\+::window\+::w\+\_\+height} = 600
+\begin{DoxyCompactList}\small\item\em Default framebuffer height in pixels. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Stateless public forwarders and module-\/level window state. 
+
+Owns the single module-\/level types\+::\+Window instance (w\+\_\+window) and the default dimensions (w\+\_\+width, w\+\_\+height). Every function here is a thin forwarder that injects w\+\_\+window into the real implementation living in \doxylink{native_8cpp}{native.\+cpp} or \doxylink{render_8cpp}{render.\+cpp}.
+
+Callers never see w\+\_\+window — they go through \doxylink{window_8hpp}{window.\+hpp}, which exposes the same signatures without the window parameter.
+
+Forwarding pattern\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{comment}{//\ Public\ API\ (window.hpp)\ \ \ \ \ \ \ \ Real\ impl\ (native.hpp\ /\ render.hpp)}}
+\DoxyCodeLine{\mbox{\hyperlink{structclz_1_1Result}{clz::Result}}\ \mbox{\hyperlink{base_8cpp_ad23afb2b76e187be63025ab887353782}{init}}()\ \ \ \ \ \ \ \ \ \ -\/-\/-\/>\ \ \mbox{\hyperlink{base_8cpp_ad23afb2b76e187be63025ab887353782}{init}}(\&w\_window)}
+\DoxyCodeLine{\mbox{\hyperlink{structclz_1_1Result}{clz::Result}}\ \mbox{\hyperlink{base_8cpp_a296c96a54e9ca399433acd6d0be55e75}{cleanup}}()\ \ \ \ \ \ \ -\/-\/-\/>\ \ \mbox{\hyperlink{base_8cpp_a296c96a54e9ca399433acd6d0be55e75}{cleanup}}(\&w\_window)}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ \mbox{\hyperlink{render_8cpp_ad42562914cdfb7f0c7a014cd7f7e73b9}{getWindowExtensions}}()\ \ -\/-\/-\/>\ \ \mbox{\hyperlink{render_8cpp_ad42562914cdfb7f0c7a014cd7f7e73b9}{getWindowExtensions}}(...,\ w\_window)}
+
+\end{DoxyCode}
+ 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{window_8cpp_a4bdda7b3511a5faddc049b874df266bc}\index{window.cpp@{window.cpp}!cleanup@{cleanup}}
+\index{cleanup@{cleanup}!window.cpp@{window.cpp}}
+\doxysubsubsection{\texorpdfstring{cleanup()}{cleanup()}}
+{\footnotesize\ttfamily \label{window_8cpp_a4bdda7b3511a5faddc049b874df266bc} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::window\+::cleanup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Forwards to native\+::cleanup() with the module-\/level window. 
+
+Destroys the window and terminates GLFW.
+
+\begin{DoxyReturn}{Returns}
+Result from native\+::cleanup().
+\end{DoxyReturn}
+Delegates to native\+::cleanup(). Safe to call once after update() returns.
+
+\begin{DoxyReturn}{Returns}
+Success after teardown completes. 
+\end{DoxyReturn}
+\Hypertarget{window_8cpp_ade954a3d38cf500411738cfbd8b31d57}\index{window.cpp@{window.cpp}!createVkSurface@{createVkSurface}}
+\index{createVkSurface@{createVkSurface}!window.cpp@{window.cpp}}
+\doxysubsubsection{\texorpdfstring{createVkSurface()}{createVkSurface()}}
+{\footnotesize\ttfamily \label{window_8cpp_ade954a3d38cf500411738cfbd8b31d57} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::window\+::create\+Vk\+Surface (\begin{DoxyParamCaption}\item[{Vk\+Surface\+KHR \texorpdfstring{$\ast$}{*}}]{surface}{, }\item[{const Vk\+Instance \&}]{instance}{}\end{DoxyParamCaption})}
+
+
+
+Forwards to render\+::create\+Vk\+Surface() with the module-\/level window. 
+
+Creates a Vulkan surface for the GLFW window.
+
+
+\begin{DoxyParams}{Parameters}
+{\em surface} & Output pointer to receive the created Vk\+Surface\+KHR. \\
+\hline
+{\em instance} & The Vulkan instance to create the surface against. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Result from render\+::create\+Vk\+Surface().
+\end{DoxyReturn}
+Wraps glfw\+Create\+Window\+Surface(). Delegates to \doxylink{render_8cpp}{render.\+cpp}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em surface} & Output pointer to receive the created Vk\+Surface\+KHR. \\
+\hline
+{\em instance} & The Vulkan instance to create the surface against. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success if the surface was created, Failure otherwise. 
+\end{DoxyReturn}
+\Hypertarget{window_8cpp_a7d86db634a49281a9037cbb394e5e1c4}\index{window.cpp@{window.cpp}!getFramebufferExtents@{getFramebufferExtents}}
+\index{getFramebufferExtents@{getFramebufferExtents}!window.cpp@{window.cpp}}
+\doxysubsubsection{\texorpdfstring{getFramebufferExtents()}{getFramebufferExtents()}}
+{\footnotesize\ttfamily \label{window_8cpp_a7d86db634a49281a9037cbb394e5e1c4} 
+void clz\+::window\+::get\+Framebuffer\+Extents (\begin{DoxyParamCaption}\item[{int \texorpdfstring{$\ast$}{*}}]{p\+Width}{, }\item[{int \texorpdfstring{$\ast$}{*}}]{p\+Height}{}\end{DoxyParamCaption})}
+
+
+
+Retrieves the current framebuffer dimensions in pixels. 
+
+Wraps glfw\+Get\+Framebuffer\+Size() directly. Prefer this over the stored w\+\_\+width/w\+\_\+height for swapchain extent, as the framebuffer size can differ from the window size on high-\/\+DPI displays.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\+Width} & Output pointer for framebuffer width in pixels. \\
+\hline
+{\em p\+Height} & Output pointer for framebuffer height in pixels.\\
+\hline
+\end{DoxyParams}
+Wraps glfw\+Get\+Framebuffer\+Size(). Use this for Vulkan swapchain extent rather than the window size, as they can differ on high-\/\+DPI displays.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\+Width} & Output pointer for framebuffer width in pixels. \\
+\hline
+{\em p\+Height} & Output pointer for framebuffer height in pixels. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{window_8cpp_ac0b6422b44cf369f3edfc920f1ab6b49}\index{window.cpp@{window.cpp}!getWindowExtensions@{getWindowExtensions}}
+\index{getWindowExtensions@{getWindowExtensions}!window.cpp@{window.cpp}}
+\doxysubsubsection{\texorpdfstring{getWindowExtensions()}{getWindowExtensions()}}
+{\footnotesize\ttfamily \label{window_8cpp_ac0b6422b44cf369f3edfc920f1ab6b49} 
+void clz\+::window\+::get\+Window\+Extensions (\begin{DoxyParamCaption}\item[{std\+::vector$<$ const char \texorpdfstring{$\ast$}{*} $>$ \&}]{Extensions}{, }\item[{uint32\+\_\+t \&}]{extensions\+Count}{}\end{DoxyParamCaption})}
+
+
+
+Forwards to render\+::get\+Window\+Extensions() with the module-\/level window. 
+
+Queries the Vulkan instance extensions required by GLFW.
+
+
+\begin{DoxyParams}{Parameters}
+{\em Extensions} & Output vector to append required extension names to. \\
+\hline
+{\em extensions\+Count} & Output count of required extensions.\\
+\hline
+\end{DoxyParams}
+Appends the platform surface extensions to {\ttfamily Extensions} and sets {\ttfamily extensions\+Count} accordingly. Delegates to \doxylink{render_8cpp}{render.\+cpp}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em Extensions} & Output vector to append extension name strings to. \\
+\hline
+{\em extensions\+Count} & Output count of required extensions. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{window_8cpp_a0f32130fcb0e89f140d54f029c4ba9a4}\index{window.cpp@{window.cpp}!init@{init}}
+\index{init@{init}!window.cpp@{window.cpp}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily \label{window_8cpp_a0f32130fcb0e89f140d54f029c4ba9a4} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::window\+::init (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Forwards to native\+::init() with the module-\/level window. 
+
+Initializes GLFW and creates the application window.
+
+\begin{DoxyReturn}{Returns}
+Result from native\+::init().
+\end{DoxyReturn}
+Delegates to native\+::init(). The window is fixed at 800×600, non-\/resizable, with no Open\+GL context (Vulkan-\/only).
+
+\begin{DoxyReturn}{Returns}
+Success if GLFW and the window handle were created, Failure with a message otherwise. 
+\end{DoxyReturn}
+\Hypertarget{window_8cpp_af93f523f8cd89858c891d0447b8d6b2c}\index{window.cpp@{window.cpp}!update@{update}}
+\index{update@{update}!window.cpp@{window.cpp}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily \label{window_8cpp_af93f523f8cd89858c891d0447b8d6b2c} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::window\+::update (\begin{DoxyParamCaption}\item[{float}]{delta\+Time}{}\end{DoxyParamCaption})}
+
+
+
+Forwards to native\+::update() with the module-\/level window. 
+
+Ticks the window subsystem for one frame.
+
+
+\begin{DoxyParams}{Parameters}
+{\em delta\+Time} & Elapsed time since the last frame (seconds). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Result from native\+::update().
+\end{DoxyReturn}
+Pumps the GLFW event queue and checks for the Escape key. Delegates to native\+::update().
+
+
+\begin{DoxyParams}{Parameters}
+{\em delta\+Time} & Elapsed time since the last frame (seconds). Currently unused; reserved for future use. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Always returns Success. 
+\end{DoxyReturn}
+\Hypertarget{window_8cpp_a40502894f7b9a9b0d29357449cc42fa0}\index{window.cpp@{window.cpp}!windowShouldClose@{windowShouldClose}}
+\index{windowShouldClose@{windowShouldClose}!window.cpp@{window.cpp}}
+\doxysubsubsection{\texorpdfstring{windowShouldClose()}{windowShouldClose()}}
+{\footnotesize\ttfamily \label{window_8cpp_a40502894f7b9a9b0d29357449cc42fa0} 
+bool clz\+::window\+::window\+Should\+Close (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Forwards to native\+::window\+Should\+Close() with the module-\/level window. 
+
+Returns whether the window has been requested to close.
+
+\begin{DoxyReturn}{Returns}
+true if the window has been flagged for closing.
+\end{DoxyReturn}
+Returns true when the user closes the window or presses Escape. Delegates to native\+::window\+Should\+Close().
+
+\begin{DoxyReturn}{Returns}
+true if the engine main loop should exit. 
+\end{DoxyReturn}

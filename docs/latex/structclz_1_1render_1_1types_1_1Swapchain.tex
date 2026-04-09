@@ -1,0 +1,42 @@
+\doxysection{clz\+::render\+::types\+::Swapchain Struct Reference}
+\hypertarget{structclz_1_1render_1_1types_1_1Swapchain}{}\label{structclz_1_1render_1_1types_1_1Swapchain}\index{clz::render::types::Swapchain@{clz::render::types::Swapchain}}
+
+
+Holds the swapchain handle and all associated image/view data.  
+
+
+
+
+{\ttfamily \#include $<$render\+\_\+types.\+hpp$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structclz_1_1render_1_1types_1_1Swapchain_a2d828a303544162fcbf1db2d8b9df482}\label{structclz_1_1render_1_1types_1_1Swapchain_a2d828a303544162fcbf1db2d8b9df482} 
+Vk\+Swapchain\+KHR {\bfseries swapchain}
+\begin{DoxyCompactList}\small\item\em \doxylink{structclz_1_1render_1_1types_1_1Swapchain}{Swapchain} handle. \end{DoxyCompactList}\item 
+\Hypertarget{structclz_1_1render_1_1types_1_1Swapchain_aa2c02408c03df5378891e2075b59060d}\label{structclz_1_1render_1_1types_1_1Swapchain_aa2c02408c03df5378891e2075b59060d} 
+Vk\+Surface\+Format\+KHR {\bfseries format}
+\begin{DoxyCompactList}\small\item\em Chosen surface format (prefers B8\+G8\+R8\+A8\+\_\+\+SRGB). \end{DoxyCompactList}\item 
+\Hypertarget{structclz_1_1render_1_1types_1_1Swapchain_a2335b6c49f18b5285854bd8fd8634d2d}\label{structclz_1_1render_1_1types_1_1Swapchain_a2335b6c49f18b5285854bd8fd8634d2d} 
+Vk\+Present\+Mode\+KHR {\bfseries present\+Mode}
+\begin{DoxyCompactList}\small\item\em Chosen present mode (prefers MAILBOX, falls back to FIFO). \end{DoxyCompactList}\item 
+\Hypertarget{structclz_1_1render_1_1types_1_1Swapchain_ab1e450c88e40f11d68307936a38dc64b}\label{structclz_1_1render_1_1types_1_1Swapchain_ab1e450c88e40f11d68307936a38dc64b} 
+Vk\+Extent2D {\bfseries extent}
+\begin{DoxyCompactList}\small\item\em Framebuffer dimensions in pixels. \end{DoxyCompactList}\item 
+\Hypertarget{structclz_1_1render_1_1types_1_1Swapchain_ac97c39c11ffc62e006ebbdddb6d3121e}\label{structclz_1_1render_1_1types_1_1Swapchain_ac97c39c11ffc62e006ebbdddb6d3121e} 
+std\+::vector$<$ Vk\+Image $>$ {\bfseries swapchain\+Images}
+\begin{DoxyCompactList}\small\item\em \doxylink{structclz_1_1render_1_1types_1_1Swapchain}{Swapchain} images. Owned by the swapchain. \end{DoxyCompactList}\item 
+\Hypertarget{structclz_1_1render_1_1types_1_1Swapchain_ab7faed8a22b1f3f40e02101ce2d4ed12}\label{structclz_1_1render_1_1types_1_1Swapchain_ab7faed8a22b1f3f40e02101ce2d4ed12} 
+std\+::vector$<$ Vk\+Image\+View $>$ {\bfseries swapchain\+Image\+Views}
+\begin{DoxyCompactList}\small\item\em Image views. Must be destroyed before the swapchain. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Holds the swapchain handle and all associated image/view data. 
+
+swapchain\+Images are owned by the swapchain and must not be destroyed manually. swapchain\+Image\+Views are created explicitly and must be destroyed before the swapchain. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/renderer/\mbox{\hyperlink{render__types_8hpp}{render\+\_\+types.\+hpp}}\end{DoxyCompactItemize}

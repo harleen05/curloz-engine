@@ -1,0 +1,38 @@
+\doxysection{clz\+::render\+::types\+::Syncers Struct Reference}
+\hypertarget{structclz_1_1render_1_1types_1_1Syncers}{}\label{structclz_1_1render_1_1types_1_1Syncers}\index{clz::render::types::Syncers@{clz::render::types::Syncers}}
+
+
+Holds all per-\/frame synchronization primitives.  
+
+
+
+
+{\ttfamily \#include $<$render\+\_\+types.\+hpp$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structclz_1_1render_1_1types_1_1Syncers_a8e755af8093759476c9c44eecbe279d0}\label{structclz_1_1render_1_1types_1_1Syncers_a8e755af8093759476c9c44eecbe279d0} 
+std\+::vector$<$ Vk\+Semaphore $>$ {\bfseries image\+Available\+Semaphores}
+\begin{DoxyCompactList}\small\item\em One per frame in flight. \end{DoxyCompactList}\item 
+\Hypertarget{structclz_1_1render_1_1types_1_1Syncers_a769c5f70177af9d20ca54283a1f063de}\label{structclz_1_1render_1_1types_1_1Syncers_a769c5f70177af9d20ca54283a1f063de} 
+std\+::vector$<$ Vk\+Semaphore $>$ {\bfseries render\+Complete\+Semaphores}
+\begin{DoxyCompactList}\small\item\em One per frame in flight. \end{DoxyCompactList}\item 
+\Hypertarget{structclz_1_1render_1_1types_1_1Syncers_a8bebf040c47d4e32ada83a6b4daac083}\label{structclz_1_1render_1_1types_1_1Syncers_a8bebf040c47d4e32ada83a6b4daac083} 
+std\+::vector$<$ Vk\+Fence $>$ {\bfseries in\+Flight\+Fence}
+\begin{DoxyCompactList}\small\item\em One per frame in flight. Created pre-\/signaled. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Holds all per-\/frame synchronization primitives. 
+
+All three vectors are sized to FRAMES\+\_\+\+IN\+\_\+\+FLIGHT.
+\begin{DoxyItemize}
+\item image\+Available\+Semaphores\+: signaled when a swapchain image is ready to render into.
+\item render\+Complete\+Semaphores\+: signaled when rendering is done, waited on by present.
+\item in\+Flight\+Fence\+: CPU-\/\+GPU sync; waited on at the start of each frame to avoid overwriting resources still in use by the GPU. 
+\end{DoxyItemize}
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/renderer/\mbox{\hyperlink{render__types_8hpp}{render\+\_\+types.\+hpp}}\end{DoxyCompactItemize}

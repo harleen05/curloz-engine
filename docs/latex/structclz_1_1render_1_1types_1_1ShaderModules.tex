@@ -1,0 +1,30 @@
+\doxysection{clz\+::render\+::types\+::Shader\+Modules Struct Reference}
+\hypertarget{structclz_1_1render_1_1types_1_1ShaderModules}{}\label{structclz_1_1render_1_1types_1_1ShaderModules}\index{clz::render::types::ShaderModules@{clz::render::types::ShaderModules}}
+
+
+Holds compiled SPIR-\/V shader module handles for a vertex + fragment pair.  
+
+
+
+
+{\ttfamily \#include $<$render\+\_\+types.\+hpp$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structclz_1_1render_1_1types_1_1ShaderModules_aed8eb19cefbb34cc8820f93e4c85a46b}\label{structclz_1_1render_1_1types_1_1ShaderModules_aed8eb19cefbb34cc8820f93e4c85a46b} 
+Vk\+Shader\+Module {\bfseries vertex\+Shader\+Module}
+\begin{DoxyCompactList}\small\item\em Compiled vertex shader module. \end{DoxyCompactList}\item 
+\Hypertarget{structclz_1_1render_1_1types_1_1ShaderModules_ac260192426323f09363d08ac91591c93}\label{structclz_1_1render_1_1types_1_1ShaderModules_ac260192426323f09363d08ac91591c93} 
+Vk\+Shader\+Module {\bfseries frag\+Shader\+Module}
+\begin{DoxyCompactList}\small\item\em Compiled fragment shader module. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Holds compiled SPIR-\/V shader module handles for a vertex + fragment pair. 
+
+Modules can be destroyed after the pipeline is created — they are not needed at draw time. Destroyed in \doxylink{cleaners_8cpp_ac4f838c35bc95e7b2f44946ee681804a}{destroy\+Pipeline()}. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/renderer/\mbox{\hyperlink{render__types_8hpp}{render\+\_\+types.\+hpp}}\end{DoxyCompactItemize}

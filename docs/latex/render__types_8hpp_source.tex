@@ -1,0 +1,161 @@
+\doxysection{render\+\_\+types.\+hpp}
+\hypertarget{render__types_8hpp_source}{}\label{render__types_8hpp_source}\index{include/renderer/render\_types.hpp@{include/renderer/render\_types.hpp}}
+\mbox{\hyperlink{render__types_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <vulkan/vulkan.h>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <vulkan/vulkan\_core.h>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{namespace\ }clz}
+\DoxyCodeLine{00018\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{namespace\ }render}
+\DoxyCodeLine{00020\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{namespace\ }types}
+\DoxyCodeLine{00022\ \ \ \ \ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }Instance}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ VkInstance\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Instance_ab6aca5d3ca2af927bff4308ed699feb6}{instance}};\ }
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ Instance()}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Instance_ab6aca5d3ca2af927bff4308ed699feb6}{instance}}\ =\ VK\_NULL\_HANDLE;}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }ValidationLayers}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ VkDebugUtilsMessengerEXT\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1ValidationLayers_a4e63f6eec8174788000408772b4ecd41}{debugMessenger}};\ }
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ ValidationLayers()}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1ValidationLayers_a4e63f6eec8174788000408772b4ecd41}{debugMessenger}}\ =\ VK\_NULL\_HANDLE;}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }Surface}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ VkSurfaceKHR\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Surface_af8f518d436b254ef3b7dfd1de0dbb4be}{surface}};\ }
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ Surface()}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Surface_af8f518d436b254ef3b7dfd1de0dbb4be}{surface}}\ =\ VK\_NULL\_HANDLE;}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }PhysicalDevice}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ VkPhysicalDevice\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1PhysicalDevice_a15b1256fff017796d8dc29cd063e8188}{physicalDevice}};\ }
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ PhysicalDevice()}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1PhysicalDevice_a15b1256fff017796d8dc29cd063e8188}{physicalDevice}}\ =\ VK\_NULL\_HANDLE;}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }Device}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ VkDevice\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device_ada8cdabc7b101cb827fc8070926c3a70}{device}};\ }
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ Device()}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device_ada8cdabc7b101cb827fc8070926c3a70}{device}}\ =\ VK\_NULL\_HANDLE;}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }Queue}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ VkQueue\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue_ac4dd0374b456892c4b15cdaa1b1c2e84}{graphicsQueue}};\ \ \ \ }
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue_afc77fd4256a31c0fec8474665824ac43}{graphicsFamily}};\ \ }
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ VkQueue\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue_a8234db0d63cd9ab4c61b9ed64db757df}{presentQueue}};\ \ \ \ \ }
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue_a47d7ff84e3e805f09281bbe39a4123be}{presentFamily}};\ \ \ }
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ Queue()}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue_ac4dd0374b456892c4b15cdaa1b1c2e84}{graphicsQueue}}\ =\ VK\_NULL\_HANDLE;}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue_afc77fd4256a31c0fec8474665824ac43}{graphicsFamily}}\ =\ UINT32\_MAX;}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue_a8234db0d63cd9ab4c61b9ed64db757df}{presentQueue}}\ =\ VK\_NULL\_HANDLE;}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue_a47d7ff84e3e805f09281bbe39a4123be}{presentFamily}}\ =\ UINT32\_MAX;}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }Swapchain}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ VkSwapchainKHR\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain_a2d828a303544162fcbf1db2d8b9df482}{swapchain}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ VkSurfaceFormatKHR\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain_aa2c02408c03df5378891e2075b59060d}{format}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ VkPresentModeKHR\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain_a2335b6c49f18b5285854bd8fd8634d2d}{presentMode}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ VkExtent2D\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain_ab1e450c88e40f11d68307936a38dc64b}{extent}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<VkImage>\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain_ac97c39c11ffc62e006ebbdddb6d3121e}{swapchainImages}};\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<VkImageView>\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain_ab7faed8a22b1f3f40e02101ce2d4ed12}{swapchainImageViews}};\ \ }
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ Swapchain()}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain_a2d828a303544162fcbf1db2d8b9df482}{swapchain}}\ =\ VK\_NULL\_HANDLE;}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }ShaderModules}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \ \ \ \ VkShaderModule\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1ShaderModules_aed8eb19cefbb34cc8820f93e4c85a46b}{vertexShaderModule}};\ }
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ \ \ VkShaderModule\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1ShaderModules_ac260192426323f09363d08ac91591c93}{fragShaderModule}};\ \ \ }
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \ \ \ \ ShaderModules()}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1ShaderModules_aed8eb19cefbb34cc8820f93e4c85a46b}{vertexShaderModule}}\ =\ VK\_NULL\_HANDLE;}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1ShaderModules_ac260192426323f09363d08ac91591c93}{fragShaderModule}}\ =\ VK\_NULL\_HANDLE;}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }Pipeline}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \ \ VkPipeline\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Pipeline_aa6bbafe32507a157a56669e0ec814a10}{pipeline}};\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \ \ VkPipelineLayout\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Pipeline_aa8e9450f8c82c6c12b50b864a2471816}{pipelineLayout}};\ }
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ \ \ Pipeline()}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Pipeline_aa6bbafe32507a157a56669e0ec814a10}{pipeline}}\ =\ VK\_NULL\_HANDLE;}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Pipeline_aa8e9450f8c82c6c12b50b864a2471816}{pipelineLayout}}\ =\ VK\_NULL\_HANDLE;}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }CommandPool}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ VkCommandPool\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandPool_a8ea63e7496e28f0f152e60a4576f0440}{commandPool}};\ }
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ CommandPool()}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandPool_a8ea63e7496e28f0f152e60a4576f0440}{commandPool}}\ =\ VK\_NULL\_HANDLE;}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }CommandBuffer}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ VkCommandBuffer\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandBuffer_a8ad942348bf67e15ebceff0e7801f779}{commandBuffer}};\ }
+\DoxyCodeLine{00210\ }
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \ \ CommandBuffer()}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandBuffer_a8ad942348bf67e15ebceff0e7801f779}{commandBuffer}}\ =\ VK\_NULL\_HANDLE;}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }Syncers}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<VkSemaphore>\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Syncers_a8e755af8093759476c9c44eecbe279d0}{imageAvailableSemaphores}};\ }
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<VkSemaphore>\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Syncers_a769c5f70177af9d20ca54283a1f063de}{renderCompleteSemaphores}};\ }
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<VkFence>\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Syncers_a8bebf040c47d4e32ada83a6b4daac083}{inFlightFence}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \ \ \ \ Syncers()}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Syncers_a8e755af8093759476c9c44eecbe279d0}{imageAvailableSemaphores}}.resize(0);}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Syncers_a769c5f70177af9d20ca54283a1f063de}{renderCompleteSemaphores}}.resize(0);}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Syncers_a8bebf040c47d4e32ada83a6b4daac083}{inFlightFence}}.resize(0);}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00240\ \ \ \ \ \}}
+\DoxyCodeLine{00241\ \}}
+\DoxyCodeLine{00242\ \}}
+
+\end{DoxyCode}
