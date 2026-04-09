@@ -1,0 +1,180 @@
+\doxysection{include/renderer/initializers.hpp File Reference}
+\hypertarget{initializers_8hpp}{}\label{initializers_8hpp}\index{include/renderer/initializers.hpp@{include/renderer/initializers.hpp}}
+
+
+Vulkan resource creation functions for the renderer subsystem.  
+
+
+{\ttfamily \#include "{}render\+\_\+types.\+hpp"{}}\newline
+{\ttfamily \#include "{}clz\+\_\+types.\+hpp"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{initializers_8cpp_aac5c3559582e58f6dc313aefd37e95dd}{clz\+::render\+::init\+Vulkan}} (\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Instance}{types\+::\+Instance}} \texorpdfstring{$\ast$}{*}p\+Instance, \mbox{\hyperlink{structclz_1_1render_1_1types_1_1ValidationLayers}{types\+::\+Validation\+Layers}} \texorpdfstring{$\ast$}{*}p\+Debug\+Messenger, \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Surface}{types\+::\+Surface}} \texorpdfstring{$\ast$}{*}p\+Surface, \mbox{\hyperlink{structclz_1_1render_1_1types_1_1PhysicalDevice}{types\+::\+Physical\+Device}} \texorpdfstring{$\ast$}{*}p\+Physical\+Device, \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \texorpdfstring{$\ast$}{*}p\+Device, \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue}{types\+::\+Queue}} \texorpdfstring{$\ast$}{*}p\+Queue)
+\begin{DoxyCompactList}\small\item\em Initializes the core Vulkan objects needed before any rendering. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{initializers_8cpp_ab73b215cc1665f284df3d1068b0d62cc}{clz\+::render\+::create\+Swapchain}} (const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1PhysicalDevice}{types\+::\+Physical\+Device}} \&physical\+Device, const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \&device, const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Surface}{types\+::\+Surface}} \&surface, const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue}{types\+::\+Queue}} \&queue, \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain}{types\+::\+Swapchain}} \texorpdfstring{$\ast$}{*}p\+Swapchain)
+\begin{DoxyCompactList}\small\item\em Creates the swapchain and all associated image views. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{initializers_8cpp_a0658ea3f3eedf70160cdf9dedbbacf80}{clz\+::render\+::create\+Shader\+Modules}} (const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \&device, const std\+::array$<$ std\+::string, 2 $>$ \&shader\+Files, \mbox{\hyperlink{structclz_1_1render_1_1types_1_1ShaderModules}{types\+::\+Shader\+Modules}} \texorpdfstring{$\ast$}{*}p\+Shader\+Modules)
+\begin{DoxyCompactList}\small\item\em Loads SPIR-\/V shader files from disk and creates Vk\+Shader\+Modules. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{initializers_8cpp_a04123f74d3f738d59c87f6f1cfd13816}{clz\+::render\+::create\+Pipeline}} (const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \&device, const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain}{types\+::\+Swapchain}} \&swapchain, \mbox{\hyperlink{structclz_1_1render_1_1types_1_1ShaderModules}{types\+::\+Shader\+Modules}} shader\+Modules, \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Pipeline}{types\+::\+Pipeline}} \texorpdfstring{$\ast$}{*}p\+Pipeline)
+\begin{DoxyCompactList}\small\item\em Creates the graphics pipeline and pipeline layout. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{initializers_8cpp_ad2055349b36bd797a940b3905896bfa6}{clz\+::render\+::create\+Syncers}} (const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \&device, const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain}{types\+::\+Swapchain}} \&swapchain, const uint8\+\_\+t \mbox{\hyperlink{renderer_8cpp_a5800fc9127fd3dfe0d551e1b4a6b883a}{FRAMES\+\_\+\+IN\+\_\+\+FLIGHT}}, \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Syncers}{types\+::\+Syncers}} \texorpdfstring{$\ast$}{*}p\+Syncers)
+\begin{DoxyCompactList}\small\item\em Creates per-\/frame semaphores and fences for CPU-\/\+GPU synchronization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Vulkan resource creation functions for the renderer subsystem. 
+
+All functions follow the same convention\+: inputs are const refs, outputs are raw pointers prefixed with p. On failure, returns a Failure result with a location-\/prefixed message. On success, returns \doxylink{clz__types_8hpp_ab9f1aa62b911366b18aeedcfc204901d}{clz\+::\+Success()}. None of these functions clean up on partial failure — callers are responsible for cleanup if INVALIDATE triggers a bail-\/out. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{initializers_8cpp_a04123f74d3f738d59c87f6f1cfd13816}\index{initializers.hpp@{initializers.hpp}!createPipeline@{createPipeline}}
+\index{createPipeline@{createPipeline}!initializers.hpp@{initializers.hpp}}
+\doxysubsubsection{\texorpdfstring{createPipeline()}{createPipeline()}}
+{\footnotesize\ttfamily \label{initializers_8cpp_a04123f74d3f738d59c87f6f1cfd13816} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::render\+::create\+Pipeline (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \&}]{device}{, }\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain}{types\+::\+Swapchain}} \&}]{swapchain}{, }\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1ShaderModules}{types\+::\+Shader\+Modules}}}]{shader\+Modules}{, }\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Pipeline}{types\+::\+Pipeline}} \texorpdfstring{$\ast$}{*}}]{p\+Pipeline}{}\end{DoxyParamCaption})}
+
+
+
+Creates the graphics pipeline and pipeline layout. 
+
+Hardcoded for a no-\/vertex-\/buffer triangle pipeline\+:
+\begin{DoxyItemize}
+\item Dynamic viewport + scissor state
+\item No vertex input bindings (positions in shader)
+\item Triangle list topology
+\item Back-\/face culling, clockwise winding
+\item No depth/stencil
+\item No blending
+\item Dynamic rendering (no render pass object — uses Vk\+Pipeline\+Rendering\+Create\+Info)
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device. \\
+\hline
+{\em swapchain} & Used for format and extent in pipeline rendering info. \\
+\hline
+{\em shader\+Modules} & Vertex + fragment shader modules to bind. \\
+\hline
+{\em p\+Pipeline} & Output\+: pipeline and pipeline layout handles. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success, or Failure if layout or pipeline creation fails. 
+\end{DoxyReturn}
+\Hypertarget{initializers_8cpp_a0658ea3f3eedf70160cdf9dedbbacf80}\index{initializers.hpp@{initializers.hpp}!createShaderModules@{createShaderModules}}
+\index{createShaderModules@{createShaderModules}!initializers.hpp@{initializers.hpp}}
+\doxysubsubsection{\texorpdfstring{createShaderModules()}{createShaderModules()}}
+{\footnotesize\ttfamily \label{initializers_8cpp_a0658ea3f3eedf70160cdf9dedbbacf80} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::render\+::create\+Shader\+Modules (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \&}]{device}{, }\item[{const std\+::array$<$ std\+::string, 2 $>$ \&}]{shader\+Files}{, }\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1ShaderModules}{types\+::\+Shader\+Modules}} \texorpdfstring{$\ast$}{*}}]{p\+Shader\+Modules}{}\end{DoxyParamCaption})}
+
+
+
+Loads SPIR-\/V shader files from disk and creates Vk\+Shader\+Modules. 
+
+Reads both files in binary mode, creates a Vk\+Shader\+Module for each. The modules can be destroyed after the pipeline is built — they are not needed at draw time.
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device for shader module creation. \\
+\hline
+{\em shader\+Files} & Array of exactly 2 paths\+: \{ vertex.\+spirv, fragment.\+spirv \}. \\
+\hline
+{\em p\+Shader\+Modules} & Output\+: vertex and fragment shader module handles. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success, or Failure if a file can\textquotesingle{}t be opened or a module can\textquotesingle{}t be created. 
+\end{DoxyReturn}
+\Hypertarget{initializers_8cpp_ab73b215cc1665f284df3d1068b0d62cc}\index{initializers.hpp@{initializers.hpp}!createSwapchain@{createSwapchain}}
+\index{createSwapchain@{createSwapchain}!initializers.hpp@{initializers.hpp}}
+\doxysubsubsection{\texorpdfstring{createSwapchain()}{createSwapchain()}}
+{\footnotesize\ttfamily \label{initializers_8cpp_ab73b215cc1665f284df3d1068b0d62cc} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::render\+::create\+Swapchain (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1PhysicalDevice}{types\+::\+Physical\+Device}} \&}]{physical\+Device}{, }\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \&}]{device}{, }\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Surface}{types\+::\+Surface}} \&}]{surface}{, }\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue}{types\+::\+Queue}} \&}]{queue}{, }\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain}{types\+::\+Swapchain}} \texorpdfstring{$\ast$}{*}}]{p\+Swapchain}{}\end{DoxyParamCaption})}
+
+
+
+Creates the swapchain and all associated image views. 
+
+Queries surface capabilities, picks the best available format (prefers B8\+G8\+R8\+A8\+\_\+\+SRGB / SRGB\+\_\+\+NONLINEAR) and present mode (prefers MAILBOX, falls back to FIFO). Handles both cases where current\+Extent is defined and where it must be clamped from the framebuffer size. Creates one image view per swapchain image.
+
+
+\begin{DoxyParams}{Parameters}
+{\em physical\+Device} & Physical device for capability queries. \\
+\hline
+{\em device} & Logical device for swapchain and image view creation. \\
+\hline
+{\em surface} & Window surface to create the swapchain against. \\
+\hline
+{\em queue} & Queue info for sharing mode selection. \\
+\hline
+{\em p\+Swapchain} & Output\+: fully populated Swapchain struct. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success, or Failure with a message on any step failing. 
+\end{DoxyReturn}
+\Hypertarget{initializers_8cpp_ad2055349b36bd797a940b3905896bfa6}\index{initializers.hpp@{initializers.hpp}!createSyncers@{createSyncers}}
+\index{createSyncers@{createSyncers}!initializers.hpp@{initializers.hpp}}
+\doxysubsubsection{\texorpdfstring{createSyncers()}{createSyncers()}}
+{\footnotesize\ttfamily \label{initializers_8cpp_ad2055349b36bd797a940b3905896bfa6} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::render\+::create\+Syncers (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \&}]{device}{, }\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain}{types\+::\+Swapchain}} \&}]{swapchain}{, }\item[{const uint8\+\_\+t}]{FRAMES\+\_\+\+IN\+\_\+\+FLIGHT}{, }\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Syncers}{types\+::\+Syncers}} \texorpdfstring{$\ast$}{*}}]{p\+Syncers}{}\end{DoxyParamCaption})}
+
+
+
+Creates per-\/frame semaphores and fences for CPU-\/\+GPU synchronization. 
+
+All three sync primitive vectors are sized to FRAMES\+\_\+\+IN\+\_\+\+FLIGHT\+:
+\begin{DoxyItemize}
+\item image\+Available\+Semaphores\+: signaled by vk\+Acquire\+Next\+Image\+KHR
+\item render\+Complete\+Semaphores\+: signaled on render completion, waited by present
+\item in\+Flight\+Fence\+: created pre-\/signaled so the first frame doesn\textquotesingle{}t deadlock
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device. \\
+\hline
+{\em swapchain} & Used to size render\+Complete\+Semaphores. \\
+\hline
+{\em FRAMES\+\_\+\+IN\+\_\+\+FLIGHT} & Number of frames to pipeline. \\
+\hline
+{\em p\+Syncers} & Output\+: populated Syncers struct. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success, or Failure if any primitive creation fails. 
+\end{DoxyReturn}
+\Hypertarget{initializers_8cpp_aac5c3559582e58f6dc313aefd37e95dd}\index{initializers.hpp@{initializers.hpp}!initVulkan@{initVulkan}}
+\index{initVulkan@{initVulkan}!initializers.hpp@{initializers.hpp}}
+\doxysubsubsection{\texorpdfstring{initVulkan()}{initVulkan()}}
+{\footnotesize\ttfamily \label{initializers_8cpp_aac5c3559582e58f6dc313aefd37e95dd} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::render\+::init\+Vulkan (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Instance}{types\+::\+Instance}} \texorpdfstring{$\ast$}{*}}]{p\+Instance}{, }\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1ValidationLayers}{types\+::\+Validation\+Layers}} \texorpdfstring{$\ast$}{*}}]{p\+Debug\+Messenger}{, }\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Surface}{types\+::\+Surface}} \texorpdfstring{$\ast$}{*}}]{p\+Surface}{, }\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1PhysicalDevice}{types\+::\+Physical\+Device}} \texorpdfstring{$\ast$}{*}}]{p\+Physical\+Device}{, }\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \texorpdfstring{$\ast$}{*}}]{p\+Device}{, }\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue}{types\+::\+Queue}} \texorpdfstring{$\ast$}{*}}]{p\+Queue}{}\end{DoxyParamCaption})}
+
+
+
+Initializes the core Vulkan objects needed before any rendering. 
+
+Creates in order\+: instance (+ validation layers if debug), window surface, physical device selection (requires Vulkan 1.\+3 + sync2 + dynamic\+Rendering), logical device, and graphics/present queues.
+
+Uses vkb (Vk\+Bootstrap) internally for instance and device setup.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\+Instance} & Output\+: populated Vk\+Instance wrapper. \\
+\hline
+{\em p\+Debug\+Messenger} & Output\+: populated debug messenger (null in release). \\
+\hline
+{\em p\+Surface} & Output\+: populated Vk\+Surface\+KHR wrapper. \\
+\hline
+{\em p\+Physical\+Device} & Output\+: selected physical device wrapper. \\
+\hline
+{\em p\+Device} & Output\+: created logical device wrapper. \\
+\hline
+{\em p\+Queue} & Output\+: graphics + present queue handles and family indices. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success, or Failure with an error message on any step failing. 
+\end{DoxyReturn}

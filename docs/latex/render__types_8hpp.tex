@@ -1,0 +1,43 @@
+\doxysection{include/renderer/render\+\_\+types.hpp File Reference}
+\hypertarget{render__types_8hpp}{}\label{render__types_8hpp}\index{include/renderer/render\_types.hpp@{include/renderer/render\_types.hpp}}
+
+
+Vulkan object wrapper types for the Curloz Engine renderer.  
+
+
+{\ttfamily \#include $<$vulkan/vulkan.\+h$>$}\newline
+{\ttfamily \#include $<$vulkan/vulkan\+\_\+core.\+h$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Instance}{clz\+::render\+::types\+::\+Instance}}
+\begin{DoxyCompactList}\small\item\em Wraps the Vk\+Instance handle. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structclz_1_1render_1_1types_1_1ValidationLayers}{clz\+::render\+::types\+::\+Validation\+Layers}}
+\begin{DoxyCompactList}\small\item\em Wraps the debug utils messenger for validation layer output. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Surface}{clz\+::render\+::types\+::\+Surface}}
+\begin{DoxyCompactList}\small\item\em Wraps the Vk\+Surface\+KHR created from the GLFW window. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structclz_1_1render_1_1types_1_1PhysicalDevice}{clz\+::render\+::types\+::\+Physical\+Device}}
+\begin{DoxyCompactList}\small\item\em Wraps the selected Vk\+Physical\+Device handle. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{clz\+::render\+::types\+::\+Device}}
+\begin{DoxyCompactList}\small\item\em Wraps the Vk\+Device (logical device) handle. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue}{clz\+::render\+::types\+::\+Queue}}
+\begin{DoxyCompactList}\small\item\em Holds graphics and present queue handles and their family indices. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain}{clz\+::render\+::types\+::\+Swapchain}}
+\begin{DoxyCompactList}\small\item\em Holds the swapchain handle and all associated image/view data. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structclz_1_1render_1_1types_1_1ShaderModules}{clz\+::render\+::types\+::\+Shader\+Modules}}
+\begin{DoxyCompactList}\small\item\em Holds compiled SPIR-\/V shader module handles for a vertex + fragment pair. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Pipeline}{clz\+::render\+::types\+::\+Pipeline}}
+\begin{DoxyCompactList}\small\item\em Holds the graphics pipeline and its layout. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandPool}{clz\+::render\+::types\+::\+Command\+Pool}}
+\begin{DoxyCompactList}\small\item\em Wraps the Vk\+Command\+Pool used to allocate command buffers. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandBuffer}{clz\+::render\+::types\+::\+Command\+Buffer}}
+\begin{DoxyCompactList}\small\item\em Wraps a single Vk\+Command\+Buffer. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Syncers}{clz\+::render\+::types\+::\+Syncers}}
+\begin{DoxyCompactList}\small\item\em Holds all per-\/frame synchronization primitives. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Vulkan object wrapper types for the Curloz Engine renderer. 
+
+Each struct is a thin named wrapper around one or more raw Vulkan handles. All handles are default-\/constructed to VK\+\_\+\+NULL\+\_\+\+HANDLE so uninitialized state is detectable. Owned and populated by \doxylink{initializers_8hpp}{initializers.\+hpp}; destroyed by the matching functions in \doxylink{cleaners_8hpp}{cleaners.\+hpp}. 

@@ -1,0 +1,35 @@
+\doxysection{window.\+hpp}
+\hypertarget{window_8hpp_source}{}\label{window_8hpp_source}\index{include/window/window.hpp@{include/window/window.hpp}}
+\mbox{\hyperlink{window_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{clz__types_8hpp}{clz\_types.hpp}}"{}}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <vulkan/vulkan.h>}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{namespace\ }clz}
+\DoxyCodeLine{00024\ \{}
+\DoxyCodeLine{00025\ \textcolor{keyword}{namespace\ }window}
+\DoxyCodeLine{00026\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ clz::Result\ \mbox{\hyperlink{native_8cpp_abbf6f207edb9655041007efcdf9af27b}{init}}();}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00048\ \ \ \ \ clz::Result\ \mbox{\hyperlink{native_8cpp_ada9e0a9ef4b98f07972f9fce567d314e}{update}}(\textcolor{keywordtype}{float}\ deltaTime);}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{native_8cpp_a6a076a3fee5b712622597c69824ffc14}{windowShouldClose}}();}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00068\ \ \ \ \ clz::Result\ \mbox{\hyperlink{native_8cpp_ad9c7507dd2d88acd8887c022fb836446}{cleanup}}();}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{render_8cpp_ad42562914cdfb7f0c7a014cd7f7e73b9}{getWindowExtensions}}(std::vector<const\ char*>\ \&Extensions,\ uint32\_t\ \&extensionsCount);}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00090\ \ \ \ \ clz::Result\ \mbox{\hyperlink{render_8cpp_a9e680fce0b2ac8055ac3baa1363b63dc}{createVkSurface}}(VkSurfaceKHR\ *surface,\ \textcolor{keyword}{const}\ VkInstance\ \&instance);}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{window_8cpp_a7d86db634a49281a9037cbb394e5e1c4}{getFramebufferExtents}}(\textcolor{keywordtype}{int}\ *pWidth,\ \textcolor{keywordtype}{int}\ *pHeight);}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \}}
+\DoxyCodeLine{00105\ \}}
+
+\end{DoxyCode}

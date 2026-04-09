@@ -1,0 +1,25 @@
+\doxysection{initializers.\+hpp}
+\hypertarget{initializers_8hpp_source}{}\label{initializers_8hpp_source}\index{include/renderer/initializers.hpp@{include/renderer/initializers.hpp}}
+\mbox{\hyperlink{initializers_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{render__types_8hpp}{render\_types.hpp}}"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{clz__types_8hpp}{clz\_types.hpp}}"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{namespace\ }clz::render}
+\DoxyCodeLine{00018\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ clz::Result\ initVulkan(\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Instance}{types::Instance}}\ *pInstance,\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1ValidationLayers}{types::ValidationLayers}}\ *pDebugMessenger,\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Surface}{types::Surface}}\ *pSurface,\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1PhysicalDevice}{types::PhysicalDevice}}\ *pPhysicalDevice,\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types::Device}}\ *pDevice,\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue}{types::Queue}}\ *pQueue);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00054\ \ \ \ \ clz::Result\ createSwapchain(\textcolor{keyword}{const}\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1PhysicalDevice}{types::PhysicalDevice}}\ \&physicalDevice,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types::Device}}\ \&device,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Surface}{types::Surface}}\ \&surface,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue}{types::Queue}}\ \&queue,\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain}{types::Swapchain}}\ *pSwapchain);}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00068\ \ \ \ \ clz::Result\ createShaderModules(\textcolor{keyword}{const}\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types::Device}}\ \&device,\ \textcolor{keyword}{const}\ std::array<std::string,\ 2>\ \&shaderFiles,\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1ShaderModules}{types::ShaderModules}}\ *pShaderModules);}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00088\ \ \ \ \ clz::Result\ createPipeline(\textcolor{keyword}{const}\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types::Device}}\ \&device,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain}{types::Swapchain}}\ \&swapchain,\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1ShaderModules}{types::ShaderModules}}\ shaderModules,\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Pipeline}{types::Pipeline}}\ *pPipeline);}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00104\ \ \ \ \ clz::Result\ createSyncers(\textcolor{keyword}{const}\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types::Device}}\ \&device,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain}{types::Swapchain}}\ \&swapchain,\ \textcolor{keyword}{const}\ uint8\_t\ \mbox{\hyperlink{renderer_8cpp_a5800fc9127fd3dfe0d551e1b4a6b883a}{FRAMES\_IN\_FLIGHT}},\ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Syncers}{types::Syncers}}\ *pSyncers);}
+\DoxyCodeLine{00105\ \}}
+
+\end{DoxyCode}
