@@ -1,18 +1,8 @@
 [
 {
   "directory": "/home/curl0z/dev/git/curloz-engine",
-  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iexternal", "-DGLFW_INCLUDE_NONE", "-o", "build/.objs/curloz engine/linux/x86_64/debug/src/renderer/initializers.cpp.o", "src/renderer/initializers.cpp"],
-  "file": "src/renderer/initializers.cpp"
-},
-{
-  "directory": "/home/curl0z/dev/git/curloz-engine",
   "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iexternal", "-DGLFW_INCLUDE_NONE", "-o", "build/.objs/curloz engine/linux/x86_64/debug/src/renderer/cleaners.cpp.o", "src/renderer/cleaners.cpp"],
   "file": "src/renderer/cleaners.cpp"
-},
-{
-  "directory": "/home/curl0z/dev/git/curloz-engine",
-  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iexternal", "-DGLFW_INCLUDE_NONE", "-o", "build/.objs/curloz engine/linux/x86_64/debug/src/renderer/renderer.cpp.o", "src/renderer/renderer.cpp"],
-  "file": "src/renderer/renderer.cpp"
 },
 {
   "directory": "/home/curl0z/dev/git/curloz-engine",
@@ -26,13 +16,23 @@
 },
 {
   "directory": "/home/curl0z/dev/git/curloz-engine",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iexternal", "-DGLFW_INCLUDE_NONE", "-o", "build/.objs/curloz engine/linux/x86_64/debug/src/renderer/initializers.cpp.o", "src/renderer/initializers.cpp"],
+  "file": "src/renderer/initializers.cpp"
+},
+{
+  "directory": "/home/curl0z/dev/git/curloz-engine",
   "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iexternal", "-DGLFW_INCLUDE_NONE", "-o", "build/.objs/curloz engine/linux/x86_64/debug/src/renderer/mainloop.cpp.o", "src/renderer/mainloop.cpp"],
   "file": "src/renderer/mainloop.cpp"
 },
 {
   "directory": "/home/curl0z/dev/git/curloz-engine",
-  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iexternal", "-DGLFW_INCLUDE_NONE", "-o", "build/.objs/curloz engine/linux/x86_64/debug/src/window/window.cpp.o", "src/window/window.cpp"],
-  "file": "src/window/window.cpp"
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iexternal", "-DGLFW_INCLUDE_NONE", "-o", "build/.objs/curloz engine/linux/x86_64/debug/src/renderer/renderer.cpp.o", "src/renderer/renderer.cpp"],
+  "file": "src/renderer/renderer.cpp"
+},
+{
+  "directory": "/home/curl0z/dev/git/curloz-engine",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iexternal", "-DGLFW_INCLUDE_NONE", "-o", "build/.objs/curloz engine/linux/x86_64/debug/src/window/native.cpp.o", "src/window/native.cpp"],
+  "file": "src/window/native.cpp"
 },
 {
   "directory": "/home/curl0z/dev/git/curloz-engine",
@@ -41,8 +41,8 @@
 },
 {
   "directory": "/home/curl0z/dev/git/curloz-engine",
-  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iexternal", "-DGLFW_INCLUDE_NONE", "-o", "build/.objs/curloz engine/linux/x86_64/debug/src/window/native.cpp.o", "src/window/native.cpp"],
-  "file": "src/window/native.cpp"
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iexternal", "-DGLFW_INCLUDE_NONE", "-o", "build/.objs/curloz engine/linux/x86_64/debug/src/window/window.cpp.o", "src/window/window.cpp"],
+  "file": "src/window/window.cpp"
 },
 {
   "directory": "/home/curl0z/dev/git/curloz-engine",
