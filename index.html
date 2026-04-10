@@ -7,553 +7,1140 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root {
+:root{
   --bg:#07090d;--bg2:#0c1018;--bg3:#111820;--surface:#141d28;
-  --border:#1c2a3a;--border2:#243040;--accent:#00d4ff;--accent2:#0099cc;
-  --accent3:#ff6b35;--green:#3ddc84;--yellow:#f5c842;--red:#ff5757;
-  --purple:#a78bfa;--text:#dce8f5;--text2:#8097ae;--text3:#3d5568;
-  --mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;--sw:255px;
+  --border:#1c2a3a;--border2:#243040;
+  --accent:#00d4ff;--accent2:#0099cc;--accent3:#ff6b35;
+  --green:#3ddc84;--yellow:#f5c842;--red:#ff5757;--purple:#a78bfa;
+  --text:#dce8f5;--text2:#8097ae;--text3:#3d5568;
+  --mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;
+  --sw:258px;
 }
-*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:13.5px;line-height:1.7;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,212,255,.012) 2px,rgba(0,212,255,.012) 4px);pointer-events:none;z-index:9999}
-.sidebar{position:fixed;top:0;left:0;width:var(--sw);height:100vh;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;z-index:100}
-.logo-wrap{padding:22px 18px 18px;border-bottom:1px solid var(--border)}
-.logo-tag{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);opacity:.7;margin-bottom:5px;font-weight:700}
-.logo-name{font-family:var(--sans);font-size:19px;font-weight:800;letter-spacing:-.02em}
+
+/* ── HAMBURGER ── */
+.ham{display:none;position:fixed;top:10px;left:10px;z-index:300;background:var(--bg2);border:1px solid var(--border2);border-radius:5px;padding:8px 10px;cursor:pointer;flex-direction:column;gap:4px}
+.ham span{display:block;width:20px;height:2px;background:var(--text2);border-radius:2px;transition:all .2s}
+.ham.open span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+.ham.open span:nth-child(2){opacity:0}
+.ham.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+
+/* ── OVERLAY ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:149}
+.overlay.show{display:block}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  position:fixed;top:0;left:0;width:var(--sw);height:100vh;
+  background:var(--bg2);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;overflow-y:auto;z-index:150;
+  transition:transform .25s ease;
+}
+.logo-wrap{padding:20px 16px 16px;border-bottom:1px solid var(--border)}
+.logo-tag{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);opacity:.7;margin-bottom:4px;font-weight:700}
+.logo-name{font-family:var(--sans);font-size:18px;font-weight:800;letter-spacing:-.02em}
 .logo-name span{color:var(--accent)}
-.logo-badges{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.lbadge{font-size:10px;padding:2px 8px;border-radius:3px;font-weight:600;letter-spacing:.03em}
+.logo-badges{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
+.lbadge{font-size:9.5px;padding:2px 7px;border-radius:3px;font-weight:600;letter-spacing:.03em}
 .lbadge-v{background:rgba(0,212,255,.1);color:var(--accent);border:1px solid rgba(0,212,255,.25)}
 .lbadge-c{background:rgba(255,107,53,.1);color:var(--accent3);border:1px solid rgba(255,107,53,.25)}
-nav{padding:12px 0;flex:1}
-.nav-group{margin-top:4px}
-.nav-group-label{padding:8px 18px 3px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);font-weight:700}
-.nav-link{display:flex;align-items:center;gap:9px;padding:6px 18px;color:var(--text2);text-decoration:none;font-size:12.5px;border-left:2px solid transparent;transition:all .13s}
-.nav-link .ni{font-size:10px;opacity:.45;width:14px}
+
+/* ── TAB SWITCHER ── */
+.tab-switcher{display:flex;border-bottom:1px solid var(--border);background:var(--bg2)}
+.tab-btn{flex:1;padding:10px 4px;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.04em;color:var(--text3);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;text-transform:uppercase}
+.tab-btn:hover{color:var(--text2)}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* ── NAV ── */
+nav{padding:10px 0;flex:1;overflow-y:auto}
+.nav-pane{display:none}.nav-pane.active{display:block}
+.nav-group{margin-top:2px}
+.nav-group-label{padding:7px 16px 3px;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);font-weight:700}
+.nav-link{display:flex;align-items:center;gap:8px;padding:5px 16px;color:var(--text2);text-decoration:none;font-size:12px;border-left:2px solid transparent;transition:all .13s}
+.nav-link .ni{font-size:9px;opacity:.4;width:13px;flex-shrink:0}
 .nav-link:hover{color:var(--text);background:rgba(0,212,255,.04);border-left-color:var(--accent)}
 .nav-link.active{color:var(--accent);background:rgba(0,212,255,.07);border-left-color:var(--accent)}
-.nav-link .ns{color:var(--text3);font-size:11px;margin-left:auto}
-.sidebar-footer{padding:14px 18px;border-top:1px solid var(--border);font-size:11px;color:var(--text3)}
+.sidebar-footer{padding:12px 16px;border-top:1px solid var(--border);font-size:10.5px;color:var(--text3)}
 .sidebar-footer a{color:var(--accent2);text-decoration:none}
+
+/* ── MAIN ── */
 .main{margin-left:var(--sw);min-height:100vh}
-.topbar{position:sticky;top:0;background:rgba(7,9,13,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);height:50px;padding:0 44px;display:flex;align-items:center;justify-content:space-between;z-index:50}
-.breadcrumb{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text3)}
+.topbar{position:sticky;top:0;background:rgba(7,9,13,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);height:48px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;z-index:50}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--text3)}
 .breadcrumb span{color:var(--text2)}
-.tbadge{font-size:10px;padding:2px 9px;border-radius:3px;background:rgba(0,212,255,.08);color:var(--accent);border:1px solid rgba(0,212,255,.2);font-weight:600}
-.hero{padding:56px 52px 0;max-width:900px;position:relative;overflow:hidden}
-.hero::after{content:'';position:absolute;top:-60px;right:-80px;width:500px;height:500px;background:radial-gradient(circle,rgba(0,212,255,.045) 0%,transparent 65%);pointer-events:none}
-.hero-tag{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:14px;opacity:.8}
-.hero h1{font-family:var(--sans);font-size:50px;font-weight:800;letter-spacing:-.03em;line-height:1.04;margin-bottom:18px}
+.tbadge{font-size:9.5px;padding:2px 8px;border-radius:3px;background:rgba(0,212,255,.08);color:var(--accent);border:1px solid rgba(0,212,255,.2);font-weight:600}
+
+/* ── TAB CONTENT PANES ── */
+.tab-content{display:none}.tab-content.active{display:block}
+
+/* ── HERO ── */
+.hero{padding:52px 48px 0;max-width:880px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-60px;right:-80px;width:480px;height:480px;background:radial-gradient(circle,rgba(0,212,255,.045) 0%,transparent 65%);pointer-events:none}
+.hero-tag{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:12px;opacity:.8}
+.hero h1{font-family:var(--sans);font-size:46px;font-weight:800;letter-spacing:-.03em;line-height:1.04;margin-bottom:16px}
 .hero h1 .dim{color:var(--text3)}.hero h1 .hi{color:var(--accent)}
-.hero-sub{font-size:14.5px;color:var(--text2);max-width:580px;line-height:1.75;margin-bottom:30px}
-.hero-btns{display:flex;gap:10px;margin-bottom:44px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:4px;font-family:var(--mono);font-size:12.5px;font-weight:500;cursor:pointer;text-decoration:none;transition:all .14s;border:none}
+.hero-sub{font-size:14px;color:var(--text2);max-width:560px;line-height:1.75;margin-bottom:28px}
+.hero-btns{display:flex;gap:9px;margin-bottom:40px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:4px;font-family:var(--mono);font-size:12px;font-weight:500;cursor:pointer;text-decoration:none;transition:all .14s;border:none}
 .btn-p{background:var(--accent);color:#000}.btn-p:hover{background:#2adbff;transform:translateY(-1px)}
 .btn-g{background:transparent;color:var(--text2);border:1px solid var(--border2)}.btn-g:hover{border-color:var(--accent);color:var(--accent)}
-.content{padding:44px 52px 80px;max-width:900px}
-section{padding-top:60px}
-.sec-tag{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:10px;opacity:.75}
-h2{font-family:var(--sans);font-size:28px;font-weight:700;letter-spacing:-.02em;margin-bottom:14px}
-h3{font-family:var(--sans);font-size:17px;font-weight:600;margin:32px 0 12px}
-p{color:var(--text2);line-height:1.8;margin-bottom:14px;font-size:13.5px}
-.divider{height:1px;background:linear-gradient(90deg,var(--border),transparent 70%);margin:52px 0}
-.loop-flow{display:flex;align-items:center;flex-wrap:wrap;gap:0;margin:24px 0;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:22px 24px;overflow-x:auto}
-.ls-box{background:var(--surface);border:1px solid var(--border2);border-radius:4px;padding:7px 13px;font-size:11.5px;font-weight:500;color:var(--accent);white-space:nowrap;cursor:default;transition:all .15s}
+
+/* ── CONTENT ── */
+.content{padding:40px 48px 80px;max-width:880px}
+section{padding-top:56px}
+.sec-tag{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:9px;opacity:.75}
+h2{font-family:var(--sans);font-size:26px;font-weight:700;letter-spacing:-.02em;margin-bottom:12px}
+h3{font-family:var(--sans);font-size:16px;font-weight:600;margin:28px 0 10px}
+p{color:var(--text2);line-height:1.8;margin-bottom:12px;font-size:13.5px}
+.divider{height:1px;background:linear-gradient(90deg,var(--border),transparent 70%);margin:48px 0}
+
+/* ── LIFECYCLE DIAGRAM ── */
+.lifecycle{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:20px 0}
+.lc-phase{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.lc-head{padding:10px 14px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border-bottom:1px solid var(--border)}
+.lc-head.init{color:var(--green);background:rgba(61,220,132,.06)}
+.lc-head.loop{color:var(--accent);background:rgba(0,212,255,.06)}
+.lc-head.cleanup{color:var(--red);background:rgba(255,87,87,.06)}
+.lc-steps{padding:10px 14px}
+.lc-step{display:flex;align-items:flex-start;gap:8px;padding:4px 0;font-size:11.5px;color:var(--text2);border-bottom:1px solid rgba(255,255,255,.04)}
+.lc-step:last-child{border:none}
+.lc-n{width:16px;height:16px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;margin-top:2px}
+.lc-n.i{background:rgba(61,220,132,.15);color:var(--green);border:1px solid rgba(61,220,132,.3)}
+.lc-n.l{background:rgba(0,212,255,.12);color:var(--accent);border:1px solid rgba(0,212,255,.25)}
+.lc-n.c{background:rgba(255,87,87,.12);color:var(--red);border:1px solid rgba(255,87,87,.25)}
+
+/* ── LOOP FLOW ── */
+.loop-flow{display:flex;align-items:center;flex-wrap:wrap;gap:0;margin:20px 0;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:18px 20px;overflow-x:auto}
+.ls-box{background:var(--surface);border:1px solid var(--border2);border-radius:4px;padding:6px 11px;font-size:11px;font-weight:500;color:var(--accent);white-space:nowrap;cursor:default;transition:all .15s}
 .ls-box:hover{border-color:var(--accent);background:rgba(0,212,255,.08)}
-.ls-arrow{font-size:11px;color:var(--text3);padding:0 6px}
-.fn-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;margin-bottom:14px;overflow:hidden;transition:border-color .15s}
+.ls-arrow{font-size:11px;color:var(--text3);padding:0 5px}
+
+/* ── FN CARD ── */
+.fn-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;margin-bottom:12px;overflow:hidden;transition:border-color .15s}
 .fn-card:hover{border-color:var(--border2)}
-.fn-header{padding:14px 18px 12px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.fn-header{padding:13px 16px 11px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .fn-header:hover{background:rgba(0,212,255,.025)}
-.fn-sig{flex:1;font-size:12.5px;line-height:1.65}
+.fn-sig{flex:1;font-size:12px;line-height:1.65}
 .fn-ret{color:var(--purple)}.fn-ns{color:var(--text3)}.fn-name{color:var(--accent);font-weight:700}
 .fn-params{color:var(--text2)}.fn-type{color:var(--green)}.fn-ptr{color:var(--text3)}
-.fn-toggle{width:22px;height:22px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--text3);background:var(--surface);border-radius:3px;border:1px solid var(--border);cursor:pointer;transition:all .13s;user-select:none;margin-top:2px}
+.fn-toggle{width:20px;height:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--text3);background:var(--surface);border-radius:3px;border:1px solid var(--border);cursor:pointer;transition:all .13s;user-select:none;margin-top:1px}
 .fn-toggle:hover{color:var(--accent);border-color:var(--accent)}
-.fn-body{display:none;padding:18px 20px}.fn-body.open{display:block}
-.fn-brief{font-size:13px;color:var(--text2);line-height:1.75;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)}
-.fn-detail{margin-bottom:14px}
-.fn-detail-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);font-weight:700;margin-bottom:8px}
-.fn-note{background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--accent2);border-radius:0 4px 4px 0;padding:12px 14px;font-size:12.5px;color:var(--text2);line-height:1.7;margin-bottom:10px}
-.param-table{width:100%;border-collapse:collapse;font-size:12px}
-.param-table th{text-align:left;padding:7px 12px;background:var(--surface);color:var(--text3);font-size:9px;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--border)}
-.param-table td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top}
+.fn-body{display:none;padding:16px 18px}.fn-body.open{display:block}
+.fn-brief{font-size:13px;color:var(--text2);line-height:1.75;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.fn-detail{margin-bottom:12px}
+.fn-detail-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);font-weight:700;margin-bottom:7px}
+.fn-note{background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--accent2);border-radius:0 4px 4px 0;padding:10px 12px;font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:8px}
+
+/* ── PARAM TABLE ── */
+.param-table{width:100%;border-collapse:collapse;font-size:11.5px}
+.param-table th{text-align:left;padding:6px 10px;background:var(--surface);color:var(--text3);font-size:9px;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--border)}
+.param-table td{padding:7px 10px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top}
 .param-table tr:last-child td{border-bottom:none}
-.param-table td:first-child{color:var(--accent);font-weight:600;white-space:nowrap;font-size:11.5px}
-.param-table td:nth-child(2){color:var(--green);white-space:nowrap;font-size:11px}
-.fn-returns{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:8px 14px;font-size:12.5px;color:var(--text2);margin-top:4px}
+.param-table td:first-child{color:var(--accent);font-weight:600;white-space:nowrap;font-size:11px}
+.param-table td:nth-child(2){color:var(--green);white-space:nowrap;font-size:10.5px}
+.fn-returns{display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:7px 12px;font-size:12px;color:var(--text2);margin-top:3px}
 .ret-ok{color:var(--green)}.ret-fail{color:var(--red)}
-.seq-list{list-style:none;margin:8px 0}
-.seq-list li{display:flex;align-items:flex-start;gap:10px;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px;color:var(--text2);line-height:1.6}
+
+/* ── SEQ LIST ── */
+.seq-list{list-style:none;margin:6px 0}
+.seq-list li{display:flex;align-items:flex-start;gap:9px;padding:4px 0;border-bottom:1px solid var(--border);font-size:11.5px;color:var(--text2);line-height:1.6}
 .seq-list li:last-child{border:none}
-.seq-num{width:20px;height:20px;flex-shrink:0;background:var(--surface);border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--accent)}
-.seq-list code{color:var(--accent);background:var(--surface);padding:1px 5px;border-radius:2px;font-size:11px}
-.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}
-.type-card{background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:16px 18px;transition:all .15s;position:relative;overflow:hidden}
+.seq-num{width:18px;height:18px;flex-shrink:0;background:var(--surface);border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--accent)}
+.seq-list code{color:var(--accent);background:var(--surface);padding:1px 5px;border-radius:2px;font-size:11px;border:1px solid var(--border)}
+
+/* ── TYPE GRID ── */
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:16px 0}
+.type-card{background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:14px 16px;transition:all .15s;position:relative;overflow:hidden}
 .type-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:opacity .2s}
 .type-card:hover{border-color:var(--border2)}.type-card:hover::before{opacity:1}
-.type-name{font-size:13px;font-weight:600;color:var(--accent);margin-bottom:5px;font-family:var(--mono)}
-.type-ns{color:var(--text3);font-size:11px}.type-def{font-size:11px;color:var(--text2);margin-top:6px;line-height:1.6}.type-loc{font-size:10px;color:var(--text3);margin-top:6px}
-.callout{display:flex;gap:12px;padding:14px 18px;border-radius:5px;margin:18px 0;font-size:12.5px}
+.type-name{font-size:12.5px;font-weight:600;color:var(--accent);margin-bottom:4px}
+.type-ns{color:var(--text3);font-size:10.5px}.type-def{font-size:11px;color:var(--text2);margin-top:5px;line-height:1.6}.type-loc{font-size:9.5px;color:var(--text3);margin-top:5px}
+
+/* ── CALLOUT ── */
+.callout{display:flex;gap:10px;padding:12px 16px;border-radius:5px;margin:16px 0;font-size:12.5px}
 .callout-i{background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.18);border-left:3px solid var(--accent)}
 .callout-w{background:rgba(245,200,66,.05);border:1px solid rgba(245,200,66,.18);border-left:3px solid var(--yellow)}
-.callout-icon{font-size:15px;flex-shrink:0;margin-top:1px}.callout-body{color:var(--text2);line-height:1.65}
+.callout-icon{font-size:14px;flex-shrink:0;margin-top:1px}.callout-body{color:var(--text2);line-height:1.65}
 .callout-body strong{color:var(--text)}
-.conv-box{background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:18px 20px;margin:16px 0}
-.conv-box h4{font-family:var(--sans);font-size:13px;font-weight:600;margin-bottom:10px;color:var(--text)}
-.conv-row{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px}
-.conv-row:last-child{border:none}.conv-key{color:var(--accent);font-weight:600;min-width:140px;flex-shrink:0}.conv-val{color:var(--text2);line-height:1.6}
-::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
-code{font-family:var(--mono);font-size:11.5px;background:var(--surface);border:1px solid var(--border);padding:1px 6px;border-radius:3px;color:var(--accent)}
-.page-footer{margin-top:60px;padding:28px 52px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-size:11.5px;color:var(--text3)}
+
+/* ── CONV BOX ── */
+.conv-box{background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:16px 18px;margin:14px 0}
+.conv-box h4{font-family:var(--sans);font-size:13px;font-weight:600;margin-bottom:9px;color:var(--text)}
+.conv-row{display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--border);font-size:11.5px}
+.conv-row:last-child{border:none}
+.conv-key{color:var(--accent);font-weight:600;min-width:130px;flex-shrink:0}.conv-val{color:var(--text2);line-height:1.6}
+
+/* ── FOOTER ── */
+.page-footer{margin-top:56px;padding:24px 48px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text3)}
 .page-footer a{color:var(--accent2);text-decoration:none}
+
+/* ── INLINE CODE ── */
+code{font-family:var(--mono);font-size:11px;background:var(--surface);border:1px solid var(--border);padding:1px 6px;border-radius:3px;color:var(--accent)}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* ════════════════════════════════
+   RESPONSIVE — mobile / portrait
+   ════════════════════════════════ */
+@media (max-width: 768px){
+  .ham{display:flex}
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .topbar{padding:0 16px;height:46px}
+  .topbar .breadcrumb .sep,.topbar .breadcrumb span:first-child{display:none}
+  .hero{padding:52px 18px 0}
+  .hero h1{font-size:28px}
+  .hero-sub{font-size:13px}
+  .content{padding:28px 18px 60px}
+  .lifecycle{grid-template-columns:1fr}
+  .type-grid{grid-template-columns:1fr}
+  .loop-flow{gap:4px;padding:14px}
+  .ls-box{font-size:10px;padding:5px 8px}
+  .fn-sig{font-size:11px}
+  .page-footer{flex-direction:column;gap:6px;padding:18px;text-align:center}
+  h2{font-size:21px}
+  .param-table td:nth-child(2){display:none}
+  .hero-btns .btn{font-size:11px;padding:7px 12px}
+}
 </style>
 </head>
 <body>
-<aside class="sidebar">
+
+<!-- HAMBURGER -->
+<button class="ham" id="ham" onclick="toggleSidebar()" aria-label="Menu">
+  <span></span><span></span><span></span>
+</button>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
   <div class="logo-wrap">
     <div class="logo-tag">// api reference</div>
     <div class="logo-name">curloz<span>-engine</span></div>
     <div class="logo-badges"><span class="lbadge lbadge-v">Vulkan 1.3</span><span class="lbadge lbadge-c">C++17/20</span></div>
   </div>
+
+  <!-- TAB SWITCHER -->
+  <div class="tab-switcher">
+    <button class="tab-btn active" onclick="switchTab('overview',this)">Overview</button>
+    <button class="tab-btn" onclick="switchTab('renderer',this)">Renderer</button>
+    <button class="tab-btn" onclick="switchTab('window',this)">Window</button>
+  </div>
+
   <nav>
-    <div class="nav-group">
-      <div class="nav-group-label">Overview</div>
-      <a href="#overview" class="nav-link active"><span class="ni">◆</span>Introduction</a>
-      <a href="#conventions" class="nav-link"><span class="ni">≡</span>Conventions</a>
-      <a href="#render-loop" class="nav-link"><span class="ni">↺</span>Render Loop</a>
+    <!-- OVERVIEW NAV -->
+    <div class="nav-pane active" id="nav-overview">
+      <div class="nav-group">
+        <div class="nav-group-label">Engine</div>
+        <a href="#overview" class="nav-link" data-tab="overview"><span class="ni">◆</span>Introduction</a>
+        <a href="#conventions" class="nav-link" data-tab="overview"><span class="ni">≡</span>Conventions</a>
+        <a href="#lifecycle" class="nav-link" data-tab="overview"><span class="ni">↺</span>Lifecycle</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">clz — base.hpp</div>
+        <a href="#clz-init" class="nav-link" data-tab="overview"><span class="ni">fn</span>init</a>
+        <a href="#clz-update" class="nav-link" data-tab="overview"><span class="ni">fn</span>update</a>
+        <a href="#clz-cleanup" class="nav-link" data-tab="overview"><span class="ni">fn</span>cleanup</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">clz — clz_types.hpp</div>
+        <a href="#result-type" class="nav-link" data-tab="overview"><span class="ni">⊞</span>Result</a>
+        <a href="#macros" class="nav-link" data-tab="overview"><span class="ni">#</span>CHECK / INVALIDATE</a>
+      </div>
     </div>
-    <div class="nav-group">
-      <div class="nav-group-label">clz::render — Initializers</div>
-      <a href="#initVulkan" class="nav-link"><span class="ni">fn</span>initVulkan</a>
-      <a href="#createSwapchain" class="nav-link"><span class="ni">fn</span>createSwapchain</a>
-      <a href="#createShaderModules" class="nav-link"><span class="ni">fn</span>createShaderModules</a>
-      <a href="#createPipeline" class="nav-link"><span class="ni">fn</span>createPipeline</a>
-      <a href="#createSyncers" class="nav-link"><span class="ni">fn</span>createSyncers</a>
+
+    <!-- RENDERER NAV -->
+    <div class="nav-pane" id="nav-renderer">
+      <div class="nav-group">
+        <div class="nav-group-label">clz::render — renderer.hpp</div>
+        <a href="#r-init" class="nav-link" data-tab="renderer"><span class="ni">fn</span>init</a>
+        <a href="#r-update" class="nav-link" data-tab="renderer"><span class="ni">fn</span>update</a>
+        <a href="#r-cleanup" class="nav-link" data-tab="renderer"><span class="ni">fn</span>cleanup</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Initializers</div>
+        <a href="#initVulkan" class="nav-link" data-tab="renderer"><span class="ni">fn</span>initVulkan</a>
+        <a href="#createSwapchain" class="nav-link" data-tab="renderer"><span class="ni">fn</span>createSwapchain</a>
+        <a href="#createShaderModules" class="nav-link" data-tab="renderer"><span class="ni">fn</span>createShaderModules</a>
+        <a href="#createPipeline" class="nav-link" data-tab="renderer"><span class="ni">fn</span>createPipeline</a>
+        <a href="#createSyncers" class="nav-link" data-tab="renderer"><span class="ni">fn</span>createSyncers</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Command Buffers</div>
+        <a href="#createCommandPool" class="nav-link" data-tab="renderer"><span class="ni">fn</span>createCommandPool</a>
+        <a href="#createCommandBuffers" class="nav-link" data-tab="renderer"><span class="ni">fn</span>createCommandBuffers</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Mainloop</div>
+        <a href="#waitForGPU" class="nav-link" data-tab="renderer"><span class="ni">fn</span>waitForGPU</a>
+        <a href="#acquireNextImage" class="nav-link" data-tab="renderer"><span class="ni">fn</span>acquireNextImage</a>
+        <a href="#startCommandBuffer" class="nav-link" data-tab="renderer"><span class="ni">fn</span>startCommandBuffer</a>
+        <a href="#recordCommandBuffer" class="nav-link" data-tab="renderer"><span class="ni">fn</span>recordCommandBuffer</a>
+        <a href="#submitCommandBuffer" class="nav-link" data-tab="renderer"><span class="ni">fn</span>submitCommandBuffer</a>
+        <a href="#present" class="nav-link" data-tab="renderer"><span class="ni">fn</span>present</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Cleaners</div>
+        <a href="#cleaners" class="nav-link" data-tab="renderer"><span class="ni">⊞</span>Destruction Order</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Types</div>
+        <a href="#render-types" class="nav-link" data-tab="renderer"><span class="ni">⊞</span>render_types.hpp</a>
+      </div>
     </div>
-    <div class="nav-group">
-      <div class="nav-group-label">clz::render — Mainloop</div>
-      <a href="#waitForGPU" class="nav-link"><span class="ni">fn</span>waitForGPU</a>
-      <a href="#acquireNextImage" class="nav-link"><span class="ni">fn</span>acquireNextImage</a>
-      <a href="#startCommandBuffer" class="nav-link"><span class="ni">fn</span>startCommandBuffer</a>
-      <a href="#recordCommandBuffer" class="nav-link"><span class="ni">fn</span>recordCommandBuffer</a>
-      <a href="#submitCommandBuffer" class="nav-link"><span class="ni">fn</span>submitCommandBuffer</a>
-      <a href="#present" class="nav-link"><span class="ni">fn</span>present</a>
-    </div>
-    <div class="nav-group">
-      <div class="nav-group-label">clz::window — Native</div>
-      <a href="#w-init" class="nav-link"><span class="ni">fn</span>init</a>
-      <a href="#w-update" class="nav-link"><span class="ni">fn</span>update</a>
-      <a href="#w-windowShouldClose" class="nav-link"><span class="ni">fn</span>windowShouldClose</a>
-      <a href="#w-cleanup" class="nav-link"><span class="ni">fn</span>cleanup</a>
-    </div>
-    <div class="nav-group">
-      <div class="nav-group-label">Types</div>
-      <a href="#types" class="nav-link"><span class="ni">⊞</span>render_types.hpp</a>
-      <a href="#window-types" class="nav-link"><span class="ni">⊞</span>window_types.hpp</a>
+
+    <!-- WINDOW NAV -->
+    <div class="nav-pane" id="nav-window">
+      <div class="nav-group">
+        <div class="nav-group-label">clz::window — window.hpp</div>
+        <a href="#w-init" class="nav-link" data-tab="window"><span class="ni">fn</span>init</a>
+        <a href="#w-update" class="nav-link" data-tab="window"><span class="ni">fn</span>update</a>
+        <a href="#w-shouldclose" class="nav-link" data-tab="window"><span class="ni">fn</span>windowShouldClose</a>
+        <a href="#w-cleanup" class="nav-link" data-tab="window"><span class="ni">fn</span>cleanup</a>
+        <a href="#w-extensions" class="nav-link" data-tab="window"><span class="ni">fn</span>getWindowExtensions</a>
+        <a href="#w-surface" class="nav-link" data-tab="window"><span class="ni">fn</span>createVkSurface</a>
+        <a href="#w-framebuffer" class="nav-link" data-tab="window"><span class="ni">fn</span>getFramebufferExtents</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Native (GLFW)</div>
+        <a href="#n-init" class="nav-link" data-tab="window"><span class="ni">fn</span>native::init</a>
+        <a href="#n-update" class="nav-link" data-tab="window"><span class="ni">fn</span>native::update</a>
+        <a href="#n-shouldclose" class="nav-link" data-tab="window"><span class="ni">fn</span>native::windowShouldClose</a>
+        <a href="#n-cleanup" class="nav-link" data-tab="window"><span class="ni">fn</span>native::cleanup</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Types</div>
+        <a href="#window-types" class="nav-link" data-tab="window"><span class="ni">⊞</span>window_types.hpp</a>
+      </div>
     </div>
   </nav>
-  <div class="sidebar-footer">Generated · Doxygen 1.13.2<br><a href="mailto:curloz@tutamail.com">curloz@tutamail.com</a></div>
+
+  <div class="sidebar-footer">Doxygen 1.13.2 · GPLv3<br><a href="mailto:curloz@tutamail.com">curloz@tutamail.com</a></div>
 </aside>
 
+<!-- MAIN -->
 <div class="main">
   <div class="topbar">
-    <div class="breadcrumb"><span>curloz-engine</span><span style="color:var(--border2)">/</span><span>API Reference</span></div>
+    <div class="breadcrumb">
+      <span>curloz-engine</span>
+      <span class="sep" style="color:var(--border2)">/</span>
+      <span id="bc-text">API Reference</span>
+    </div>
+    <span class="tbadge">Doxygen · Generated</span>
   </div>
 
-  <div class="hero" id="overview">
-    <h1><span class="dim">curloz</span><span class="hi">-engine</span><br><span class="dim" style="font-size:26px;font-weight:600;letter-spacing:-.01em">Vulkan API Reference</span></h1>
-    <p class="hero-sub">Covers the renderer initialisation pipeline, per-frame mainloop operations, and the GLFW window subsystem.</p>
-    <div class="hero-btns">
-      <a href="#render-loop" class="btn btn-p">↺ Render Loop</a>
-      <a href="#initVulkan" class="btn btn-g">⬇ Initializers</a>
-      <a href="#waitForGPU" class="btn btn-g">▶ Mainloop</a>
-      <a href="#w-init" class="btn btn-g">⬡ Window</a>
-    </div>
-  </div>
-
-  <div class="content">
-
-    <section id="conventions">
-      <div class="sec-tag">// conventions</div>
-      <h2>Coding Conventions</h2>
-      <p>All functions follow a consistent interface pattern. Understanding it once makes the whole API predictable.</p>
-      <div class="conv-box">
-        <h4>Function Interface Rules</h4>
-        <div class="conv-row"><span class="conv-key">Return type</span><span class="conv-val"><code>clz::Result</code> — either <code>clz::Success()</code> or <code>Failure("location: message")</code></span></div>
-        <div class="conv-row"><span class="conv-key">Input arguments</span><span class="conv-val">Passed as <code>const</code> references — read-only</span></div>
-        <div class="conv-row"><span class="conv-key">Output arguments</span><span class="conv-val">Raw pointers prefixed with <code>p</code> — e.g. <code>pInstance</code>, <code>pSwapchain</code></span></div>
-        <div class="conv-row"><span class="conv-key">Partial failure</span><span class="conv-val">Functions do <em>not</em> clean up on partial failure — callers handle cleanup on bail-out</span></div>
-        <div class="conv-row"><span class="conv-key">Namespaces</span><span class="conv-val"><code>clz::render</code> for renderer · <code>clz::window</code> for windowing</span></div>
-        <div class="conv-row"><span class="conv-key">Global state</span><span class="conv-val">None — all functions operate on explicitly passed handles</span></div>
-      </div>
-    </section>
-
-    <section id="render-loop">
-      <div class="sec-tag">// architecture</div>
-      <h2>The Render Loop</h2>
-      <p>Each frame executes six steps in strict order, called by <code>render::update()</code> in <code>renderer.cpp</code>. These functions are not meant to be called directly by external code.</p>
-      <div class="loop-flow">
-        <div class="ls-box">waitForGPU</div><div class="ls-arrow">→ </div>
-        <div class="ls-box">acquireNextImage</div><div class="ls-arrow">→ </div>
-        <div class="ls-box">startCommandBuffer</div><div class="ls-arrow">→ </div><br>
-        <div class="ls-box">recordCommandBuffer</div><div class="ls-arrow">→ </div>
-        <div class="ls-box">submitCommandBuffer</div><div class="ls-arrow">→ </div>
-        <div class="ls-box">present</div>
-      </div>
-      <div class="callout callout-i">
-        <div class="callout-icon">ℹ</div>
-        <div class="callout-body"><strong>Double-buffered:</strong> Frame-in-flight state lives in <code>renderer.cpp</code> module-level variables. The mainloop functions are stateless — all state is injected via parameters.</div>
-      </div>
-    </section>
-
-    <div class="divider"></div>
-
-    <section id="initializers-section">
-      <div class="sec-tag">// clz::render — include/renderer/initializers.hpp</div>
-      <h2>Renderer Initializers</h2>
-      <p>Vulkan resource creation functions called once during engine startup in dependency order. All inputs are <code>const</code> refs; all outputs are pointer parameters prefixed with <code>p</code>.</p>
-    </section>
-
-    <div class="fn-card" id="initVulkan">
-      <div class="fn-header" onclick="toggle(this)">
-        <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">initVulkan</span><span class="fn-params">(</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn-type">types::Instance</span> <span class="fn-ptr">*</span>pInstance, <span class="fn-type">types::ValidationLayers</span> <span class="fn-ptr">*</span>pDebugMessenger,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn-type">types::Surface</span> <span class="fn-ptr">*</span>pSurface, <span class="fn-type">types::PhysicalDevice</span> <span class="fn-ptr">*</span>pPhysicalDevice,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn-type">types::Device</span> <span class="fn-ptr">*</span>pDevice, <span class="fn-type">types::Queue</span> <span class="fn-ptr">*</span>pQueue<span class="fn-params">)</span></div>
-        <div class="fn-toggle">+</div>
-      </div>
-      <div class="fn-body">
-        <div class="fn-brief">Initializes the core Vulkan objects needed before any rendering: instance, validation layers (debug), window surface, physical device selection, logical device, and queue handles — all in a single call.</div>
-        <div class="fn-detail"><div class="fn-detail-label">Parameters</div>
-        <table class="param-table"><tr><th>Name</th><th>Type</th><th>Description</th></tr>
-        <tr><td>pInstance</td><td>types::Instance*</td><td>Output: VkInstance handle wrapper</td></tr>
-        <tr><td>pDebugMessenger</td><td>types::ValidationLayers*</td><td>Output: debug utils messenger for validation layer output</td></tr>
-        <tr><td>pSurface</td><td>types::Surface*</td><td>Output: VkSurfaceKHR from the GLFW window</td></tr>
-        <tr><td>pPhysicalDevice</td><td>types::PhysicalDevice*</td><td>Output: selected VkPhysicalDevice</td></tr>
-        <tr><td>pDevice</td><td>types::Device*</td><td>Output: VkDevice (logical device)</td></tr>
-        <tr><td>pQueue</td><td>types::Queue*</td><td>Output: graphics + present queue handles and family indices</td></tr></table></div>
-        <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;with a location-prefixed message on any step failing</div></div>
+  <!-- ══════════════ OVERVIEW TAB ══════════════ -->
+  <div class="tab-content active" id="tab-overview">
+    <div class="hero" id="overview">
+      <div class="hero-tag">// core engine — base.hpp · clz_types.hpp</div>
+      <h1><span class="dim">curloz</span><span class="hi">-engine</span><br><span class="dim" style="font-size:24px;font-weight:600;letter-spacing:-.01em">Engine Overview</span></h1>
+      <p class="hero-sub">The top-level engine lifecycle, error propagation system, and conventions that every module follows. Start here before diving into the renderer or window subsystems.</p>
+      <div class="hero-btns">
+        <a href="#lifecycle" class="btn btn-p">↺ Lifecycle</a>
+        <a href="#clz-init" class="btn btn-g">fn init</a>
+        <a href="#result-type" class="btn btn-g">⊞ Result</a>
+        <a href="#macros" class="btn btn-g"># Macros</a>
       </div>
     </div>
 
-    <div class="fn-card" id="createSwapchain">
-      <div class="fn-header" onclick="toggle(this)">
-        <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">createSwapchain</span><span class="fn-params">(</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn-params">const </span><span class="fn-type">types::PhysicalDevice</span>&amp; physicalDevice, <span class="fn-params">const </span><span class="fn-type">types::Device</span>&amp; device,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn-params">const </span><span class="fn-type">types::Surface</span>&amp; surface, <span class="fn-params">const </span><span class="fn-type">types::Queue</span>&amp; queue, <span class="fn-type">types::Swapchain</span> <span class="fn-ptr">*</span>pSwapchain<span class="fn-params">)</span></div>
-        <div class="fn-toggle">+</div>
+    <div class="content">
+      <!-- CONVENTIONS -->
+      <section id="conventions">
+        <div class="sec-tag">// conventions</div>
+        <h2>Coding Conventions</h2>
+        <p>All functions across every module follow a consistent interface pattern.</p>
+        <div class="conv-box">
+          <h4>Function Interface Rules</h4>
+          <div class="conv-row"><span class="conv-key">Return type</span><span class="conv-val"><code>clz::Result</code> — <code>clz::Success()</code> or <code>Failure("location: msg")</code>. Top-level lifecycle fns return <code>bool</code>.</span></div>
+          <div class="conv-row"><span class="conv-key">Inputs</span><span class="conv-val"><code>const</code> references — read-only, never modified</span></div>
+          <div class="conv-row"><span class="conv-key">Outputs</span><span class="conv-val">Raw pointers prefixed with <code>p</code> — e.g. <code>pInstance</code>, <code>pSwapchain</code></span></div>
+          <div class="conv-row"><span class="conv-key">Partial failure</span><span class="conv-val">Functions do not clean up on partial failure — callers handle cleanup on bail-out</span></div>
+          <div class="conv-row"><span class="conv-key">Error propagation</span><span class="conv-val"><code>CHECK</code> for bool-returning fns · <code>INVALIDATE</code> for Result-returning fns</span></div>
+          <div class="conv-row"><span class="conv-key">Global state</span><span class="conv-val">None exposed — all functions operate on explicitly passed handles</span></div>
+        </div>
+      </section>
+
+      <!-- LIFECYCLE -->
+      <section id="lifecycle">
+        <div class="sec-tag">// architecture</div>
+        <h2>Engine Lifecycle</h2>
+        <p>The engine has three phases driven from <code>main.cpp</code> via three calls into <code>base.hpp</code>. Each phase coordinates the window and renderer subsystems in the correct order.</p>
+
+        <div class="lifecycle">
+          <div class="lc-phase">
+            <div class="lc-head init">① Startup — clz::init()</div>
+            <div class="lc-steps">
+              <div class="lc-step"><span class="lc-n i">1</span>window::init() — GLFW + window handle</div>
+              <div class="lc-step"><span class="lc-n i">2</span>render::init() — full Vulkan stack</div>
+              <div class="lc-step"><span class="lc-n i">3</span>Returns <code>false</code> on any failure via <code>CHECK</code></div>
+            </div>
+          </div>
+          <div class="lc-phase">
+            <div class="lc-head loop">② Main Loop — clz::update()</div>
+            <div class="lc-steps">
+              <div class="lc-step"><span class="lc-n l">↺</span>Runs until windowShouldClose()</div>
+              <div class="lc-step"><span class="lc-n l">1</span>window::update(dt) — poll events</div>
+              <div class="lc-step"><span class="lc-n l">2</span>render::update(dt) — render frame</div>
+            </div>
+          </div>
+          <div class="lc-phase">
+            <div class="lc-head cleanup">③ Shutdown — clz::cleanup()</div>
+            <div class="lc-steps">
+              <div class="lc-step"><span class="lc-n c">1</span>render::cleanup() — Vulkan teardown</div>
+              <div class="lc-step"><span class="lc-n c">2</span>window::cleanup() — GLFW teardown</div>
+              <div class="lc-step"><span class="lc-n c">✓</span>Reverse of init order always</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-i">
+          <div class="callout-icon">ℹ</div>
+          <div class="callout-body"><strong>Delta time:</strong> <code>deltaTime</code> passed to both <code>window::update()</code> and <code>render::update()</code> is currently hardcoded to <code>0</code> — reserved for future animation and input use.</div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- BASE FUNCTIONS -->
+      <section id="base-fns">
+        <div class="sec-tag">// clz — include/base.hpp · src/base.cpp</div>
+        <h2>Engine Lifecycle Functions</h2>
+        <p>The three public functions in namespace <code>clz</code> that drive the entire engine. Called directly from <code>main.cpp</code>.</p>
+      </section>
+
+      <div class="fn-card" id="clz-init">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">bool</span> <span class="fn-ns">clz::</span><span class="fn-name">init</span><span class="fn-params">()</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Initializes all internal engine subsystems. Calls <code>window::init()</code> first, then <code>render::init()</code>. Uses the <code>CHECK</code> macro to bail out early if either step fails.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Init Sequence</div>
+          <ul class="seq-list">
+            <li><span class="seq-num">1</span><code>window::init()</code> — GLFW init + 800×600 window creation</li>
+            <li><span class="seq-num">2</span><code>render::init()</code> — full Vulkan stack (instance → swapchain → pipeline → sync → command pool)</li>
+            <li><span class="seq-num">3</span>Prints <code>"Initialized all internal engines\nWelcome to curloz engine"</code> on success</li>
+          </ul></div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><code>true</code> if all subsystems came up cleanly · <code>false</code> on any failure</div></div>
+        </div>
       </div>
-      <div class="fn-body">
-        <div class="fn-brief">Creates the swapchain and all associated image views. Queries surface capabilities, picks best format and present mode, creates one image view per swapchain image.</div>
-        <div class="fn-detail"><div class="fn-detail-label">Selection Strategy</div><div class="fn-note">Prefers <code>B8G8R8A8_SRGB / SRGB_NONLINEAR</code> format. Present mode prefers <code>MAILBOX</code>, falls back to <code>FIFO</code>. Handles both defined and clamped <code>currentExtent</code> cases.</div></div>
-        <div class="fn-detail"><div class="fn-detail-label">Parameters</div>
-        <table class="param-table"><tr><th>Name</th><th>Type</th><th>Description</th></tr>
-        <tr><td>physicalDevice</td><td>const types::PhysicalDevice&</td><td>For surface capability queries</td></tr>
-        <tr><td>device</td><td>const types::Device&</td><td>For swapchain and image view creation</td></tr>
-        <tr><td>surface</td><td>const types::Surface&</td><td>Window surface to create the swapchain against</td></tr>
-        <tr><td>queue</td><td>const types::Queue&</td><td>Queue info for sharing mode selection</td></tr>
-        <tr><td>pSwapchain</td><td>types::Swapchain*</td><td>Output: fully populated Swapchain struct</td></tr></table></div>
-        <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;with a message on any step failing</div></div>
+
+      <div class="fn-card" id="clz-update">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">void</span> <span class="fn-ns">clz::</span><span class="fn-name">update</span><span class="fn-params">()</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Runs the main engine loop until the window signals a close. Pumps <code>window::update(0)</code> then <code>render::update(0)</code> every frame. Blocks until <code>window::windowShouldClose()</code> returns true.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Loop Body (per frame)</div>
+          <ul class="seq-list">
+            <li><span class="seq-num">1</span><code>window::update(0)</code> — poll OS events, check Escape key</li>
+            <li><span class="seq-num">2</span><code>render::update(0)</code> — acquire image, record + submit commands, present</li>
+          </ul></div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns">void — returns when <code>windowShouldClose()</code> is true</div></div>
+        </div>
+      </div>
+
+      <div class="fn-card" id="clz-cleanup">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">void</span> <span class="fn-ns">clz::</span><span class="fn-name">cleanup</span><span class="fn-params">()</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Tears down all engine subsystems in reverse initialization order. Shuts down the renderer before the window to avoid use-after-free of any window-backed rendering resources.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Teardown Order</div>
+          <ul class="seq-list">
+            <li><span class="seq-num">1</span><code>render::cleanup()</code> — <code>vkDeviceWaitIdle</code> then Vulkan object destruction</li>
+            <li><span class="seq-num">2</span><code>window::cleanup()</code> — destroy GLFW window, terminate GLFW</li>
+          </ul></div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- RESULT TYPE -->
+      <section id="result-type">
+        <div class="sec-tag">// clz — include/clz_types.hpp</div>
+        <h2>clz::Result</h2>
+        <p>The engine's unified return type for all fallible operations. No exceptions — just a bool and a message.</p>
+        <div class="fn-note">
+          <strong>struct clz::Result</strong><br>
+          <code>bool success</code> — true if operation succeeded<br>
+          <code>std::string message</code> — human-readable status or error<br>
+          <code>void what()</code> — prints message to stdout
+        </div>
+        <div class="type-grid" style="margin-top:12px">
+          <div class="type-card">
+            <div class="type-name">clz::Success()</div>
+            <div class="type-def">Returns a Result with <code>success=true</code>. Silent overload uses placeholder message. String overload logs to stdout.</div>
+          </div>
+          <div class="type-card">
+            <div class="type-name">clz::Failure(msg)</div>
+            <div class="type-def">Returns a Result with <code>success=false</code> and the given message. Does not print — <code>CHECK</code>/<code>INVALIDATE</code> handle printing at the call site.</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="macros" style="padding-top:32px">
+        <h3>Error Propagation Macros</h3>
+        <div class="type-grid">
+          <div class="type-card">
+            <div class="type-name">#define CHECK(result)</div>
+            <div class="type-def">Used in <code>bool</code>-returning functions. Prints <code>"ERROR: "</code> + message and <code>return false</code> if <code>result.success == false</code>.</div>
+          </div>
+          <div class="type-card">
+            <div class="type-name">#define INVALIDATE(result)</div>
+            <div class="type-def">Used in <code>clz::Result</code>-returning functions. Prints <code>"ERROR: "</code> + message and <code>return result</code> if <code>result.success == false</code>.</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+    <footer class="page-footer">
+      <span>curloz-engine · API Reference · Doxygen 1.13.2</span>
+      <span><a href="mailto:curloz@tutamail.com">curloz@tutamail.com</a> · GPLv3</span>
+    </footer>
+  </div><!-- /tab-overview -->
+
+  <!-- ══════════════ RENDERER TAB ══════════════ -->
+  <div class="tab-content" id="tab-renderer">
+    <div class="hero" id="r-hero">
+      <div class="hero-tag">// clz::render — renderer.hpp · initializers · mainloop · cleaners</div>
+      <h1><span class="dim">curloz</span><span class="hi">-engine</span><br><span class="dim" style="font-size:24px;font-weight:600;letter-spacing:-.01em">Renderer API</span></h1>
+      <p class="hero-sub">Full Vulkan renderer — from instance creation to per-frame presentation. All module-level state lives in <code>renderer.cpp</code>; everything here is stateless.</p>
+      <div class="hero-btns">
+        <a href="#r-init" class="btn btn-p">↓ renderer.hpp</a>
+        <a href="#initVulkan" class="btn btn-g">Initializers</a>
+        <a href="#waitForGPU" class="btn btn-g">Mainloop</a>
+        <a href="#cleaners" class="btn btn-g">Cleaners</a>
       </div>
     </div>
+    <div class="content">
 
-    <div class="fn-card" id="createShaderModules">
-      <div class="fn-header" onclick="toggle(this)">
-        <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">createShaderModules</span><span class="fn-params">(</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn-params">const </span><span class="fn-type">types::Device</span>&amp; device, <span class="fn-params">const </span>std::array&lt;std::string, 2&gt;&amp; shaderFiles, <span class="fn-type">types::ShaderModules</span> <span class="fn-ptr">*</span>pShaderModules<span class="fn-params">)</span></div>
-        <div class="fn-toggle">+</div>
+      <!-- render::init / update / cleanup -->
+      <section id="r-section">
+        <div class="sec-tag">// clz::render — include/renderer/renderer.hpp</div>
+        <h2>Public Renderer Interface</h2>
+        <p>Three lifecycle functions mirroring the top-level engine pattern. All Vulkan state lives in module-level <code>r_*</code> variables in <code>renderer.cpp</code>.</p>
+
+        <div class="callout callout-i">
+          <div class="callout-icon">ℹ</div>
+          <div class="callout-body"><strong>Frame state variables:</strong> <code>r_currentFrame</code> cycles <code>0..FRAMES_IN_FLIGHT-1</code>. <code>r_imageIndex</code> is the swapchain image index from <code>vkAcquireNextImageKHR</code> — may differ from <code>r_currentFrame</code>. <code>FRAMES_IN_FLIGHT = 2</code>.</div>
+        </div>
+      </section>
+
+      <div class="fn-card" id="r-init">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">init</span><span class="fn-params">()</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Brings up the full Vulkan renderer stack. Any failure propagates immediately via <code>INVALIDATE</code>, leaving partial state uncleaned.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Init Sequence</div>
+          <ul class="seq-list">
+            <li><span class="seq-num">1</span><code>initVulkan()</code> — instance + validation layers + surface + device + queues</li>
+            <li><span class="seq-num">2</span><code>createSwapchain()</code> — swapchain + image views</li>
+            <li><span class="seq-num">3</span><code>createShaderModules()</code> — load SPIR-V from <code>assets/shaders/</code></li>
+            <li><span class="seq-num">4</span><code>createPipeline()</code> — graphics pipeline + layout</li>
+            <li><span class="seq-num">5</span><code>createSyncers()</code> — semaphores + in-flight fences</li>
+            <li><span class="seq-num">6</span><code>createCommandPool()</code> + <code>createCommandBuffers()</code></li>
+          </ul></div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if any subsystem fails</div></div>
+        </div>
       </div>
-      <div class="fn-body">
-        <div class="fn-brief">Loads SPIR-V shader files from disk and creates VkShaderModules. Reads both files in binary mode. Modules can be destroyed after pipeline creation — not needed at draw time.</div>
-        <div class="fn-detail"><div class="fn-detail-label">Parameters</div>
-        <table class="param-table"><tr><th>Name</th><th>Type</th><th>Description</th></tr>
-        <tr><td>device</td><td>const types::Device&</td><td>Logical device for shader module creation</td></tr>
-        <tr><td>shaderFiles</td><td>const std::array&lt;std::string,2&gt;&</td><td>Exactly 2 paths: <code>{ vertex.spirv, fragment.spirv }</code></td></tr>
-        <tr><td>pShaderModules</td><td>types::ShaderModules*</td><td>Output: vertex and fragment shader module handles</td></tr></table></div>
-        <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if a file can't be opened or module creation fails</div></div>
+
+      <div class="fn-card" id="r-update">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">update</span><span class="fn-params">(float deltaTime)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Renders one frame using the double-buffered frame-in-flight loop. All steps indexed by <code>r_currentFrame</code>. Advances <code>r_currentFrame</code> with modulo wrap at end.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Per-Frame Sequence</div>
+          <ul class="seq-list">
+            <li><span class="seq-num">1</span><code>waitForGPU</code> — block CPU until this frame's fence is signaled</li>
+            <li><span class="seq-num">2</span><code>acquireNextImage</code> — get swapchain image index</li>
+            <li><span class="seq-num">3</span><code>startCommandBuffer</code> — reset + begin</li>
+            <li><span class="seq-num">4</span><code>recordCommandBuffer</code> — image barriers + draw call</li>
+            <li><span class="seq-num">5</span><code>submitCommandBuffer</code> — vkQueueSubmit2</li>
+            <li><span class="seq-num">6</span><code>present</code> — vkQueuePresentKHR</li>
+            <li><span class="seq-num">7</span><code>r_currentFrame = (r_currentFrame + 1) % FRAMES_IN_FLIGHT</code></li>
+          </ul></div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if any Vulkan call fails</div></div>
+        </div>
+      </div>
+
+      <div class="fn-card" id="r-cleanup">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">void</span> <span class="fn-ns">clz::render::</span><span class="fn-name">cleanup</span><span class="fn-params">()</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Tears down all Vulkan resources in reverse initialization order. Calls <code>vkDeviceWaitIdle()</code> first to guarantee the GPU is idle.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Destruction Order</div>
+          <ul class="seq-list">
+            <li><span class="seq-num">0</span><code>vkDeviceWaitIdle()</code></li>
+            <li><span class="seq-num">1</span>command pool (frees all command buffers)</li>
+            <li><span class="seq-num">2</span>syncers (semaphores + fences)</li>
+            <li><span class="seq-num">3</span>pipeline + shader modules</li>
+            <li><span class="seq-num">4</span>swapchain + image views</li>
+            <li><span class="seq-num">5</span>device → surface → validation layers → instance</li>
+          </ul></div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- INITIALIZERS -->
+      <section id="init-section">
+        <div class="sec-tag">// clz::render — include/renderer/initializers.hpp</div>
+        <h2>Initializers</h2>
+        <p>Vulkan resource creation. Called once during <code>render::init()</code> in dependency order.</p>
+      </section>
+
+      <div class="fn-card" id="initVulkan">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">initVulkan</span><span class="fn-params">(</span><br>&nbsp;&nbsp;<span class="fn-type">types::Instance</span><span class="fn-ptr">*</span>pInstance, <span class="fn-type">types::ValidationLayers</span><span class="fn-ptr">*</span>pDebugMessenger,<br>&nbsp;&nbsp;<span class="fn-type">types::Surface</span><span class="fn-ptr">*</span>pSurface, <span class="fn-type">types::PhysicalDevice</span><span class="fn-ptr">*</span>pPhysicalDevice,<br>&nbsp;&nbsp;<span class="fn-type">types::Device</span><span class="fn-ptr">*</span>pDevice, <span class="fn-type">types::Queue</span><span class="fn-ptr">*</span>pQueue<span class="fn-params">)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Initializes the core Vulkan objects: instance, validation layers (debug builds), window surface, physical device selection, logical device, and queue handles.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Parameters</div>
+          <table class="param-table"><tr><th>Name</th><th>Type</th><th>Description</th></tr>
+          <tr><td>pInstance</td><td>types::Instance*</td><td>Output: VkInstance wrapper</td></tr>
+          <tr><td>pDebugMessenger</td><td>types::ValidationLayers*</td><td>Output: debug utils messenger</td></tr>
+          <tr><td>pSurface</td><td>types::Surface*</td><td>Output: VkSurfaceKHR from GLFW window</td></tr>
+          <tr><td>pPhysicalDevice</td><td>types::PhysicalDevice*</td><td>Output: selected GPU</td></tr>
+          <tr><td>pDevice</td><td>types::Device*</td><td>Output: logical device</td></tr>
+          <tr><td>pQueue</td><td>types::Queue*</td><td>Output: graphics + present queue handles</td></tr></table></div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;with location-prefixed message</div></div>
+        </div>
+      </div>
+
+      <div class="fn-card" id="createSwapchain">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">createSwapchain</span><span class="fn-params">(const <span class="fn-type">PhysicalDevice</span>&, const <span class="fn-type">Device</span>&, const <span class="fn-type">Surface</span>&, const <span class="fn-type">Queue</span>&, <span class="fn-type">Swapchain</span>*)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Creates the swapchain and all associated image views. Queries surface capabilities, picks best format (<code>B8G8R8A8_SRGB/SRGB_NONLINEAR</code>) and present mode (prefers <code>MAILBOX</code>, falls back to <code>FIFO</code>).</div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;on any step failing</div></div>
+        </div>
+      </div>
+
+      <div class="fn-card" id="createShaderModules">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">createShaderModules</span><span class="fn-params">(const <span class="fn-type">Device</span>&, const std::array&lt;std::string,2&gt;&, <span class="fn-type">ShaderModules</span>*)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Loads SPIR-V shader files from disk and creates VkShaderModules. Array must be exactly <code>{ vertex.spirv, fragment.spirv }</code>. Modules can be destroyed after pipeline creation.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if file can't be opened or module creation fails</div></div>
+        </div>
+      </div>
+
+      <div class="fn-card" id="createPipeline">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">createPipeline</span><span class="fn-params">(const <span class="fn-type">Device</span>&, const <span class="fn-type">Swapchain</span>&, <span class="fn-type">ShaderModules</span>, <span class="fn-type">Pipeline</span>*)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Creates the graphics pipeline and layout. No-vertex-buffer triangle pipeline using Vulkan 1.3 dynamic rendering. No render pass object.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Pipeline Config</div>
+          <ul class="seq-list">
+            <li><span class="seq-num">·</span>Dynamic viewport + scissor · triangle list topology</li>
+            <li><span class="seq-num">·</span>No vertex input bindings — positions in vertex shader</li>
+            <li><span class="seq-num">·</span>Back-face culling · clockwise winding · no depth/stencil · no blending</li>
+            <li><span class="seq-num">·</span>Dynamic rendering via <code>VkPipelineRenderingCreateInfo</code></li>
+          </ul></div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if layout or pipeline creation fails</div></div>
+        </div>
+      </div>
+
+      <div class="fn-card" id="createSyncers">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">createSyncers</span><span class="fn-params">(const <span class="fn-type">Device</span>&, const <span class="fn-type">Swapchain</span>&, const uint8_t FRAMES_IN_FLIGHT, <span class="fn-type">Syncers</span>*)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Creates <code>FRAMES_IN_FLIGHT</code> sets of per-frame sync primitives: one <code>imageAvailable</code> semaphore, one <code>renderFinished</code> semaphore, and one in-flight fence per frame.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if any semaphore or fence creation fails</div></div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- COMMAND BUFFERS -->
+      <section id="cmdbuf-section">
+        <div class="sec-tag">// clz::render — include/renderer/commandbuffer.hpp</div>
+        <h2>Command Buffers</h2>
+      </section>
+
+      <div class="fn-card" id="createCommandPool">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">createCommandPool</span><span class="fn-params">(const <span class="fn-type">Device</span>&, const <span class="fn-type">Queue</span>&, <span class="fn-type">CommandPool</span>*)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Creates a command pool tied to the graphics queue family. Created with <code>VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT</code> so individual command buffers can be reset per-frame without resetting the entire pool.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if <code>vkCreateCommandPool</code> fails</div></div>
+        </div>
+      </div>
+
+      <div class="fn-card" id="createCommandBuffers">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">createCommandBuffers</span><span class="fn-params">(const <span class="fn-type">Device</span>&, const <span class="fn-type">CommandPool</span>&, vector&lt;<span class="fn-type">CommandBuffer</span>&gt;*, uint8_t count)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Allocates <code>count</code> primary command buffers from the given pool in a single <code>vkAllocateCommandBuffers</code> call. Buffers are freed implicitly when the pool is destroyed.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Parameters</div>
+          <table class="param-table"><tr><th>Name</th><th>Type</th><th>Description</th></tr>
+          <tr><td>device</td><td>const types::Device&</td><td>Logical device</td></tr>
+          <tr><td>commandPool</td><td>const types::CommandPool&</td><td>Pool to allocate from</td></tr>
+          <tr><td>pCommandBuffers</td><td>vector&lt;CommandBuffer&gt;*</td><td>Output vector to append allocated buffers to</td></tr>
+          <tr><td>count</td><td>uint8_t</td><td>Number of buffers to allocate. Defaults to 1</td></tr></table></div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if <code>vkAllocateCommandBuffers</code> fails</div></div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- MAINLOOP -->
+      <section id="mainloop-section">
+        <div class="sec-tag">// clz::render — include/renderer/mainloop.hpp · src/renderer/mainloop.cpp</div>
+        <h2>Mainloop Operations</h2>
+        <p>The six per-frame steps called in sequence by <code>render::update()</code>. Stateless — all state injected via parameters.</p>
+        <div class="loop-flow">
+          <div class="ls-box">waitForGPU</div><div class="ls-arrow">→</div>
+          <div class="ls-box">acquireNextImage</div><div class="ls-arrow">→</div>
+          <div class="ls-box">startCommandBuffer</div><div class="ls-arrow">→</div>
+          <div class="ls-box">recordCommandBuffer</div><div class="ls-arrow">→</div>
+          <div class="ls-box">submitCommandBuffer</div><div class="ls-arrow">→</div>
+          <div class="ls-box">present</div>
+        </div>
+      </section>
+
+      <div class="fn-card" id="waitForGPU">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">waitForGPU</span><span class="fn-params">(const <span class="fn-type">Device</span>, VkFence* pFence)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Blocks indefinitely (<code>UINT64_MAX</code>) until the GPU signals the fence, then resets it for the next <code>vkQueueSubmit2</code>.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if wait or reset returns non-success VkResult</div></div>
+        </div>
+      </div>
+
+      <div class="fn-card" id="acquireNextImage">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">acquireNextImage</span><span class="fn-params">(const <span class="fn-type">Device</span>, const <span class="fn-type">Swapchain</span>, VkSemaphore, uint32_t* pImageIndex)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Acquires the next presentable swapchain image. Signals semaphore when image is safe to render into. <code>VK_SUBOPTIMAL_KHR</code> treated as success. <code>VK_ERROR_OUT_OF_DATE_KHR</code> returned as Failure — swapchain rebuild not yet implemented.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span> (incl. suboptimal)&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;with reason string</div></div>
+        </div>
+      </div>
+
+      <div class="fn-card" id="startCommandBuffer">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">startCommandBuffer</span><span class="fn-params">(const <span class="fn-type">Device</span>, <span class="fn-type">CommandBuffer</span>)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Calls <code>vkResetCommandBuffer()</code> then <code>vkBeginCommandBuffer()</code>. Buffer is reused each frame — not <code>ONE_TIME_SUBMIT</code>.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if either Vulkan call fails</div></div>
+        </div>
+      </div>
+
+      <div class="fn-card" id="recordCommandBuffer">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">recordCommandBuffer</span><span class="fn-params">(const <span class="fn-type">CommandBuffer</span>, const <span class="fn-type">Swapchain</span>, uint32_t imageIndex, <span class="fn-type">Pipeline</span>)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Records the full draw sequence using Vulkan 1.3 dynamic rendering — no render pass object.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Recording Sequence</div>
+          <ul class="seq-list">
+            <li><span class="seq-num">1</span>Barrier: <code>UNDEFINED → COLOR_ATTACHMENT_OPTIMAL</code></li>
+            <li><span class="seq-num">2</span><code>vkCmdBeginRendering</code> — black clear, store op</li>
+            <li><span class="seq-num">3</span>Dynamic viewport + scissor to swapchain extent</li>
+            <li><span class="seq-num">4</span>Bind graphics pipeline</li>
+            <li><span class="seq-num">5</span><code>vkCmdDraw(3,1,0,0)</code> — hardcoded triangle</li>
+            <li><span class="seq-num">6</span><code>vkCmdEndRendering</code></li>
+            <li><span class="seq-num">7</span>Barrier: <code>COLOR_ATTACHMENT_OPTIMAL → PRESENT_SRC_KHR</code></li>
+            <li><span class="seq-num">8</span><code>vkEndCommandBuffer</code></li>
+          </ul></div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if <code>vkEndCommandBuffer</code> fails</div></div>
+        </div>
+      </div>
+
+      <div class="fn-card" id="submitCommandBuffer">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">submitCommandBuffer</span><span class="fn-params">(<span class="fn-type">Queue</span>, <span class="fn-type">CommandBuffer</span>, VkSemaphore imageAvailable, VkSemaphore renderFinished, VkFence inFlightFence)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Submits recorded commands via <code>vkQueueSubmit2</code> (Vulkan 1.3). Wait scoped to <code>COLOR_ATTACHMENT_OUTPUT</code>. Signals both the renderFinished semaphore and the in-flight fence on completion.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if <code>vkQueueSubmit2</code> fails</div></div>
+        </div>
+      </div>
+
+      <div class="fn-card" id="present">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">present</span><span class="fn-params">(const <span class="fn-type">Swapchain</span>, const <span class="fn-type">Queue</span>, VkSemaphore, uint32_t imageIndex)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Presents rendered image to display. Waits on <code>renderCompleteSemaphore</code>. Uses graphics queue — assumes it supports presentation (dedicated present queue not yet implemented).</div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if <code>vkQueuePresentKHR</code> fails</div></div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- CLEANERS -->
+      <section id="cleaners">
+        <div class="sec-tag">// clz::render — include/renderer/cleaners.hpp</div>
+        <h2>Cleaners</h2>
+        <p>Counterpart destruction function for every initializer. <code>renderer.cpp</code> calls <code>vkDeviceWaitIdle()</code> before any of these. Destroy in reverse init order.</p>
+        <div class="type-grid">
+          <div class="type-card"><div class="type-name">destroyCommandPool</div><div class="type-def">Destroys pool and implicitly frees all allocated command buffers. No need to call <code>vkFreeCommandBuffers</code> first.</div></div>
+          <div class="type-card"><div class="type-name">destroySyncers</div><div class="type-def">Iterates all three vectors (<code>imageAvailableSemaphores</code>, <code>renderCompleteSemaphores</code>, <code>inFlightFence</code>) and destroys each handle.</div></div>
+          <div class="type-card"><div class="type-name">destroyPipeline</div><div class="type-def">Destroys graphics pipeline, pipeline layout, and both shader modules.</div></div>
+          <div class="type-card"><div class="type-name">destroySwapchain</div><div class="type-def">Destroys all image views first, then the swapchain. Images freed automatically by the swapchain.</div></div>
+          <div class="type-card"><div class="type-name">destroyDevice</div><div class="type-def">Destroys the logical device. Must be called after all device-owned resources are destroyed.</div></div>
+          <div class="type-card"><div class="type-name">destroySurface</div><div class="type-def">Must be called before <code>destroyInstance()</code>.</div></div>
+          <div class="type-card"><div class="type-name">destroyValidationLayers</div><div class="type-def">Uses <code>vkb::destroy_debug_utils_messenger</code>. Safe if messenger is <code>VK_NULL_HANDLE</code> (release builds).</div></div>
+          <div class="type-card"><div class="type-name">destroyInstance</div><div class="type-def">Must be called last — after surface, validation layers, and device are already destroyed.</div></div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- TYPES -->
+      <section id="render-types">
+        <div class="sec-tag">// types — include/renderer/render_types.hpp</div>
+        <h2>Renderer Types</h2>
+        <div class="type-grid">
+          <div class="type-card"><div class="type-name">types::Instance</div><div class="type-ns">clz::render::types</div><div class="type-def">Wraps <code>VkInstance</code>.</div><div class="type-loc">render_types.hpp:28</div></div>
+          <div class="type-card"><div class="type-name">types::ValidationLayers</div><div class="type-ns">clz::render::types</div><div class="type-def">Debug utils messenger for validation layer output.</div><div class="type-loc">render_types.hpp:45</div></div>
+          <div class="type-card"><div class="type-name">types::Surface</div><div class="type-ns">clz::render::types</div><div class="type-def">Wraps <code>VkSurfaceKHR</code> from GLFW.</div><div class="type-loc">render_types.hpp:61</div></div>
+          <div class="type-card"><div class="type-name">types::PhysicalDevice</div><div class="type-ns">clz::render::types</div><div class="type-def">Wraps selected <code>VkPhysicalDevice</code>.</div><div class="type-loc">render_types.hpp:77</div></div>
+          <div class="type-card"><div class="type-name">types::Device</div><div class="type-ns">clz::render::types</div><div class="type-def">Wraps <code>VkDevice</code> (logical device).</div><div class="type-loc">render_types.hpp:91</div></div>
+          <div class="type-card"><div class="type-name">types::Queue</div><div class="type-ns">clz::render::types</div><div class="type-def">Graphics + present queue handles and family indices.</div><div class="type-loc">render_types.hpp:109</div></div>
+          <div class="type-card"><div class="type-name">types::Swapchain</div><div class="type-ns">clz::render::types</div><div class="type-def">Swapchain handle + all image/view data.</div><div class="type-loc">render_types.hpp:132</div></div>
+          <div class="type-card"><div class="type-name">types::ShaderModules</div><div class="type-ns">clz::render::types</div><div class="type-def">Vertex + fragment SPIR-V module handles.</div><div class="type-loc">render_types.hpp:154</div></div>
+          <div class="type-card"><div class="type-name">types::Pipeline</div><div class="type-ns">clz::render::types</div><div class="type-def">Graphics pipeline + layout.</div><div class="type-loc">render_types.hpp:173</div></div>
+          <div class="type-card"><div class="type-name">types::CommandPool</div><div class="type-ns">clz::render::types</div><div class="type-def">Command pool (graphics family, reset-per-buffer).</div><div class="type-loc">render_types.hpp:195</div></div>
+          <div class="type-card"><div class="type-name">types::CommandBuffer</div><div class="type-ns">clz::render::types</div><div class="type-def">Wraps a single <code>VkCommandBuffer</code>.</div><div class="type-loc">render_types.hpp:208</div></div>
+          <div class="type-card"><div class="type-name">types::Syncers</div><div class="type-ns">clz::render::types</div><div class="type-def">All per-frame sync primitives (semaphores + fences).</div><div class="type-loc">render_types.hpp:228</div></div>
+        </div>
+      </section>
+    </div>
+    <footer class="page-footer">
+      <span>curloz-engine · Renderer API · Doxygen 1.13.2</span>
+      <span><a href="mailto:curloz@tutamail.com">curloz@tutamail.com</a> · GPLv3</span>
+    </footer>
+  </div><!-- /tab-renderer -->
+
+  <!-- ══════════════ WINDOW TAB ══════════════ -->
+  <div class="tab-content" id="tab-window">
+    <div class="hero" id="w-hero">
+      <div class="hero-tag">// clz::window — window.hpp · native.hpp · render.hpp</div>
+      <h1><span class="dim">curloz</span><span class="hi">-engine</span><br><span class="dim" style="font-size:24px;font-weight:600;letter-spacing:-.01em">Window API</span></h1>
+      <p class="hero-sub">GLFW window lifecycle and Vulkan surface creation. Split across three translation units: <code>window.cpp</code> (forwarders), <code>native.cpp</code> (GLFW), <code>render.cpp</code> (Vulkan surface).</p>
+      <div class="hero-btns">
+        <a href="#w-init" class="btn btn-p">↓ window.hpp</a>
+        <a href="#n-init" class="btn btn-g">Native (GLFW)</a>
+        <a href="#window-types" class="btn btn-g">Types</a>
       </div>
     </div>
+    <div class="content">
 
-    <div class="fn-card" id="createPipeline">
-      <div class="fn-header" onclick="toggle(this)">
-        <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">createPipeline</span><span class="fn-params">(</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn-params">const </span><span class="fn-type">types::Device</span>&amp; device, <span class="fn-params">const </span><span class="fn-type">types::Swapchain</span>&amp; swapchain,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn-type">types::ShaderModules</span> shaderModules, <span class="fn-type">types::Pipeline</span> <span class="fn-ptr">*</span>pPipeline<span class="fn-params">)</span></div>
-        <div class="fn-toggle">+</div>
+      <section id="w-section">
+        <div class="sec-tag">// clz::window — include/window/window.hpp · src/window/window.cpp</div>
+        <h2>Public Window Interface</h2>
+        <p>Stateless forwarders that inject the module-level <code>w_window</code> into the real implementations in <code>native.cpp</code> and <code>render.cpp</code>. Callers never touch <code>types::Window</code> directly.</p>
+        <div class="callout callout-i">
+          <div class="callout-icon">ℹ</div>
+          <div class="callout-body"><strong>Module state:</strong> <code>window.cpp</code> owns <code>w_window</code> (module-level GLFWwindow wrapper), <code>w_width = 800</code>, <code>w_height = 600</code>.</div>
+        </div>
+      </section>
+
+      <div class="fn-card" id="w-init">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::window::</span><span class="fn-name">init</span><span class="fn-params">()</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Forwards to <code>native::init(&w_window)</code>. Initializes GLFW and creates an 800×600 Vulkan-compatible non-resizable window.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;from <code>native::init()</code></div></div>
+        </div>
       </div>
-      <div class="fn-body">
-        <div class="fn-brief">Creates the graphics pipeline and layout. Hardcoded for a no-vertex-buffer triangle pipeline using Vulkan 1.3 dynamic rendering — no render pass object.</div>
-        <div class="fn-detail"><div class="fn-detail-label">Pipeline Configuration</div>
-        <ul class="seq-list">
-          <li><span class="seq-num">·</span>Dynamic viewport + scissor state</li>
-          <li><span class="seq-num">·</span>No vertex input bindings — positions hardcoded in vertex shader</li>
-          <li><span class="seq-num">·</span>Triangle list topology · back-face culling · clockwise winding</li>
-          <li><span class="seq-num">·</span>No depth/stencil, no blending</li>
-          <li><span class="seq-num">·</span>Dynamic rendering via <code>VkPipelineRenderingCreateInfo</code></li>
-        </ul></div>
-        <div class="fn-detail"><div class="fn-detail-label">Parameters</div>
-        <table class="param-table"><tr><th>Name</th><th>Type</th><th>Description</th></tr>
-        <tr><td>device</td><td>const types::Device&</td><td>Logical device</td></tr>
-        <tr><td>swapchain</td><td>const types::Swapchain&</td><td>Format and extent for pipeline rendering info</td></tr>
-        <tr><td>shaderModules</td><td>types::ShaderModules</td><td>Vertex + fragment shader modules to bind</td></tr>
-        <tr><td>pPipeline</td><td>types::Pipeline*</td><td>Output: pipeline and layout handles</td></tr></table></div>
-        <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if layout or pipeline creation fails</div></div>
+
+      <div class="fn-card" id="w-update">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::window::</span><span class="fn-name">update</span><span class="fn-params">(float deltaTime)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Forwards to <code>native::update(&w_window, deltaTime)</code>. Polls GLFW events and handles Escape-to-close.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Always returns Success</span></div></div>
+        </div>
       </div>
+
+      <div class="fn-card" id="w-shouldclose">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">bool</span> <span class="fn-ns">clz::window::</span><span class="fn-name">windowShouldClose</span><span class="fn-params">()</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Forwards to <code>native::windowShouldClose(&w_window)</code>. Returns true when the close button or Escape has been pressed.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><code>true</code> if <code>glfwWindowShouldClose()</code> is set</div></div>
+        </div>
+      </div>
+
+      <div class="fn-card" id="w-cleanup">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::window::</span><span class="fn-name">cleanup</span><span class="fn-params">()</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Forwards to <code>native::cleanup(&w_window)</code>. Destroys the GLFW window and terminates GLFW. Safe to call once after the main loop exits.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;after teardown completes</div></div>
+        </div>
+      </div>
+
+      <div class="fn-card" id="w-extensions">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">void</span> <span class="fn-ns">clz::window::</span><span class="fn-name">getWindowExtensions</span><span class="fn-params">(vector&lt;const char*&gt;& Extensions, uint32_t& extensionsCount)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Forwards to <code>render::getWindowExtensions()</code>. Appends the platform Vulkan surface extensions required by GLFW to the output vector.</div>
+        </div>
+      </div>
+
+      <div class="fn-card" id="w-surface">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::window::</span><span class="fn-name">createVkSurface</span><span class="fn-params">(VkSurfaceKHR* surface, const VkInstance& instance)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Forwards to <code>render::createVkSurface()</code>. Wraps <code>glfwCreateWindowSurface()</code> to create a platform-appropriate Vulkan surface for the GLFW window.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if surface creation fails</div></div>
+        </div>
+      </div>
+
+      <div class="fn-card" id="w-framebuffer">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">void</span> <span class="fn-ns">clz::window::</span><span class="fn-name">getFramebufferExtents</span><span class="fn-params">(int* pWidth, int* pHeight)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Wraps <code>glfwGetFramebufferSize()</code>. Use this for Vulkan swapchain extent rather than the stored <code>w_width</code>/<code>w_height</code> — framebuffer size can differ from window size on high-DPI displays.</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- NATIVE -->
+      <section id="native-section">
+        <div class="sec-tag">// clz::window — include/window/native.hpp · src/window/native.cpp</div>
+        <h2>Native — GLFW Implementation</h2>
+        <p>Low-level functions that operate directly on a <code>types::Window*</code>. Not part of the public engine API — use <code>window.hpp</code> instead.</p>
+        <div class="callout callout-w">
+          <div class="callout-icon">⚠</div>
+          <div class="callout-body"><strong>Internal API:</strong> These are the real implementations; <code>window.hpp</code> forwards to them with the module-level window injected.</div>
+        </div>
+      </section>
+
+      <div class="fn-card" id="n-init">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::window::</span><span class="fn-name">init</span><span class="fn-params">(<span class="fn-type">types::Window</span>* pWindow)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Initializes GLFW and creates a Vulkan-compatible 800×600 fixed-size window.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Sequence</div>
+          <ul class="seq-list">
+            <li><span class="seq-num">1</span><code>glfwInit()</code></li>
+            <li><span class="seq-num">2</span>Hint <code>GLFW_CLIENT_API = GLFW_NO_API</code></li>
+            <li><span class="seq-num">3</span>Hint <code>GLFW_RESIZABLE = false</code></li>
+            <li><span class="seq-num">4</span><code>glfwCreateWindow(800, 600, ...)</code></li>
+          </ul></div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span> with log message&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;with error location</div></div>
+        </div>
+      </div>
+
+      <div class="fn-card" id="n-update">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::window::</span><span class="fn-name">update</span><span class="fn-params">(<span class="fn-type">types::Window</span>* pWindow, float deltaTime)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Calls <code>glfwPollEvents()</code> then checks if Escape is held and flags the window for closing. <code>deltaTime</code> is currently unused — reserved for future input/animation use.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Always returns Success</span></div></div>
+        </div>
+      </div>
+
+      <div class="fn-card" id="n-shouldclose">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">bool</span> <span class="fn-ns">clz::window::</span><span class="fn-name">windowShouldClose</span><span class="fn-params">(<span class="fn-type">types::Window</span>* pWindow)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Returns whether the window close flag is set — triggered by OS close button or Escape key in <code>update()</code>.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><code>true</code> if <code>glfwWindowShouldClose()</code> is set</div></div>
+        </div>
+      </div>
+
+      <div class="fn-card" id="n-cleanup">
+        <div class="fn-header" onclick="toggle(this)">
+          <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::window::</span><span class="fn-name">cleanup</span><span class="fn-params">(<span class="fn-type">types::Window</span>* pWindow)</span></div>
+          <div class="fn-toggle">+</div>
+        </div>
+        <div class="fn-body">
+          <div class="fn-brief">Destroys the GLFW window and terminates GLFW. Calling while the window is still in use is undefined behaviour.</div>
+          <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Always returns Success</span></div></div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <section id="window-types">
+        <div class="sec-tag">// types — include/window/window_types.hpp</div>
+        <h2>Window Types</h2>
+        <div class="type-grid">
+          <div class="type-card"><div class="type-name">types::Window</div><div class="type-ns">clz::window::types</div><div class="type-def">Thin wrapper around a <code>GLFWwindow*</code> pointer.</div><div class="type-loc">window_types.hpp:29</div></div>
+        </div>
+      </section>
     </div>
+    <footer class="page-footer">
+      <span>curloz-engine · Window API · Doxygen 1.13.2</span>
+      <span><a href="mailto:curloz@tutamail.com">curloz@tutamail.com</a> · GPLv3</span>
+    </footer>
+  </div><!-- /tab-window -->
 
-    <div class="fn-card" id="createSyncers">
-      <div class="fn-header" onclick="toggle(this)">
-        <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">createSyncers</span><span class="fn-params">(</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn-params">const </span><span class="fn-type">types::Device</span>&amp; device, <span class="fn-params">const </span><span class="fn-type">types::Swapchain</span>&amp; swapchain,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn-params">const </span>uint8_t FRAMES_IN_FLIGHT, <span class="fn-type">types::Syncers</span> <span class="fn-ptr">*</span>pSyncers<span class="fn-params">)</span></div>
-        <div class="fn-toggle">+</div>
-      </div>
-      <div class="fn-body">
-        <div class="fn-brief">Creates per-frame semaphores and fences for CPU-GPU synchronization. Allocates <code>FRAMES_IN_FLIGHT</code> sets — one imageAvailable semaphore, one renderFinished semaphore, and one in-flight fence per frame.</div>
-        <div class="fn-detail"><div class="fn-detail-label">Parameters</div>
-        <table class="param-table"><tr><th>Name</th><th>Type</th><th>Description</th></tr>
-        <tr><td>device</td><td>const types::Device&</td><td>Logical device</td></tr>
-        <tr><td>swapchain</td><td>const types::Swapchain&</td><td>Used to size sync primitive arrays</td></tr>
-        <tr><td>FRAMES_IN_FLIGHT</td><td>const uint8_t</td><td>Number of frames to pipeline simultaneously on the GPU</td></tr>
-        <tr><td>pSyncers</td><td>types::Syncers*</td><td>Output: all per-frame synchronization primitives</td></tr></table></div>
-        <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if any semaphore or fence creation fails</div></div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <section id="mainloop-section">
-      <div class="sec-tag">// clz::render — include/renderer/mainloop.hpp · src/renderer/mainloop.cpp</div>
-      <h2>Mainloop Operations</h2>
-      <p>Per-frame Vulkan render loop step implementations. All six functions operate on explicitly passed handles — no global state. Module-level state (<code>r_currentFrame</code>, <code>r_imageIndex</code>, etc.) lives in <code>renderer.cpp</code>.</p>
-    </section>
-
-    <div class="fn-card" id="waitForGPU">
-      <div class="fn-header" onclick="toggle(this)">
-        <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">waitForGPU</span><span class="fn-params">(</span><span class="fn-params">const </span><span class="fn-type">types::Device</span> device, VkFence <span class="fn-ptr">*</span>pFence<span class="fn-params">)</span></div>
-        <div class="fn-toggle">+</div>
-      </div>
-      <div class="fn-body">
-        <div class="fn-brief">Waits on the in-flight fence then resets it. Blocks indefinitely (<code>UINT64_MAX</code> timeout) until the GPU signals the fence, guaranteeing command buffer and sync primitives for this frame are free. Resets the fence for re-use by the next <code>vkQueueSubmit2</code>.</div>
-        <div class="fn-detail"><div class="fn-detail-label">Parameters</div>
-        <table class="param-table"><tr><th>Name</th><th>Type</th><th>Description</th></tr>
-        <tr><td>device</td><td>const types::Device</td><td>Logical device</td></tr>
-        <tr><td>pFence</td><td>VkFence*</td><td>Pointer to the fence to wait on and reset</td></tr></table></div>
-        <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if wait or reset returns a non-success VkResult</div></div>
-      </div>
-    </div>
-
-    <div class="fn-card" id="acquireNextImage">
-      <div class="fn-header" onclick="toggle(this)">
-        <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">acquireNextImage</span><span class="fn-params">(</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn-params">const </span><span class="fn-type">types::Device</span> device, <span class="fn-params">const </span><span class="fn-type">types::Swapchain</span> swapchain,<br>&nbsp;&nbsp;&nbsp;&nbsp;VkSemaphore semaphore, uint32_t <span class="fn-ptr">*</span>pImageIndex<span class="fn-params">)</span></div>
-        <div class="fn-toggle">+</div>
-      </div>
-      <div class="fn-body">
-        <div class="fn-brief">Acquires the next presentable swapchain image. Signals <code>semaphore</code> when the image is safe to render into.</div>
-        <div class="fn-detail"><div class="fn-detail-label">Error Handling</div><div class="fn-note"><code>VK_SUBOPTIMAL_KHR</code> treated as success. <code>VK_ERROR_OUT_OF_DATE_KHR</code> returned as Failure — swapchain rebuild not yet implemented.</div></div>
-        <div class="fn-detail"><div class="fn-detail-label">Parameters</div>
-        <table class="param-table"><tr><th>Name</th><th>Type</th><th>Description</th></tr>
-        <tr><td>device</td><td>const types::Device</td><td>Logical device</td></tr>
-        <tr><td>swapchain</td><td>const types::Swapchain</td><td>Swapchain to acquire from</td></tr>
-        <tr><td>semaphore</td><td>VkSemaphore</td><td>Signaled when the image is safe to render into</td></tr>
-        <tr><td>pImageIndex</td><td>uint32_t*</td><td>Output: acquired image index</td></tr></table></div>
-        <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span> (including suboptimal)&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;with a reason string</div></div>
-      </div>
-    </div>
-
-    <div class="fn-card" id="startCommandBuffer">
-      <div class="fn-header" onclick="toggle(this)">
-        <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">startCommandBuffer</span><span class="fn-params">(</span><span class="fn-params">const </span><span class="fn-type">types::Device</span> device, <span class="fn-type">types::CommandBuffer</span> commandBuffer<span class="fn-params">)</span></div>
-        <div class="fn-toggle">+</div>
-      </div>
-      <div class="fn-body">
-        <div class="fn-brief">Resets and begins a command buffer for this frame's recording. Calls <code>vkResetCommandBuffer()</code> then <code>vkBeginCommandBuffer()</code>. BeginInfo has no flags — buffer is reused each frame, not <code>ONE_TIME_SUBMIT</code>.</div>
-        <div class="fn-detail"><div class="fn-detail-label">Parameters</div>
-        <table class="param-table"><tr><th>Name</th><th>Type</th><th>Description</th></tr>
-        <tr><td>device</td><td>const types::Device</td><td>Logical device</td></tr>
-        <tr><td>commandBuffer</td><td>types::CommandBuffer</td><td>Command buffer to reset and open for recording</td></tr></table></div>
-        <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if either Vulkan call fails</div></div>
-      </div>
-    </div>
-
-    <div class="fn-card" id="recordCommandBuffer">
-      <div class="fn-header" onclick="toggle(this)">
-        <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">recordCommandBuffer</span><span class="fn-params">(</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn-params">const </span><span class="fn-type">types::CommandBuffer</span> commandBuffer, <span class="fn-params">const </span><span class="fn-type">types::Swapchain</span> swapchain,<br>&nbsp;&nbsp;&nbsp;&nbsp;uint32_t imageIndex, <span class="fn-type">types::Pipeline</span> pipeline<span class="fn-params">)</span></div>
-        <div class="fn-toggle">+</div>
-      </div>
-      <div class="fn-body">
-        <div class="fn-brief">Records the full draw sequence for one frame using Vulkan 1.3 dynamic rendering — no render pass object.</div>
-        <div class="fn-detail"><div class="fn-detail-label">Recording Sequence</div>
-        <ul class="seq-list">
-          <li><span class="seq-num">1</span>Barrier: <code>UNDEFINED → COLOR_ATTACHMENT_OPTIMAL</code></li>
-          <li><span class="seq-num">2</span><code>vkCmdBeginRendering</code> — black clear, store op, single color attachment</li>
-          <li><span class="seq-num">3</span>Dynamic viewport + scissor set to swapchain extent</li>
-          <li><span class="seq-num">4</span>Bind graphics pipeline</li>
-          <li><span class="seq-num">5</span><code>vkCmdDraw(3, 1, 0, 0)</code> — hardcoded triangle, vertex positions in shader</li>
-          <li><span class="seq-num">6</span><code>vkCmdEndRendering</code></li>
-          <li><span class="seq-num">7</span>Barrier: <code>COLOR_ATTACHMENT_OPTIMAL → PRESENT_SRC_KHR</code></li>
-          <li><span class="seq-num">8</span><code>vkEndCommandBuffer</code></li>
-        </ul></div>
-        <div class="fn-detail"><div class="fn-detail-label">Parameters</div>
-        <table class="param-table"><tr><th>Name</th><th>Type</th><th>Description</th></tr>
-        <tr><td>commandBuffer</td><td>const types::CommandBuffer</td><td>Must be in recording state</td></tr>
-        <tr><td>swapchain</td><td>const types::Swapchain</td><td>Source of images, image views, and extent</td></tr>
-        <tr><td>imageIndex</td><td>uint32_t</td><td>Which swapchain image to render into</td></tr>
-        <tr><td>pipeline</td><td>types::Pipeline</td><td>Graphics pipeline to bind</td></tr></table></div>
-        <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if <code>vkEndCommandBuffer</code> fails</div></div>
-      </div>
-    </div>
-
-    <div class="fn-card" id="submitCommandBuffer">
-      <div class="fn-header" onclick="toggle(this)">
-        <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">submitCommandBuffer</span><span class="fn-params">(</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn-type">types::Queue</span> queue, <span class="fn-type">types::CommandBuffer</span> commandBuffer,<br>&nbsp;&nbsp;&nbsp;&nbsp;VkSemaphore imageAvailableSemaphore, VkSemaphore renderFinishedSemaphore, VkFence inFlightFence<span class="fn-params">)</span></div>
-        <div class="fn-toggle">+</div>
-      </div>
-      <div class="fn-body">
-        <div class="fn-brief">Submits the command buffer using <code>vkQueueSubmit2</code> (Vulkan 1.3 / sync2). Wait scoped to <code>COLOR_ATTACHMENT_OUTPUT</code>. Signal scope is <code>ALL_GRAPHICS</code>.</div>
-        <div class="fn-detail"><div class="fn-detail-label">Parameters</div>
-        <table class="param-table"><tr><th>Name</th><th>Type</th><th>Description</th></tr>
-        <tr><td>queue</td><td>types::Queue</td><td>Graphics queue to submit to</td></tr>
-        <tr><td>commandBuffer</td><td>types::CommandBuffer</td><td>Recorded command buffer to submit</td></tr>
-        <tr><td>imageAvailableSemaphore</td><td>VkSemaphore</td><td>Wait — blocks until image is ready to render into</td></tr>
-        <tr><td>renderFinishedSemaphore</td><td>VkSemaphore</td><td>Signal — fires when rendering is done</td></tr>
-        <tr><td>inFlightFence</td><td>VkFence</td><td>Signal — CPU can reuse this frame's resources when fired</td></tr></table></div>
-        <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if <code>vkQueueSubmit2</code> fails</div></div>
-      </div>
-    </div>
-
-    <div class="fn-card" id="present">
-      <div class="fn-header" onclick="toggle(this)">
-        <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::render::</span><span class="fn-name">present</span><span class="fn-params">(</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn-params">const </span><span class="fn-type">types::Swapchain</span> swapchain, <span class="fn-params">const </span><span class="fn-type">types::Queue</span> queue,<br>&nbsp;&nbsp;&nbsp;&nbsp;VkSemaphore semaphore, uint32_t imageIndex<span class="fn-params">)</span></div>
-        <div class="fn-toggle">+</div>
-      </div>
-      <div class="fn-body">
-        <div class="fn-brief">Presents the rendered swapchain image to the display. Waits on <code>semaphore</code> (renderCompleteSemaphore). Assumes graphics queue supports presentation — dedicated present queue not yet implemented.</div>
-        <div class="fn-detail"><div class="fn-detail-label">Parameters</div>
-        <table class="param-table"><tr><th>Name</th><th>Type</th><th>Description</th></tr>
-        <tr><td>swapchain</td><td>const types::Swapchain</td><td>Swapchain to present from</td></tr>
-        <tr><td>queue</td><td>const types::Queue</td><td>Queue to submit the present operation to</td></tr>
-        <tr><td>semaphore</td><td>VkSemaphore</td><td>Wait — render must be complete before presenting</td></tr>
-        <tr><td>imageIndex</td><td>uint32_t</td><td>Swapchain image index to present</td></tr></table></div>
-        <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span>&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;if <code>vkQueuePresentKHR</code> fails</div></div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <section id="window-section">
-      <div class="sec-tag">// clz::window — include/window/native.hpp · src/window/native.cpp</div>
-      <h2>Window — Native (GLFW)</h2>
-      <p>GLFW lifecycle implementation. All functions take an explicit <code>types::Window*</code> — no global state. The module-level <code>w_window</code> is owned by <code>window.cpp</code> and injected here via the forwarding layer.</p>
-      <div class="callout callout-w">
-        <div class="callout-icon">⚠</div>
-        <div class="callout-body"><strong>Internal API:</strong> <code>native.hpp</code> is not the public engine API. Use <code>window.hpp</code> instead — it manages the module-level Window instance and forwards here.</div>
-      </div>
-    </section>
-
-    <div class="fn-card" id="w-init">
-      <div class="fn-header" onclick="toggle(this)">
-        <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::window::</span><span class="fn-name">init</span><span class="fn-params">(</span><span class="fn-type">types::Window</span> <span class="fn-ptr">*</span>pWindow<span class="fn-params">)</span></div>
-        <div class="fn-toggle">+</div>
-      </div>
-      <div class="fn-body">
-        <div class="fn-brief">Initializes GLFW and creates a Vulkan-compatible 800×600 fixed-size window with no OpenGL context.</div>
-        <div class="fn-detail"><div class="fn-detail-label">Sequence</div>
-        <ul class="seq-list">
-          <li><span class="seq-num">1</span><code>glfwInit()</code> — returns Failure on error</li>
-          <li><span class="seq-num">2</span>Hint <code>GLFW_CLIENT_API = GLFW_NO_API</code> (Vulkan, no GL context)</li>
-          <li><span class="seq-num">3</span>Hint <code>GLFW_RESIZABLE = false</code> (fixed 800×600)</li>
-          <li><span class="seq-num">4</span><code>glfwCreateWindow()</code> — returns Failure if handle is null</li>
-        </ul></div>
-        <div class="fn-detail"><div class="fn-detail-label">Parameters</div>
-        <table class="param-table"><tr><th>Name</th><th>Type</th><th>Description</th></tr>
-        <tr><td>pWindow</td><td>types::Window*</td><td>Non-null pointer to the Window struct to populate</td></tr></table></div>
-        <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Success</span> with log message&nbsp;or&nbsp;<span class="ret-fail">Failure</span>&nbsp;with error location string</div></div>
-      </div>
-    </div>
-
-    <div class="fn-card" id="w-update">
-      <div class="fn-header" onclick="toggle(this)">
-        <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::window::</span><span class="fn-name">update</span><span class="fn-params">(</span><span class="fn-type">types::Window</span> <span class="fn-ptr">*</span>pWindow, float deltaTime<span class="fn-params">)</span></div>
-        <div class="fn-toggle">+</div>
-      </div>
-      <div class="fn-body">
-        <div class="fn-brief">Polls GLFW events and handles Escape-to-close for one frame. Calls <code>glfwPollEvents()</code> then checks whether Escape is held and flags the window for closing if so.</div>
-        <div class="fn-detail"><div class="fn-detail-label">Parameters</div>
-        <table class="param-table"><tr><th>Name</th><th>Type</th><th>Description</th></tr>
-        <tr><td>pWindow</td><td>types::Window*</td><td>Non-null pointer to the active Window</td></tr>
-        <tr><td>deltaTime</td><td>float</td><td>Elapsed time since last frame (seconds). Currently unused — reserved for future input/animation use</td></tr></table></div>
-        <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Always returns Success</span></div></div>
-      </div>
-    </div>
-
-    <div class="fn-card" id="w-windowShouldClose">
-      <div class="fn-header" onclick="toggle(this)">
-        <div class="fn-sig"><span class="fn-ret">bool</span> <span class="fn-ns">clz::window::</span><span class="fn-name">windowShouldClose</span><span class="fn-params">(</span><span class="fn-type">types::Window</span> <span class="fn-ptr">*</span>pWindow<span class="fn-params">)</span></div>
-        <div class="fn-toggle">+</div>
-      </div>
-      <div class="fn-body">
-        <div class="fn-brief">Returns whether the window has been flagged for closing. Flag is set by the OS close button or by Escape being pressed in <code>update()</code>.</div>
-        <div class="fn-detail"><div class="fn-detail-label">Parameters</div>
-        <table class="param-table"><tr><th>Name</th><th>Type</th><th>Description</th></tr>
-        <tr><td>pWindow</td><td>types::Window*</td><td>Non-null pointer to the active Window</td></tr></table></div>
-        <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><code>true</code> if <code>glfwWindowShouldClose()</code> is set for this window</div></div>
-      </div>
-    </div>
-
-    <div class="fn-card" id="w-cleanup">
-      <div class="fn-header" onclick="toggle(this)">
-        <div class="fn-sig"><span class="fn-ret">clz::Result</span> <span class="fn-ns">clz::window::</span><span class="fn-name">cleanup</span><span class="fn-params">(</span><span class="fn-type">types::Window</span> <span class="fn-ptr">*</span>pWindow<span class="fn-params">)</span></div>
-        <div class="fn-toggle">+</div>
-      </div>
-      <div class="fn-body">
-        <div class="fn-brief">Destroys the GLFW window and terminates the GLFW library. Always call after the main loop exits and before process shutdown. Calling while the window is still in use is undefined behaviour.</div>
-        <div class="fn-detail"><div class="fn-detail-label">Parameters</div>
-        <table class="param-table"><tr><th>Name</th><th>Type</th><th>Description</th></tr>
-        <tr><td>pWindow</td><td>types::Window*</td><td>Non-null pointer to the Window to tear down</td></tr></table></div>
-        <div class="fn-detail"><div class="fn-detail-label">Returns</div><div class="fn-returns"><span class="ret-ok">Always returns Success</span> after cleanup completes</div></div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <section id="types">
-      <div class="sec-tag">// types — include/renderer/render_types.hpp</div>
-      <h2>Renderer Types</h2>
-      <p>Thin Vulkan object wrappers used as parameters throughout the renderer API. All in namespace <code>clz::render::types</code>.</p>
-      <div class="type-grid">
-        <div class="type-card"><div class="type-name">types::Instance</div><div class="type-ns">clz::render::types</div><div class="type-def">Wraps the <code>VkInstance</code> handle.</div><div class="type-loc">render_types.hpp:28</div></div>
-        <div class="type-card"><div class="type-name">types::ValidationLayers</div><div class="type-ns">clz::render::types</div><div class="type-def">Wraps the debug utils messenger for validation layer output.</div><div class="type-loc">render_types.hpp:45</div></div>
-        <div class="type-card"><div class="type-name">types::Surface</div><div class="type-ns">clz::render::types</div><div class="type-def">Wraps the <code>VkSurfaceKHR</code> created from the GLFW window.</div><div class="type-loc">render_types.hpp:61</div></div>
-        <div class="type-card"><div class="type-name">types::PhysicalDevice</div><div class="type-ns">clz::render::types</div><div class="type-def">Wraps the selected <code>VkPhysicalDevice</code> handle.</div><div class="type-loc">render_types.hpp:77</div></div>
-        <div class="type-card"><div class="type-name">types::Device</div><div class="type-ns">clz::render::types</div><div class="type-def">Wraps the <code>VkDevice</code> (logical device) handle.</div><div class="type-loc">render_types.hpp:91</div></div>
-        <div class="type-card"><div class="type-name">types::Queue</div><div class="type-ns">clz::render::types</div><div class="type-def">Holds graphics and present queue handles and their family indices.</div><div class="type-loc">render_types.hpp:109</div></div>
-        <div class="type-card"><div class="type-name">types::Swapchain</div><div class="type-ns">clz::render::types</div><div class="type-def">Holds the swapchain handle and all associated image/view data.</div><div class="type-loc">render_types.hpp:132</div></div>
-        <div class="type-card"><div class="type-name">types::ShaderModules</div><div class="type-ns">clz::render::types</div><div class="type-def">Holds compiled SPIR-V shader module handles for a vertex + fragment pair.</div><div class="type-loc">render_types.hpp:154</div></div>
-        <div class="type-card"><div class="type-name">types::Pipeline</div><div class="type-ns">clz::render::types</div><div class="type-def">Holds the graphics pipeline and its layout.</div><div class="type-loc">render_types.hpp:173</div></div>
-        <div class="type-card"><div class="type-name">types::CommandBuffer</div><div class="type-ns">clz::render::types</div><div class="type-def">Wraps a single <code>VkCommandBuffer</code>.</div><div class="type-loc">render_types.hpp:208</div></div>
-        <div class="type-card"><div class="type-name">types::Syncers</div><div class="type-ns">clz::render::types</div><div class="type-def">Holds all per-frame synchronization primitives (semaphores + fences).</div><div class="type-loc">render_types.hpp:228</div></div>
-      </div>
-    </section>
-
-    <section id="window-types" style="padding-top:32px">
-      <h3>Window Types</h3>
-      <div class="type-grid">
-        <div class="type-card"><div class="type-name">types::Window</div><div class="type-ns">clz::window::types</div><div class="type-def">Thin wrapper around a <code>GLFWwindow</code> pointer.</div><div class="type-loc">window_types.hpp:29</div></div>
-      </div>
-    </section>
-
-  </div>
-
-  <footer class="page-footer">
-    <span>curloz-engine · API Reference · Generated from Doxygen 1.13.2</span>
-    <span><a href="mailto:curloz@tutamail.com">curloz@tutamail.com</a> · GPLv3</span>
-  </footer>
-</div>
+</div><!-- /main -->
 
 <script>
+// ── SIDEBAR MOBILE ──
+function toggleSidebar(){
+  const s=document.getElementById('sidebar'),h=document.getElementById('ham'),o=document.getElementById('overlay');
+  const open=s.classList.toggle('open');
+  h.classList.toggle('open',open);
+  o.classList.toggle('show',open);
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('ham').classList.remove('open');
+  document.getElementById('overlay').classList.remove('false');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+// ── TAB SWITCHING ──
+function switchTab(tab, btn){
+  // hide all content panes + nav panes, deactivate buttons
+  document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.nav-pane').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el=>el.classList.remove('active'));
+  // activate chosen
+  document.getElementById('tab-'+tab).classList.add('active');
+  document.getElementById('nav-'+tab).classList.add('active');
+  btn.classList.add('active');
+  // update breadcrumb
+  const labels={overview:'Overview',renderer:'Renderer',window:'Window'};
+  document.getElementById('bc-text').textContent=labels[tab]+' API';
+  // close sidebar on mobile
+  if(window.innerWidth<=768) closeSidebar();
+  // scroll to top
+  window.scrollTo(0,0);
+  // clear active nav links
+  document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
+}
+
+// ── EXPAND/COLLAPSE FN CARDS ──
 function toggle(header){
-  const body=header.nextElementSibling,btn=header.querySelector('.fn-toggle'),open=body.classList.toggle('open');
+  const body=header.nextElementSibling,btn=header.querySelector('.fn-toggle');
+  const open=body.classList.toggle('open');
   btn.textContent=open?'−':'+';
 }
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){const id=e.target.id;document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));const a=document.querySelector('.nav-link[href="#'+id+'"]');if(a)a.classList.add('active');}});
-},{rootMargin:'-20% 0px -70% 0px'});
-document.querySelectorAll('section[id],div[id]').forEach(s=>obs.observe(s));
-function openFromHash(){const h=window.location.hash.slice(1);if(h){const c=document.getElementById(h);if(c&&c.classList.contains('fn-card')){const b=c.querySelector('.fn-body'),t=c.querySelector('.fn-toggle');if(b&&!b.classList.contains('open')){b.classList.add('open');t.textContent='−';}}}}
-window.addEventListener('hashchange',openFromHash);openFromHash();
+
+// ── SCROLL SPY (per active tab) ──
+let observer=null;
+function setupScrollSpy(){
+  if(observer) observer.disconnect();
+  const activeTab=document.querySelector('.tab-content.active');
+  if(!activeTab) return;
+  const sections=activeTab.querySelectorAll('[id]');
+  observer=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const id=e.target.id;
+        document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
+        const a=document.querySelector('.nav-link[href="#'+id+'"]');
+        if(a) a.classList.add('active');
+      }
+    });
+  },{rootMargin:'-15% 0px -70% 0px'});
+  sections.forEach(s=>observer.observe(s));
+}
+setupScrollSpy();
+
+// ── NAV LINK CLICKS ──
+document.querySelectorAll('.nav-link').forEach(link=>{
+  link.addEventListener('click',function(e){
+    const tab=this.dataset.tab;
+    if(tab){
+      const btn=document.querySelector('.tab-btn[onclick*="\''+tab+'\'"]');
+      if(btn) switchTab(tab,btn);
+      // wait a tick for tab to render, then scroll
+      const id=this.getAttribute('href').slice(1);
+      setTimeout(()=>{
+        const el=document.getElementById(id);
+        if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+        // open fn card if it's one
+        if(el&&el.classList.contains('fn-card')){
+          const body=el.querySelector('.fn-body'),btn2=el.querySelector('.fn-toggle');
+          if(body&&!body.classList.contains('open')){body.classList.add('open');btn2.textContent='−';}
+        }
+      },50);
+      setupScrollSpy();
+    }
+    if(window.innerWidth<=768) closeSidebar();
+  });
+});
+
+// ── HASH ON LOAD ──
+(function(){
+  const h=window.location.hash.slice(1);
+  if(!h) return;
+  const el=document.getElementById(h);
+  if(!el) return;
+  // figure out which tab it's in
+  const tabEl=el.closest('.tab-content');
+  if(tabEl){
+    const tabId=tabEl.id.replace('tab-','');
+    const btn=document.querySelector('.tab-btn[onclick*="\''+tabId+'\'"]');
+    if(btn) switchTab(tabId,btn);
+  }
+  setTimeout(()=>{
+    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+    if(el&&el.classList.contains('fn-card')){
+      const body=el.querySelector('.fn-body'),btn=el.querySelector('.fn-toggle');
+      if(body&&!body.classList.contains('open')){body.classList.add('open');btn.textContent='−';}
+    }
+    setupScrollSpy();
+  },100);
+})();
 </script>
 </body>
 </html>
