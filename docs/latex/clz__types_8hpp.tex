@@ -1,0 +1,150 @@
+\doxysection{include/clz\+\_\+types.hpp File Reference}
+\hypertarget{clz__types_8hpp}{}\label{clz__types_8hpp}\index{include/clz\_types.hpp@{include/clz\_types.hpp}}
+
+
+Core result type and error-\/propagation utilities for Curloz Engine.  
+
+
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$fmt/base.\+h$>$}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}}
+\begin{DoxyCompactList}\small\item\em Represents the outcome of a fallible engine operation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{clz__types_8hpp_a5b20dbc391d89612ed9c0dcb9415dbc3}{CHECK}}(clz\+\_\+result)
+\begin{DoxyCompactList}\small\item\em Early-\/returns false if {\ttfamily clz\+\_\+result} indicates failure. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{clz__types_8hpp_a33e1ea16e0ab0c5791a30ed6f0530a5f}{INVALIDATE}}(clz\+\_\+result)
+\begin{DoxyCompactList}\small\item\em Early-\/returns the failing Result itself if it indicates failure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structclz_1_1Result}{Result}} \mbox{\hyperlink{clz__types_8hpp_ab9f1aa62b911366b18aeedcfc204901d}{clz\+::\+Success}} ()
+\begin{DoxyCompactList}\small\item\em Creates a silent success \doxylink{structclz_1_1Result}{Result} with the default placeholder message. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structclz_1_1Result}{Result}} \mbox{\hyperlink{clz__types_8hpp_a0b9f185fcdbd07ea968b74366b627e47}{clz\+::\+Success}} (const std\+::string \&msg)
+\begin{DoxyCompactList}\small\item\em Creates a success \doxylink{structclz_1_1Result}{Result} and prints the message to stdout. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structclz_1_1Result}{Result}} \mbox{\hyperlink{clz__types_8hpp_ad95e747a3a7b5370d8e85aab198ac4b9}{clz\+::\+Failure}} (const std\+::string \&msg="{}Unknown error"{})
+\begin{DoxyCompactList}\small\item\em Creates a failure \doxylink{structclz_1_1Result}{Result} with an optional error message. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Core result type and error-\/propagation utilities for Curloz Engine. 
+
+Defines \doxylink{structclz_1_1Result}{clz\+::\+Result}, factory helpers (Success / Failure), and the CHECK / INVALIDATE macros that form the engine\textquotesingle{}s lightweight error handling convention — no exceptions, no std\+::expected, just a bool and a message. 
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{clz__types_8hpp_a5b20dbc391d89612ed9c0dcb9415dbc3}\index{clz\_types.hpp@{clz\_types.hpp}!CHECK@{CHECK}}
+\index{CHECK@{CHECK}!clz\_types.hpp@{clz\_types.hpp}}
+\doxysubsubsection{\texorpdfstring{CHECK}{CHECK}}
+{\footnotesize\ttfamily \label{clz__types_8hpp_a5b20dbc391d89612ed9c0dcb9415dbc3} 
+\#define CHECK(\begin{DoxyParamCaption}\item[{}]{clz\+\_\+result}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{if}\ (!clz\_result.success)\ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ fmt::print(\textcolor{stringliteral}{"{}ERROR:\ "{}});\ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ clz\_result.what();\ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Early-\/returns false if {\ttfamily clz\+\_\+result} indicates failure. 
+
+Intended for use in functions that return bool. Prints "{}\+ERROR\+: "{} followed by the result message, then returns false. Has no effect if clz\+\_\+result.\+success is true.
+
+
+\begin{DoxyParams}{Parameters}
+{\em clz\+\_\+result} & A \doxylink{structclz_1_1Result}{clz\+::\+Result} value to inspect. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{clz__types_8hpp_a33e1ea16e0ab0c5791a30ed6f0530a5f}\index{clz\_types.hpp@{clz\_types.hpp}!INVALIDATE@{INVALIDATE}}
+\index{INVALIDATE@{INVALIDATE}!clz\_types.hpp@{clz\_types.hpp}}
+\doxysubsubsection{\texorpdfstring{INVALIDATE}{INVALIDATE}}
+{\footnotesize\ttfamily \label{clz__types_8hpp_a33e1ea16e0ab0c5791a30ed6f0530a5f} 
+\#define INVALIDATE(\begin{DoxyParamCaption}\item[{}]{clz\+\_\+result}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{if}\ (!clz\_result.success)\ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ fmt::print(\textcolor{stringliteral}{"{}ERROR:\ "{}});\ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ clz\_result.what();\ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ clz\_result;\ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Early-\/returns the failing Result itself if it indicates failure. 
+
+Intended for use in functions that return \doxylink{structclz_1_1Result}{clz\+::\+Result}. Prints "{}\+ERROR\+: "{} followed by the result message, then propagates the Result up the call stack. Has no effect if clz\+\_\+result.\+success is true.
+
+
+\begin{DoxyParams}{Parameters}
+{\em clz\+\_\+result} & A \doxylink{structclz_1_1Result}{clz\+::\+Result} value to inspect. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{clz__types_8hpp_ad95e747a3a7b5370d8e85aab198ac4b9}\index{clz\_types.hpp@{clz\_types.hpp}!Failure@{Failure}}
+\index{Failure@{Failure}!clz\_types.hpp@{clz\_types.hpp}}
+\doxysubsubsection{\texorpdfstring{Failure()}{Failure()}}
+{\footnotesize\ttfamily \label{clz__types_8hpp_ad95e747a3a7b5370d8e85aab198ac4b9} 
+Result clz\+::\+Failure (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg}{ = {\ttfamily "{}Unknown~error"{}}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Creates a failure Result with an optional error message. 
+
+Does not print anything — the CHECK / INVALIDATE macros handle printing at the call site.
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & Error description. Defaults to "{}\+Unknown error"{}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A Result with success = false and message set to {\ttfamily msg}. 
+\end{DoxyReturn}
+\Hypertarget{clz__types_8hpp_ab9f1aa62b911366b18aeedcfc204901d}\index{clz\_types.hpp@{clz\_types.hpp}!Success@{Success}}
+\index{Success@{Success}!clz\_types.hpp@{clz\_types.hpp}}
+\doxysubsubsection{\texorpdfstring{Success()}{Success()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{clz__types_8hpp_ab9f1aa62b911366b18aeedcfc204901d} 
+Result clz\+::\+Success (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Creates a silent success Result with the default placeholder message. 
+
+Use when no diagnostic output is needed on the happy path.
+
+\begin{DoxyReturn}{Returns}
+A Result with success = true. 
+\end{DoxyReturn}
+\Hypertarget{clz__types_8hpp_a0b9f185fcdbd07ea968b74366b627e47}\index{clz\_types.hpp@{clz\_types.hpp}!Success@{Success}}
+\index{Success@{Success}!clz\_types.hpp@{clz\_types.hpp}}
+\doxysubsubsection{\texorpdfstring{Success()}{Success()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{clz__types_8hpp_a0b9f185fcdbd07ea968b74366b627e47} 
+Result clz\+::\+Success (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Creates a success Result and prints the message to stdout. 
+
+Use when you want to confirm a successful step with a log line.
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & Descriptive message to store and print. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A Result with success = true and message set to {\ttfamily msg}. 
+\end{DoxyReturn}

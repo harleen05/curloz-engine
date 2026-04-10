@@ -1,0 +1,83 @@
+\doxysection{src/base.cpp File Reference}
+\hypertarget{base_8cpp}{}\label{base_8cpp}\index{src/base.cpp@{src/base.cpp}}
+
+
+Implementation of the core engine lifecycle functions.  
+
+
+{\ttfamily \#include "{}base.\+hpp"{}}\newline
+{\ttfamily \#include "{}renderer/renderer.\+hpp"{}}\newline
+{\ttfamily \#include "{}window/window.\+hpp"{}}\newline
+{\ttfamily \#include "{}clz\+\_\+types.\+hpp"{}}\newline
+{\ttfamily \#include $<$fmt/base.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{base_8cpp_ad23afb2b76e187be63025ab887353782}{clz\+::init}} ()
+\begin{DoxyCompactList}\small\item\em Initializes the window and renderer subsystems. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{base_8cpp_a10f36af73a4ed3a2382c47f1ef2deccb}{clz\+::update}} ()
+\begin{DoxyCompactList}\small\item\em Runs the engine\textquotesingle{}s main loop. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{base_8cpp_a296c96a54e9ca399433acd6d0be55e75}{clz\+::cleanup}} ()
+\begin{DoxyCompactList}\small\item\em Tears down all engine subsystems in reverse initialization order. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementation of the core engine lifecycle functions. 
+
+Drives initialization, the main loop, and shutdown for all internal subsystems (window and renderer). Entry point for engine bring-\/up is \doxylink{base_8cpp_ad23afb2b76e187be63025ab887353782}{clz\+::init()}, followed by \doxylink{base_8cpp_a10f36af73a4ed3a2382c47f1ef2deccb}{clz\+::update()}, then \doxylink{base_8cpp_a296c96a54e9ca399433acd6d0be55e75}{clz\+::cleanup()}. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{base_8cpp_a296c96a54e9ca399433acd6d0be55e75}\index{base.cpp@{base.cpp}!cleanup@{cleanup}}
+\index{cleanup@{cleanup}!base.cpp@{base.cpp}}
+\doxysubsubsection{\texorpdfstring{cleanup()}{cleanup()}}
+{\footnotesize\ttfamily \label{base_8cpp_a296c96a54e9ca399433acd6d0be55e75} 
+void clz\+::cleanup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Tears down all engine subsystems in reverse initialization order. 
+
+Shuts down all internal engine subsystems in reverse init order.
+
+Shuts down the renderer before the window to avoid use-\/after-\/free of any window-\/backed rendering resources. Prints shutdown messages to stdout for each step.
+
+Cleans up the renderer first, then the window. Safe to call once after update() returns. \Hypertarget{base_8cpp_ad23afb2b76e187be63025ab887353782}\index{base.cpp@{base.cpp}!init@{init}}
+\index{init@{init}!base.cpp@{base.cpp}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily \label{base_8cpp_ad23afb2b76e187be63025ab887353782} 
+bool clz\+::init (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Initializes the window and renderer subsystems. 
+
+Initializes all internal engine subsystems.
+
+Calls window\+::init() first, then render\+::init(). Uses the CHECK macro to bail out early if either step fails. Prints confirmation to stdout on success.
+
+\begin{DoxyReturn}{Returns}
+true if all subsystems came up cleanly, false on any failure.
+\end{DoxyReturn}
+Brings up the window and renderer in order. If any subsystem fails to initialize, the function returns false immediately.
+
+\begin{DoxyReturn}{Returns}
+true if all subsystems initialized successfully, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{base_8cpp_a10f36af73a4ed3a2382c47f1ef2deccb}\index{base.cpp@{base.cpp}!update@{update}}
+\index{update@{update}!base.cpp@{base.cpp}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily \label{base_8cpp_a10f36af73a4ed3a2382c47f1ef2deccb} 
+void clz\+::update (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Runs the engine\textquotesingle{}s main loop. 
+
+Runs the main engine loop until the window signals a close.
+
+Pumps window events and renderer updates every frame. Runs until window\+::window\+Should\+Close() signals that the window has been closed or a quit event was received.
+
+\begin{DoxyNote}{Note}
+The delta-\/time argument passed to window\+::update() and render\+::update() is currently hardcoded to 0 (placeholder).
+\end{DoxyNote}
+Ticks the window and renderer each frame in sequence. Blocks until window\+::window\+Should\+Close() returns true. 

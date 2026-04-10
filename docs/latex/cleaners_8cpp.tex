@@ -1,0 +1,267 @@
+\doxysection{src/renderer/cleaners.cpp File Reference}
+\hypertarget{cleaners_8cpp}{}\label{cleaners_8cpp}\index{src/renderer/cleaners.cpp@{src/renderer/cleaners.cpp}}
+
+
+Vulkan resource destruction implementations.  
+
+
+{\ttfamily \#include "{}renderer/cleaners.\+hpp"{}}\newline
+{\ttfamily \#include "{}renderer/render\+\_\+types.\+hpp"{}}\newline
+{\ttfamily \#include $<$Vk\+Bootstrap/\+Vk\+Bootstrap.\+h$>$}\newline
+{\ttfamily \#include $<$vulkan/vulkan.\+h$>$}\newline
+{\ttfamily \#include $<$vulkan/vulkan\+\_\+core.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{cleaners_8cpp_ade2cb05fcbf57901b918dcd96e3150ad}{clz\+::render\+::destroy\+Instance}} (\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Instance}{types\+::\+Instance}} \texorpdfstring{$\ast$}{*}p\+Instance)
+\begin{DoxyCompactList}\small\item\em Destroys the Vk\+Instance. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{cleaners_8cpp_abf3143e4782d79f2b97bff1fd18cdf83}{clz\+::render\+::destroy\+Validation\+Layers}} (\mbox{\hyperlink{structclz_1_1render_1_1types_1_1ValidationLayers}{types\+::\+Validation\+Layers}} \texorpdfstring{$\ast$}{*}p\+Validation\+Layers, const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Instance}{types\+::\+Instance}} \&instance)
+\begin{DoxyCompactList}\small\item\em Destroys the debug utils messenger via vkb. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{cleaners_8cpp_a810aa0aa0802cb843e73729cca2520a8}{clz\+::render\+::destroy\+Surface}} (\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Surface}{types\+::\+Surface}} \texorpdfstring{$\ast$}{*}p\+Surface, const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Instance}{types\+::\+Instance}} \&p\+Instance)
+\begin{DoxyCompactList}\small\item\em Destroys the Vk\+Surface\+KHR. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{cleaners_8cpp_ac4c668469d52ac340e0c09c0c1d43dfe}{clz\+::render\+::destroy\+Device}} (\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \texorpdfstring{$\ast$}{*}p\+Device)
+\begin{DoxyCompactList}\small\item\em Destroys the logical device. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{cleaners_8cpp_a2f7471723aaf140df0f06bc8fd8c45fe}{clz\+::render\+::destroy\+Swapchain}} (const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \&device, \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain}{types\+::\+Swapchain}} \texorpdfstring{$\ast$}{*}p\+Swapchain)
+\begin{DoxyCompactList}\small\item\em Destroys all swapchain image views, then the swapchain. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{cleaners_8cpp_ac4f838c35bc95e7b2f44946ee681804a}{clz\+::render\+::destroy\+Pipeline}} (const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \&device, \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Pipeline}{types\+::\+Pipeline}} \texorpdfstring{$\ast$}{*}p\+Pipeline, \mbox{\hyperlink{structclz_1_1render_1_1types_1_1ShaderModules}{types\+::\+Shader\+Modules}} \texorpdfstring{$\ast$}{*}p\+Shader\+Modules)
+\begin{DoxyCompactList}\small\item\em Destroys the graphics pipeline, layout, and both shader modules. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{cleaners_8cpp_adefc0cb7f5f6e1dff7e54df47e9bc3ce}{clz\+::render\+::destroy\+Command\+Pool}} (const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \&device, \mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandPool}{types\+::\+Command\+Pool}} \texorpdfstring{$\ast$}{*}p\+Command\+Pool)
+\begin{DoxyCompactList}\small\item\em Destroys the command pool. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{cleaners_8cpp_a60f4ad9068f68fd58ecb08765cff392a}{clz\+::render\+::destroy\+Syncers}} (const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \&device, \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Syncers}{types\+::\+Syncers}} \texorpdfstring{$\ast$}{*}p\+Syncers)
+\begin{DoxyCompactList}\small\item\em Destroys all semaphores and fences in the Syncers struct. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Vulkan resource destruction implementations. 
+
+Each function is the exact counterpart of a creation function in \doxylink{initializers_8hpp}{initializers.\+hpp} or \doxylink{commandbuffer_8hpp}{commandbuffer.\+hpp}. Call order in \doxylink{renderer_8cpp}{renderer.\+cpp} follows strict reverse-\/init order to avoid use-\/after-\/free of dependent handles. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{cleaners_8cpp_adefc0cb7f5f6e1dff7e54df47e9bc3ce}\index{cleaners.cpp@{cleaners.cpp}!destroyCommandPool@{destroyCommandPool}}
+\index{destroyCommandPool@{destroyCommandPool}!cleaners.cpp@{cleaners.cpp}}
+\doxysubsubsection{\texorpdfstring{destroyCommandPool()}{destroyCommandPool()}}
+{\footnotesize\ttfamily \label{cleaners_8cpp_adefc0cb7f5f6e1dff7e54df47e9bc3ce} 
+void clz\+::render\+::destroy\+Command\+Pool (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \&}]{device}{, }\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandPool}{types\+::\+Command\+Pool}} \texorpdfstring{$\ast$}{*}}]{p\+Command\+Pool}{}\end{DoxyParamCaption})}
+
+
+
+Destroys the command pool. 
+
+Destroys the command pool (and implicitly all allocated command buffers).
+
+Destroying the pool implicitly frees all command buffers allocated from it — no need to call vk\+Free\+Command\+Buffers first.
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device. \\
+\hline
+{\em p\+Command\+Pool} & Non-\/null pointer to the Command\+Pool to destroy.\\
+\hline
+\end{DoxyParams}
+Destroying the pool frees all command buffers allocated from it. No need to call vk\+Free\+Command\+Buffers beforehand.
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device. \\
+\hline
+{\em p\+Command\+Pool} & Non-\/null pointer to the Command\+Pool to destroy. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{cleaners_8cpp_ac4c668469d52ac340e0c09c0c1d43dfe}\index{cleaners.cpp@{cleaners.cpp}!destroyDevice@{destroyDevice}}
+\index{destroyDevice@{destroyDevice}!cleaners.cpp@{cleaners.cpp}}
+\doxysubsubsection{\texorpdfstring{destroyDevice()}{destroyDevice()}}
+{\footnotesize\ttfamily \label{cleaners_8cpp_ac4c668469d52ac340e0c09c0c1d43dfe} 
+void clz\+::render\+::destroy\+Device (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \texorpdfstring{$\ast$}{*}}]{p\+Device}{}\end{DoxyParamCaption})}
+
+
+
+Destroys the logical device. 
+
+Implicitly waits for all device operations to complete (equivalent to vk\+Device\+Wait\+Idle). In practice, \doxylink{renderer_8cpp}{renderer.\+cpp} calls vk\+Device\+Wait\+Idle explicitly before cleanup to be safe.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\+Device} & Non-\/null pointer to the Device to destroy.\\
+\hline
+\end{DoxyParams}
+Must be called after all device-\/owned resources (swapchain, pipeline, command pool, sync primitives) are destroyed.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\+Device} & Non-\/null pointer to the Device to destroy. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{cleaners_8cpp_ade2cb05fcbf57901b918dcd96e3150ad}\index{cleaners.cpp@{cleaners.cpp}!destroyInstance@{destroyInstance}}
+\index{destroyInstance@{destroyInstance}!cleaners.cpp@{cleaners.cpp}}
+\doxysubsubsection{\texorpdfstring{destroyInstance()}{destroyInstance()}}
+{\footnotesize\ttfamily \label{cleaners_8cpp_ade2cb05fcbf57901b918dcd96e3150ad} 
+void clz\+::render\+::destroy\+Instance (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Instance}{types\+::\+Instance}} \texorpdfstring{$\ast$}{*}}]{p\+Instance}{}\end{DoxyParamCaption})}
+
+
+
+Destroys the Vk\+Instance. 
+
+Must be the last Vulkan object destroyed. All child objects (surface, device, etc.) must already be gone before this is called.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\+Instance} & Non-\/null pointer to the Instance to destroy.\\
+\hline
+\end{DoxyParams}
+Must be called last — after surface, validation layers, and device are already destroyed.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\+Instance} & Non-\/null pointer to the Instance to destroy. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{cleaners_8cpp_ac4f838c35bc95e7b2f44946ee681804a}\index{cleaners.cpp@{cleaners.cpp}!destroyPipeline@{destroyPipeline}}
+\index{destroyPipeline@{destroyPipeline}!cleaners.cpp@{cleaners.cpp}}
+\doxysubsubsection{\texorpdfstring{destroyPipeline()}{destroyPipeline()}}
+{\footnotesize\ttfamily \label{cleaners_8cpp_ac4f838c35bc95e7b2f44946ee681804a} 
+void clz\+::render\+::destroy\+Pipeline (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \&}]{device}{, }\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Pipeline}{types\+::\+Pipeline}} \texorpdfstring{$\ast$}{*}}]{p\+Pipeline}{, }\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1ShaderModules}{types\+::\+Shader\+Modules}} \texorpdfstring{$\ast$}{*}}]{p\+Shader\+Modules}{}\end{DoxyParamCaption})}
+
+
+
+Destroys the graphics pipeline, layout, and both shader modules. 
+
+Destroys the graphics pipeline, pipeline layout, and shader modules.
+
+Shader modules are kept alive until explicit cleanup for simplicity — they could technically be destroyed right after pipeline creation.
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device. \\
+\hline
+{\em p\+Pipeline} & Non-\/null pointer to the Pipeline to destroy. \\
+\hline
+{\em p\+Shader\+Modules} & Non-\/null pointer to the Shader\+Modules to destroy.\\
+\hline
+\end{DoxyParams}
+Shader modules are destroyed here even though they could have been destroyed right after pipeline creation — keeping them alive until explicit cleanup is fine and keeps ownership simple.
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device. \\
+\hline
+{\em p\+Pipeline} & Non-\/null pointer to the Pipeline to destroy. \\
+\hline
+{\em p\+Shader\+Modules} & Non-\/null pointer to the Shader\+Modules to destroy. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{cleaners_8cpp_a810aa0aa0802cb843e73729cca2520a8}\index{cleaners.cpp@{cleaners.cpp}!destroySurface@{destroySurface}}
+\index{destroySurface@{destroySurface}!cleaners.cpp@{cleaners.cpp}}
+\doxysubsubsection{\texorpdfstring{destroySurface()}{destroySurface()}}
+{\footnotesize\ttfamily \label{cleaners_8cpp_a810aa0aa0802cb843e73729cca2520a8} 
+void clz\+::render\+::destroy\+Surface (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Surface}{types\+::\+Surface}} \texorpdfstring{$\ast$}{*}}]{p\+Surface}{, }\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Instance}{types\+::\+Instance}} \&}]{p\+Instance}{}\end{DoxyParamCaption})}
+
+
+
+Destroys the Vk\+Surface\+KHR. 
+
+Must be called before destroy\+Instance() and after destroy\+Device().
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\+Surface} & Non-\/null pointer to the Surface to destroy. \\
+\hline
+{\em p\+Instance} & Instance the surface was created against.\\
+\hline
+\end{DoxyParams}
+Must be called before destroy\+Instance().
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\+Surface} & Non-\/null pointer to the Surface to destroy. \\
+\hline
+{\em instance} & The instance the surface was created against. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{cleaners_8cpp_a2f7471723aaf140df0f06bc8fd8c45fe}\index{cleaners.cpp@{cleaners.cpp}!destroySwapchain@{destroySwapchain}}
+\index{destroySwapchain@{destroySwapchain}!cleaners.cpp@{cleaners.cpp}}
+\doxysubsubsection{\texorpdfstring{destroySwapchain()}{destroySwapchain()}}
+{\footnotesize\ttfamily \label{cleaners_8cpp_a2f7471723aaf140df0f06bc8fd8c45fe} 
+void clz\+::render\+::destroy\+Swapchain (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \&}]{device}{, }\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain}{types\+::\+Swapchain}} \texorpdfstring{$\ast$}{*}}]{p\+Swapchain}{}\end{DoxyParamCaption})}
+
+
+
+Destroys all swapchain image views, then the swapchain. 
+
+Destroys all swapchain image views and the swapchain itself.
+
+Image views must be destroyed before the swapchain since they reference the swapchain\textquotesingle{}s Vk\+Images. The images themselves are owned by the swapchain and freed automatically.
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device. \\
+\hline
+{\em p\+Swapchain} & Non-\/null pointer to the Swapchain to destroy.\\
+\hline
+\end{DoxyParams}
+Image views are destroyed first since they reference the swapchain images. The swapchain images themselves are owned by the swapchain and are freed automatically.
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device. \\
+\hline
+{\em swapchain} & Non-\/null pointer to the Swapchain to destroy. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{cleaners_8cpp_a60f4ad9068f68fd58ecb08765cff392a}\index{cleaners.cpp@{cleaners.cpp}!destroySyncers@{destroySyncers}}
+\index{destroySyncers@{destroySyncers}!cleaners.cpp@{cleaners.cpp}}
+\doxysubsubsection{\texorpdfstring{destroySyncers()}{destroySyncers()}}
+{\footnotesize\ttfamily \label{cleaners_8cpp_a60f4ad9068f68fd58ecb08765cff392a} 
+void clz\+::render\+::destroy\+Syncers (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} \&}]{device}{, }\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Syncers}{types\+::\+Syncers}} \texorpdfstring{$\ast$}{*}}]{p\+Syncers}{}\end{DoxyParamCaption})}
+
+
+
+Destroys all semaphores and fences in the Syncers struct. 
+
+Iterates all three vectors in order\+: image\+Available\+Semaphores → render\+Complete\+Semaphores → in\+Flight\+Fence
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device. \\
+\hline
+{\em p\+Syncers} & Non-\/null pointer to the Syncers to destroy.\\
+\hline
+\end{DoxyParams}
+Iterates all three vectors (image\+Available\+Semaphores, render\+Complete\+Semaphores, in\+Flight\+Fence) and destroys each handle.
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Logical device. \\
+\hline
+{\em p\+Syncers} & Non-\/null pointer to the Syncers to destroy. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{cleaners_8cpp_abf3143e4782d79f2b97bff1fd18cdf83}\index{cleaners.cpp@{cleaners.cpp}!destroyValidationLayers@{destroyValidationLayers}}
+\index{destroyValidationLayers@{destroyValidationLayers}!cleaners.cpp@{cleaners.cpp}}
+\doxysubsubsection{\texorpdfstring{destroyValidationLayers()}{destroyValidationLayers()}}
+{\footnotesize\ttfamily \label{cleaners_8cpp_abf3143e4782d79f2b97bff1fd18cdf83} 
+void clz\+::render\+::destroy\+Validation\+Layers (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structclz_1_1render_1_1types_1_1ValidationLayers}{types\+::\+Validation\+Layers}} \texorpdfstring{$\ast$}{*}}]{p\+Validation\+Layers}{, }\item[{const \mbox{\hyperlink{structclz_1_1render_1_1types_1_1Instance}{types\+::\+Instance}} \&}]{instance}{}\end{DoxyParamCaption})}
+
+
+
+Destroys the debug utils messenger via vkb. 
+
+Destroys the debug utils messenger.
+
+No-\/op in release builds where debug\+Messenger is VK\+\_\+\+NULL\+\_\+\+HANDLE. Must be called before destroy\+Instance().
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\+Validation\+Layers} & Non-\/null pointer to the Validation\+Layers to destroy. \\
+\hline
+{\em instance} & Instance the messenger was created against.\\
+\hline
+\end{DoxyParams}
+Uses vkb\+::destroy\+\_\+debug\+\_\+utils\+\_\+messenger. Safe to call even if the messenger is VK\+\_\+\+NULL\+\_\+\+HANDLE (release builds).
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\+Validation\+Layers} & Non-\/null pointer to the Validation\+Layers to destroy. \\
+\hline
+{\em instance} & The instance the messenger was created against. \\
+\hline
+\end{DoxyParams}

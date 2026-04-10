@@ -43,16 +43,15 @@ namespace clz::render
 				       .build();
 		if (!inst_ret)
 		{
-			result.success = false;
-			result.message = inst_ret.error().message();
-			return result;
+			return clz::Failure(inst_ret.error().message());
 		}
 		vkb::Instance vkb_inst = inst_ret.value();
 		pInstance->instance = vkb_inst.instance;
-            if (enableValidationLayers)
-                pDebugMessenger->debugMessenger = vkb_inst.debug_messenger;
-            else
-                pDebugMessenger->debugMessenger = VK_NULL_HANDLE;
+
+        if (enableValidationLayers)
+            pDebugMessenger->debugMessenger = vkb_inst.debug_messenger;
+        else
+            pDebugMessenger->debugMessenger = VK_NULL_HANDLE;
 
 
 		// Window surface
@@ -74,21 +73,24 @@ namespace clz::render
 			.value();
 		if (!vkb_PhysicalDevice)
 		{
-			result.success = false;
-			result.message = inst_ret.error().message();
-			return result;
+			return clz::Failure("Could not select physical device");
 		}
 
 		vkb::DeviceBuilder deviceBuilder{ vkb_PhysicalDevice };
-		vkb::Device vkb_Device = deviceBuilder.build().value();
+		auto vkb_deviceReslt = deviceBuilder.build();
+		if (!vkb_deviceReslt)
+		{
+			return clz::Failure("src/renderer.hpp/initializers.cpp:init: Could not create logical device");
+		}
+		vkb::Device vkb_device = vkb_deviceReslt.value();
 		pPhysicalDevice->physicalDevice = vkb_PhysicalDevice.physical_device;
-		pDevice->device = vkb_Device.device;
+		pDevice->device = vkb_device.device;
 
 		// Queue and families
-		pQueue->graphicsQueue = vkb_Device.get_queue(vkb::QueueType::graphics).value();
-		pQueue->graphicsFamily = vkb_Device.get_queue_index(vkb::QueueType::graphics).value();
-		pQueue->presentQueue = vkb_Device.get_queue(vkb::QueueType::present).value();
-		pQueue->presentFamily = vkb_Device.get_queue_index(vkb::QueueType::present).value();
+		pQueue->graphicsQueue = vkb_device.get_queue(vkb::QueueType::graphics).value();
+		pQueue->graphicsFamily = vkb_device.get_queue_index(vkb::QueueType::graphics).value();
+		pQueue->presentQueue = vkb_device.get_queue(vkb::QueueType::present).value();
+		pQueue->presentFamily = vkb_device.get_queue_index(vkb::QueueType::present).value();
 
 		return result;
 	}
@@ -133,7 +135,7 @@ namespace clz::render
         pSwapchain->format = formats[0];
         for (const auto  &availableFormat : formats)
         {
-                if (availableFormat.format == VK_FORMAT_B8G8R8_SRGB &&
+                if (availableFormat.format == VK_FORMAT_B8G8R8A8_SRGB &&
                     availableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR)
                 {
                         pSwapchain->format = availableFormat;
@@ -141,7 +143,7 @@ namespace clz::render
                 }
         }
 
-        // triple buffering :)))))
+        // Primarily select mailbox
         pSwapchain->presentMode = VK_PRESENT_MODE_FIFO_KHR;
 
         for (const auto &availablePresentMode : presentModes)
@@ -181,8 +183,6 @@ namespace clz::render
         uint32_t imageCount = capabilities.minImageCount + 1;
         if (imageCount > capabilities.maxImageCount && capabilities.maxImageCount > 0)
                 imageCount = capabilities.maxImageCount;
-
-        imageCount = 8;
 
         VkSwapchainCreateInfoKHR swapchainInfo = {};
         swapchainInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
@@ -438,34 +438,21 @@ namespace clz::render
 
     clz::Result createSyncers(const types::Device &device, const types::Swapchain &swapchain, const uint8_t FRAMES_IN_FLIGHT, types::Syncers *pSyncers)
     {
-        clz::Result result;
-
-        pSyncers->renderCompleteSemaphores.resize(static_cast<size_t>(swapchain.swapchainImages.size()));
-        for (size_t i=0; i<swapchain.swapchainImages.size(); ++i)
-        {
-            VkSemaphoreCreateInfo semaphoreInfo = {};
-            semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-            if (vkCreateSemaphore(device.device, &semaphoreInfo, nullptr, &pSyncers->renderCompleteSemaphores[i]) != VK_SUCCESS)
-            {
-                result.message = "src/renderer/initializers.cpp:createSyncers: Could not create semaphores";
-                result.success = false;
-                return result;
-            }
-        }
-
-        //pSyncers->imageAvailableSemaphores.resize(swapchain.swapchainImages.size());
-        pSyncers->imageAvailableSemaphores.resize(FRAMES_IN_FLIGHT);
-        //for (size_t i=0; i<swapchain.swapchainImages.size(); ++i)
+	pSyncers->renderCompleteSemaphores.resize(static_cast<size_t>(FRAMES_IN_FLIGHT));
+	pSyncers->imageAvailableSemaphores.resize(static_cast<size_t>(FRAMES_IN_FLIGHT));
         for (size_t i=0; i<FRAMES_IN_FLIGHT; ++i)
         {
             VkSemaphoreCreateInfo semaphoreInfo = {};
             semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
             if (vkCreateSemaphore(device.device, &semaphoreInfo, nullptr, &pSyncers->imageAvailableSemaphores[i]) != VK_SUCCESS)
             {
-                result.message = "src/renderer/initializers.cpp:createSyncers: Could not create semaphores";
-                result.success = false;
-                return result;
+                return clz::Failure("src/renderer/initializers.cpp:createSyncers: Could not create semaphores");
             }
+            if (vkCreateSemaphore(device.device, &semaphoreInfo, nullptr, &pSyncers->renderCompleteSemaphores[i]) != VK_SUCCESS)
+            {
+                return clz::Failure("src/renderer/initializers.cpp:createSyncers: Could not create semaphores");
+            }
+
         }
 
         pSyncers->inFlightFence.resize(static_cast<size_t>(FRAMES_IN_FLIGHT));
@@ -476,14 +463,11 @@ namespace clz::render
             fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
             if (vkCreateFence(device.device, &fenceInfo, nullptr, &pSyncers->inFlightFence[i]) != VK_SUCCESS)
             {
-                result.message = "src/renderer/initializers.cpp:createSyncers: Could not create fence";
-                result.success = false;
-                return result;
+                return clz::Failure("src/renderer/initializers.cpp:createSyncers: Could not create fence");
             }
         }
 
-        result.success = true;
-        return result;
+	return clz::Success();
     }
 
 }

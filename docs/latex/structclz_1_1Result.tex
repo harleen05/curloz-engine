@@ -1,0 +1,39 @@
+\doxysection{clz\+::Result Struct Reference}
+\hypertarget{structclz_1_1Result}{}\label{structclz_1_1Result}\index{clz::Result@{clz::Result}}
+
+
+Represents the outcome of a fallible engine operation.  
+
+
+
+
+{\ttfamily \#include $<$clz\+\_\+types.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structclz_1_1Result_a17ddc49db4f623474b8e311b5af81903}\label{structclz_1_1Result_a17ddc49db4f623474b8e311b5af81903} 
+{\bfseries Result} ()
+\begin{DoxyCompactList}\small\item\em Default-\/constructs a successful \doxylink{structclz_1_1Result}{Result} with a placeholder message. \end{DoxyCompactList}\item 
+\Hypertarget{structclz_1_1Result_a883d965e677d5f1b020acbc90f53b776}\label{structclz_1_1Result_a883d965e677d5f1b020acbc90f53b776} 
+void {\bfseries what} ()
+\begin{DoxyCompactList}\small\item\em Prints the result message to stdout. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structclz_1_1Result_a983c5b4bf758d8ad10409c9ca409cb49}\label{structclz_1_1Result_a983c5b4bf758d8ad10409c9ca409cb49} 
+bool {\bfseries success}
+\begin{DoxyCompactList}\small\item\em true if the operation succeeded, false otherwise. \end{DoxyCompactList}\item 
+\Hypertarget{structclz_1_1Result_a484698dd96b37d55bd13392d71e06939}\label{structclz_1_1Result_a484698dd96b37d55bd13392d71e06939} 
+std\+::string {\bfseries message}
+\begin{DoxyCompactList}\small\item\em Human-\/readable status or error description. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents the outcome of a fallible engine operation. 
+
+Carries a boolean success flag and an optional human-\/readable message. The default constructor produces a successful result. Use the \doxylink{clz__types_8hpp_ab9f1aa62b911366b18aeedcfc204901d}{Success()} and \doxylink{clz__types_8hpp_ad95e747a3a7b5370d8e85aab198ac4b9}{Failure()} factory functions rather than constructing \doxylink{structclz_1_1Result}{Result} directly. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{clz__types_8hpp}{clz\+\_\+types.\+hpp}}\end{DoxyCompactItemize}

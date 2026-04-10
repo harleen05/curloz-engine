@@ -1,0 +1,121 @@
+\doxysection{include/renderer/renderer.hpp File Reference}
+\hypertarget{renderer_8hpp}{}\label{renderer_8hpp}\index{include/renderer/renderer.hpp@{include/renderer/renderer.hpp}}
+
+
+Public interface for the Curloz Engine renderer subsystem.  
+
+
+{\ttfamily \#include "{}clz\+\_\+types.\+hpp"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structclz_1_1Result}{Result}} \mbox{\hyperlink{renderer_8cpp_a29661052db715fd025fcf7796fbe9c18}{clz\+::render\+::init}} ()
+\begin{DoxyCompactList}\small\item\em Brings up the full Vulkan renderer stack. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{renderer_8cpp_a55e0e6fca6c643577511d9c7c7ede06d}{clz\+::render\+::update}} (float delta\+Time)
+\begin{DoxyCompactList}\small\item\em Renders one frame using the double-\/buffered frame-\/in-\/flight loop. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{renderer_8cpp_ace541f5d8c4e2bb9b22d6572e4b480f5}{clz\+::render\+::cleanup}} ()
+\begin{DoxyCompactList}\small\item\em Tears down all Vulkan resources in reverse initialization order. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Public interface for the Curloz Engine renderer subsystem. 
+
+One-\/stop include for anything render-\/related. Mirrors the window subsystem pattern — callers never touch Vulkan handles directly. All module-\/level state and Vulkan objects live in \doxylink{renderer_8cpp}{renderer.\+cpp}.
+
+Typical call order\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{render::init();}
+\DoxyCodeLine{\textcolor{keywordflow}{while}\ (!window::windowShouldClose())}
+\DoxyCodeLine{\ \ \ \ render::update(dt);}
+\DoxyCodeLine{render::cleanup();}
+
+\end{DoxyCode}
+ 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{renderer_8cpp_ace541f5d8c4e2bb9b22d6572e4b480f5}\index{renderer.hpp@{renderer.hpp}!cleanup@{cleanup}}
+\index{cleanup@{cleanup}!renderer.hpp@{renderer.hpp}}
+\doxysubsubsection{\texorpdfstring{cleanup()}{cleanup()}}
+{\footnotesize\ttfamily \label{renderer_8cpp_ace541f5d8c4e2bb9b22d6572e4b480f5} 
+void clz\+::render\+::cleanup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Tears down all Vulkan resources in reverse initialization order. 
+
+vk\+Device\+Wait\+Idle() is called first to guarantee the GPU is idle before any handle is destroyed. Destruction order\+: command pool → syncers → pipeline → swapchain → device → surface → validation layers → instance
+
+Calls vk\+Device\+Wait\+Idle() first to ensure the GPU is idle before any destruction. Destroys\+: command pool, syncers, pipeline, swapchain, device, surface, validation layers, instance. \Hypertarget{renderer_8cpp_a29661052db715fd025fcf7796fbe9c18}\index{renderer.hpp@{renderer.hpp}!init@{init}}
+\index{init@{init}!renderer.hpp@{renderer.hpp}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily \label{renderer_8cpp_a29661052db715fd025fcf7796fbe9c18} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::render\+::init (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Brings up the full Vulkan renderer stack. 
+
+Initializes the full Vulkan renderer stack.
+
+Initializes all subsystems in dependency order. Any failure propagates immediately via INVALIDATE, leaving partial state uncleaned (full init is a one-\/time path; partial cleanup is not implemented).
+
+Shader paths are hardcoded to\+: assets/shaders/triangle\+\_\+vert.\+spirv assets/shaders/triangle\+\_\+frag.\+spirv
+
+\begin{DoxyReturn}{Returns}
+Success if all subsystems came up, Failure otherwise.
+\end{DoxyReturn}
+Brings up subsystems in order\+:
+\begin{DoxyEnumerate}
+\item Vulkan instance + validation layers + surface + device + queues
+\item Swapchain
+\item Shader modules + graphics pipeline
+\item Sync primitives (semaphores + fences)
+\item Command pool + command buffers
+\end{DoxyEnumerate}
+
+Uses INVALIDATE throughout — any failure propagates immediately.
+
+\begin{DoxyReturn}{Returns}
+Success if all subsystems initialized, Failure with a message otherwise. 
+\end{DoxyReturn}
+\Hypertarget{renderer_8cpp_a55e0e6fca6c643577511d9c7c7ede06d}\index{renderer.hpp@{renderer.hpp}!update@{update}}
+\index{update@{update}!renderer.hpp@{renderer.hpp}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily \label{renderer_8cpp_a55e0e6fca6c643577511d9c7c7ede06d} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::render\+::update (\begin{DoxyParamCaption}\item[{float}]{delta\+Time}{}\end{DoxyParamCaption})}
+
+
+
+Renders one frame using the double-\/buffered frame-\/in-\/flight loop. 
+
+All steps are indexed by r\+\_\+current\+Frame except r\+\_\+image\+Index which comes from vk\+Acquire\+Next\+Image\+KHR and may differ from r\+\_\+current\+Frame when the swapchain has more images than FRAMES\+\_\+\+IN\+\_\+\+FLIGHT.
+
+r\+\_\+current\+Frame is advanced at the end with a modulo wrap.
+
+
+\begin{DoxyParams}{Parameters}
+{\em delta\+Time} & Unused. Reserved for future animation/input use. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success each frame, Failure if any Vulkan call fails.
+\end{DoxyReturn}
+Per-\/frame sequence\+:
+\begin{DoxyEnumerate}
+\item Wait for the in-\/flight fence (CPU-\/\+GPU sync)
+\item Acquire next swapchain image
+\item Reset + begin command buffer
+\item Record draw commands (image transitions + dynamic rendering + draw call)
+\item Submit command buffer to graphics queue
+\item Present to swapchain
+\item Advance r\+\_\+current\+Frame
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}{Parameters}
+{\em delta\+Time} & Elapsed time since the last frame (seconds). Currently unused. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success each frame, or Failure if any Vulkan call fails. 
+\end{DoxyReturn}

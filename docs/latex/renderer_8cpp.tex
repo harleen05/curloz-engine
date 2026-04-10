@@ -1,0 +1,172 @@
+\doxysection{src/renderer/renderer.cpp File Reference}
+\hypertarget{renderer_8cpp}{}\label{renderer_8cpp}\index{src/renderer/renderer.cpp@{src/renderer/renderer.cpp}}
+
+
+Module-\/level Vulkan state and public renderer lifecycle implementation.  
+
+
+{\ttfamily \#include "{}renderer/renderer.\+hpp"{}}\newline
+{\ttfamily \#include "{}clz\+\_\+types.\+hpp"{}}\newline
+{\ttfamily \#include "{}renderer/render\+\_\+types.\+hpp"{}}\newline
+{\ttfamily \#include "{}renderer/initializers.\+hpp"{}}\newline
+{\ttfamily \#include "{}renderer/cleaners.\+hpp"{}}\newline
+{\ttfamily \#include "{}renderer/commandbuffer.\+hpp"{}}\newline
+{\ttfamily \#include "{}renderer/mainloop.\+hpp"{}}\newline
+{\ttfamily \#include $<$array$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structclz_1_1Result}{Result}} \mbox{\hyperlink{renderer_8cpp_a29661052db715fd025fcf7796fbe9c18}{clz\+::render\+::init}} ()
+\begin{DoxyCompactList}\small\item\em Brings up the full Vulkan renderer stack. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} \mbox{\hyperlink{renderer_8cpp_a55e0e6fca6c643577511d9c7c7ede06d}{clz\+::render\+::update}} (float delta\+Time)
+\begin{DoxyCompactList}\small\item\em Renders one frame using the double-\/buffered frame-\/in-\/flight loop. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{renderer_8cpp_ace541f5d8c4e2bb9b22d6572e4b480f5}{clz\+::render\+::cleanup}} ()
+\begin{DoxyCompactList}\small\item\em Tears down all Vulkan resources in reverse initialization order. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{renderer_8cpp_a36c656403c4f1e3b7807b666698f5d5d}\label{renderer_8cpp_a36c656403c4f1e3b7807b666698f5d5d} 
+\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Instance}{types\+::\+Instance}} {\bfseries clz\+::render\+::r\+\_\+instance}
+\begin{DoxyCompactList}\small\item\em Vulkan instance. \end{DoxyCompactList}\item 
+\Hypertarget{renderer_8cpp_a0de31d88c5e9df3011f636e2bfd5b36d}\label{renderer_8cpp_a0de31d88c5e9df3011f636e2bfd5b36d} 
+\mbox{\hyperlink{structclz_1_1render_1_1types_1_1ValidationLayers}{types\+::\+Validation\+Layers}} {\bfseries clz\+::render\+::r\+\_\+validation\+Layers}
+\begin{DoxyCompactList}\small\item\em Debug messenger (null in release). \end{DoxyCompactList}\item 
+\Hypertarget{renderer_8cpp_a0b69331636687941d46ce3f546a7f211}\label{renderer_8cpp_a0b69331636687941d46ce3f546a7f211} 
+\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Surface}{types\+::\+Surface}} {\bfseries clz\+::render\+::r\+\_\+surface}
+\begin{DoxyCompactList}\small\item\em Window surface. \end{DoxyCompactList}\item 
+\Hypertarget{renderer_8cpp_a40fc5ab4a152a9537f7c7bb236fdcd23}\label{renderer_8cpp_a40fc5ab4a152a9537f7c7bb236fdcd23} 
+\mbox{\hyperlink{structclz_1_1render_1_1types_1_1PhysicalDevice}{types\+::\+Physical\+Device}} {\bfseries clz\+::render\+::r\+\_\+physical\+Device}
+\begin{DoxyCompactList}\small\item\em Selected GPU. \end{DoxyCompactList}\item 
+\Hypertarget{renderer_8cpp_a59a94dfa1b7fc13efafbd8088b07fe6b}\label{renderer_8cpp_a59a94dfa1b7fc13efafbd8088b07fe6b} 
+\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Device}{types\+::\+Device}} {\bfseries clz\+::render\+::r\+\_\+device}
+\begin{DoxyCompactList}\small\item\em Logical device. \end{DoxyCompactList}\item 
+\Hypertarget{renderer_8cpp_a74963b9e10241f3c1f59eeafdb19a5f5}\label{renderer_8cpp_a74963b9e10241f3c1f59eeafdb19a5f5} 
+\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Queue}{types\+::\+Queue}} {\bfseries clz\+::render\+::r\+\_\+queue}
+\begin{DoxyCompactList}\small\item\em Graphics + present queues. \end{DoxyCompactList}\item 
+\Hypertarget{renderer_8cpp_ad47bdd22afcbeabb586fb9d855d373c0}\label{renderer_8cpp_ad47bdd22afcbeabb586fb9d855d373c0} 
+\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Swapchain}{types\+::\+Swapchain}} {\bfseries clz\+::render\+::r\+\_\+swapchain}
+\begin{DoxyCompactList}\small\item\em Swapchain + images + image views. \end{DoxyCompactList}\item 
+\Hypertarget{renderer_8cpp_a6276984e2c7e9ce8c052b512f63016dc}\label{renderer_8cpp_a6276984e2c7e9ce8c052b512f63016dc} 
+\mbox{\hyperlink{structclz_1_1render_1_1types_1_1ShaderModules}{types\+::\+Shader\+Modules}} {\bfseries clz\+::render\+::r\+\_\+shader\+Modules}
+\begin{DoxyCompactList}\small\item\em Vertex + fragment SPIR-\/V modules. \end{DoxyCompactList}\item 
+\Hypertarget{renderer_8cpp_ae03558b82617738f89c5a7ee63d1432a}\label{renderer_8cpp_ae03558b82617738f89c5a7ee63d1432a} 
+\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Pipeline}{types\+::\+Pipeline}} {\bfseries clz\+::render\+::r\+\_\+\+Pipeline}
+\begin{DoxyCompactList}\small\item\em Graphics pipeline + layout. \end{DoxyCompactList}\item 
+\Hypertarget{renderer_8cpp_ae3e8b239fe75b07409b0ff1e682ebf43}\label{renderer_8cpp_ae3e8b239fe75b07409b0ff1e682ebf43} 
+\mbox{\hyperlink{structclz_1_1render_1_1types_1_1Syncers}{types\+::\+Syncers}} {\bfseries clz\+::render\+::r\+\_\+syncers}
+\begin{DoxyCompactList}\small\item\em Semaphores + in-\/flight fences. \end{DoxyCompactList}\item 
+\Hypertarget{renderer_8cpp_a21b7d8e29db1a25afc452f62a220ff2e}\label{renderer_8cpp_a21b7d8e29db1a25afc452f62a220ff2e} 
+\mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandPool}{types\+::\+Command\+Pool}} {\bfseries clz\+::render\+::r\+\_\+command\+Pool}
+\begin{DoxyCompactList}\small\item\em Command pool (graphics family, reset-\/per-\/buffer). \end{DoxyCompactList}\item 
+\Hypertarget{renderer_8cpp_a9febb601ef8dd50a1546b3b23f3a9ca5}\label{renderer_8cpp_a9febb601ef8dd50a1546b3b23f3a9ca5} 
+std\+::vector$<$ \mbox{\hyperlink{structclz_1_1render_1_1types_1_1CommandBuffer}{types\+::\+Command\+Buffer}} $>$ {\bfseries clz\+::render\+::r\+\_\+command\+Buffers}
+\begin{DoxyCompactList}\small\item\em One command buffer per frame in flight. \end{DoxyCompactList}\item 
+\Hypertarget{renderer_8cpp_a5800fc9127fd3dfe0d551e1b4a6b883a}\label{renderer_8cpp_a5800fc9127fd3dfe0d551e1b4a6b883a} 
+constexpr size\+\_\+t {\bfseries clz\+::render\+::\+FRAMES\+\_\+\+IN\+\_\+\+FLIGHT} = 2
+\begin{DoxyCompactList}\small\item\em Number of frames to pipeline on the GPU simultaneously. \end{DoxyCompactList}\item 
+\Hypertarget{renderer_8cpp_a2fab221e90b2cca5b0660c89a8d60fde}\label{renderer_8cpp_a2fab221e90b2cca5b0660c89a8d60fde} 
+uint32\+\_\+t {\bfseries clz\+::render\+::r\+\_\+current\+Frame} = 0
+\begin{DoxyCompactList}\small\item\em Cycles 0..FRAMES\+\_\+\+IN\+\_\+\+FLIGHT-\/1. Indexes per-\/frame sync primitives and command buffers. \end{DoxyCompactList}\item 
+\Hypertarget{renderer_8cpp_a91ef554337b04b5fd194b9fb51b7ad00}\label{renderer_8cpp_a91ef554337b04b5fd194b9fb51b7ad00} 
+uint32\+\_\+t {\bfseries clz\+::render\+::r\+\_\+image\+Index} = 0
+\begin{DoxyCompactList}\small\item\em Swapchain image index acquired for the current frame by vk\+Acquire\+Next\+Image\+KHR. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Module-\/level Vulkan state and public renderer lifecycle implementation. 
+
+Owns all module-\/level Vulkan object instances (r\+\_\+\texorpdfstring{$\ast$}{*} variables) and implements the three public functions from \doxylink{renderer_8hpp}{renderer.\+hpp}. All real work is delegated to \doxylink{initializers_8hpp}{initializers.\+hpp}, \doxylink{cleaners_8hpp}{cleaners.\+hpp}, \doxylink{commandbuffer_8hpp}{commandbuffer.\+hpp}, and \doxylink{mainloop_8hpp}{mainloop.\+hpp}.
+
+Frame state\+:
+\begin{DoxyItemize}
+\item r\+\_\+current\+Frame\+: cycles 0..FRAMES\+\_\+\+IN\+\_\+\+FLIGHT-\/1, indexes into per-\/frame sync primitives.
+\item r\+\_\+image\+Index\+: the swapchain image index acquired for the current frame. 
+\end{DoxyItemize}
+
+\doxysubsection{Function Documentation}
+\Hypertarget{renderer_8cpp_ace541f5d8c4e2bb9b22d6572e4b480f5}\index{renderer.cpp@{renderer.cpp}!cleanup@{cleanup}}
+\index{cleanup@{cleanup}!renderer.cpp@{renderer.cpp}}
+\doxysubsubsection{\texorpdfstring{cleanup()}{cleanup()}}
+{\footnotesize\ttfamily \label{renderer_8cpp_ace541f5d8c4e2bb9b22d6572e4b480f5} 
+void clz\+::render\+::cleanup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Tears down all Vulkan resources in reverse initialization order. 
+
+vk\+Device\+Wait\+Idle() is called first to guarantee the GPU is idle before any handle is destroyed. Destruction order\+: command pool → syncers → pipeline → swapchain → device → surface → validation layers → instance
+
+Calls vk\+Device\+Wait\+Idle() first to ensure the GPU is idle before any destruction. Destroys\+: command pool, syncers, pipeline, swapchain, device, surface, validation layers, instance. \Hypertarget{renderer_8cpp_a29661052db715fd025fcf7796fbe9c18}\index{renderer.cpp@{renderer.cpp}!init@{init}}
+\index{init@{init}!renderer.cpp@{renderer.cpp}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily \label{renderer_8cpp_a29661052db715fd025fcf7796fbe9c18} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::render\+::init (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Brings up the full Vulkan renderer stack. 
+
+Initializes the full Vulkan renderer stack.
+
+Initializes all subsystems in dependency order. Any failure propagates immediately via INVALIDATE, leaving partial state uncleaned (full init is a one-\/time path; partial cleanup is not implemented).
+
+Shader paths are hardcoded to\+: assets/shaders/triangle\+\_\+vert.\+spirv assets/shaders/triangle\+\_\+frag.\+spirv
+
+\begin{DoxyReturn}{Returns}
+Success if all subsystems came up, Failure otherwise.
+\end{DoxyReturn}
+Brings up subsystems in order\+:
+\begin{DoxyEnumerate}
+\item Vulkan instance + validation layers + surface + device + queues
+\item Swapchain
+\item Shader modules + graphics pipeline
+\item Sync primitives (semaphores + fences)
+\item Command pool + command buffers
+\end{DoxyEnumerate}
+
+Uses INVALIDATE throughout — any failure propagates immediately.
+
+\begin{DoxyReturn}{Returns}
+Success if all subsystems initialized, Failure with a message otherwise. 
+\end{DoxyReturn}
+\Hypertarget{renderer_8cpp_a55e0e6fca6c643577511d9c7c7ede06d}\index{renderer.cpp@{renderer.cpp}!update@{update}}
+\index{update@{update}!renderer.cpp@{renderer.cpp}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily \label{renderer_8cpp_a55e0e6fca6c643577511d9c7c7ede06d} 
+\mbox{\hyperlink{structclz_1_1Result}{clz\+::\+Result}} clz\+::render\+::update (\begin{DoxyParamCaption}\item[{float}]{delta\+Time}{}\end{DoxyParamCaption})}
+
+
+
+Renders one frame using the double-\/buffered frame-\/in-\/flight loop. 
+
+All steps are indexed by r\+\_\+current\+Frame except r\+\_\+image\+Index which comes from vk\+Acquire\+Next\+Image\+KHR and may differ from r\+\_\+current\+Frame when the swapchain has more images than FRAMES\+\_\+\+IN\+\_\+\+FLIGHT.
+
+r\+\_\+current\+Frame is advanced at the end with a modulo wrap.
+
+
+\begin{DoxyParams}{Parameters}
+{\em delta\+Time} & Unused. Reserved for future animation/input use. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success each frame, Failure if any Vulkan call fails.
+\end{DoxyReturn}
+Per-\/frame sequence\+:
+\begin{DoxyEnumerate}
+\item Wait for the in-\/flight fence (CPU-\/\+GPU sync)
+\item Acquire next swapchain image
+\item Reset + begin command buffer
+\item Record draw commands (image transitions + dynamic rendering + draw call)
+\item Submit command buffer to graphics queue
+\item Present to swapchain
+\item Advance r\+\_\+current\+Frame
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}{Parameters}
+{\em delta\+Time} & Elapsed time since the last frame (seconds). Currently unused. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success each frame, or Failure if any Vulkan call fails. 
+\end{DoxyReturn}
